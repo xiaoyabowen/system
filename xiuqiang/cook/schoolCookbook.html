@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>食谱管理</title>
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+        }
+
+        a,
+        img {
+            border: 0;
+        }
+
+        body {
+            background: #e3e3e3;
+            height: 100%;
+            font: normal normal 12px/24px "Microsoft yahei", Arial;
+            padding-bottom: 30px;
+        }
+
+        a {
+            color: #1c84c6;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        #title {
+            width: 300px;
+            margin: 3% auto 0;
+        }
+
+        #title h2 {
+            font-size: 18px;
+        }
+
+        #wrapper {
+            width: 980px;
+            margin: 0 auto;
+            background: #f8f8f8;
+            border: 1px solid #a3a3a3;
+            padding: 20px 20px 50px;
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+        }
+
+        h3 {
+            color: #333;
+            font-size: 14px;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        /* box */
+
+        .box {
+            width: 400px;
+            margin: 10px auto 0;
+            background: #fff
+        }
+
+        .tab_menu {
+            overflow: hidden;
+            width: 420px;
+            height: 40px;
+            text-align: center;
+            line-height: 40px;
+        }
+
+        .tab_menu li {
+            width: 80px;
+            float: left;
+            height: 40px;
+            line-height: 40px;
+            color: #1c84c6;
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #1c84c6;
+            border-radius: 5px;
+            margin-right: 4px;
+        }
+
+        .tab_menu li:hover {
+            background: #1c84c6;
+            color: #fff;
+        }
+
+        .tab_menu li.current {
+            color: #fff;
+            background: #1c84c6;
+        }
+
+        .tab_menu li a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .tab_menu li.current a {
+            color: #333;
+        }
+
+        .tab_box {
+            width: 416px;
+            padding: 20px;
+            margin-left: 32px;
+        }
+
+        .tab_box li {
+            height: 24px;
+            line-height: 24px;
+            overflow: hidden;
+        }
+
+        .tab_box li span {
+            margin: 0 5px 0 0;
+            font-family: "宋体";
+            font-size: 12px;
+            font-weight: 400;
+            color: #ddd;
+        }
+
+        .tab_box .hide {
+            display: none;
+        }
+
+        .caione {
+            border: 1px dotted #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .name input {
+            border: none;
+            border: 1px solid #e3e3e3;
+            border-radius: 5px;
+            outline: none;
+            margin-left: 10px;
+        }
+
+        .sc {
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .scbox {
+            float: left;
+            margin-left: 15px;
+            margin-bottom: 10px;
+            position: relative;
+            width: 100%;
+        }
+
+        .scbox > span {
+            position: absolute;
+            top: 5px;;
+            right: 5px;
+            font-size: 12px;
+            line-height: 20px;
+            padding: 0 10px;
+            cursor: pointer;
+        }
+        .scbox > select{
+            width: 70px;
+            height: 30px;
+        }
+        .sc > span {
+            line-height: 30px;
+            float: left;
+        }
+
+        .sc > p {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 12px;
+            line-height: 20px;
+            padding: 0 10px;
+            cursor: pointer;
+        }
+
+        .imgbox {
+            margin-top: 15px;
+        }
+
+        .imgbox span {
+            float: left;
+        }
+
+        .imglist {
+            float: left;
+            margin-left: 15px;
+        }
+
+        .sc input {
+            float: left;
+            width: 70px;
+            height: 30px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 10px;
+        }
+
+        #unit {
+            width: 70px;
+            height: 30px;
+            outline: none;
+            background: #fff;
+        }
+
+        .detail,
+        .detail1 {
+
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        textarea {
+            float: left;
+            width: 240px;
+            height: 100px;
+            margin-left: 15px;
+            border: 1px solid #ccc;
+        }
+
+        .detailtitle {
+            float: left;
+        }
+
+        .componenbox {
+            float: left;
+            width: 325px;
+        }
+
+        .add,
+        .scbox span {
+            float: right;
+            cursor: pointer;
+            border: 1px solid #1c84c6;
+            border-radius: 5px;
+            color: #1c84c6;
+            padding: 0 5px;
+        }
+
+        .add:hover {
+            background: #1c84c6;
+            color: #fff;
+        }
+
+        .scbox span:hover {
+            background: #1c84c6;
+            color: #fff;
+        }
+
+        .imgboxupload {
+            float: left;
+        }
+        .imgboxupload > .imgWrap{
+            position: relative;
+            display: inline-block;
+        }
+        .imgboxupload > .imgWrap > img {
+            margin-left: 10px;
+            width: 46px;
+            height: 46px;
+        }
+        .imgboxupload > .imgWrap > span{
+            position: absolute;
+            top:0px;
+            right:-5px;
+            width: 24px;
+            height: 24px;
+            background: url("../resource/img/delete.png") no-repeat;
+            background-size: 80%;
+        }
+        .addimg {
+            float: left;
+        }
+
+        .add-btn-icon {
+            width:376px;
+            /*margin-left: 32px;*/
+            height: 100px;
+            background: #f3f3f4 url("../resource/img/add.png") 50% 50% no-repeat;
+            background-size: 20%;
+            cursor: pointer;
+        }
+
+        .add-btn-icon:hover {
+            background: #eee url("../resource/img/add.png") 50% 50% no-repeat;
+            background-size: 25%;
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated  fadeInDown  content-view  ">
+    <form method="get" class="form-horizontal" id="areaForm">
+        <div id="template" class="form-group">
+            <label class="col-sm-3 control-label">选择食谱模板</label>
+            <div class="col-sm-5">
+                <select id="selectTemplate"  class="  form-control"  title="选择食谱模板" onchange="selectT()">
+                </select>
+            </div>
+        </div>
+        <div id="schoolToTemplate" class="form-group">
+            <label class="col-sm-3 control-label">模板名称</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="name" placeholder="请输入名称" />
+                <span class="help-block m-b-none validate">请输入名称</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">日期</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="day" placeholder="请输入日期" readonly/>
+                <span class="help-block m-b-none validate">请输入日期</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">类型</label>
+            <div class="col-sm-5">
+                <select id="type"  class="  form-control"  title="请选择类型" >
+                    <option  value=0 selected = "true">普通</option>
+                    <option  value=1>清真</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="box cookbookItems" id="cookbookItems">
+
+        </div>
+
+
+    </form>
+</div>
+
+
+<form style="opacity: 0;position: absolute;left: 0px;" action="" id="uploadFormImg" autocomplete="off"
+      enctype="multipart/form-data">
+    <input id="uploadFormInput" onchange="uploadImg(this,1)" style="height: 0;width: 0;" type="file" name="file"/>
+</form>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>功能列表</h5>
+        </div>
+        <div id="toolbar" class="btn-group">
+            <button class="btn btn-success  btn-outline" id="btn_add">
+                <i class="fa fa-plus">添加</i>
+            </button>
+            <!--            <button class="btn btn-success  btn-outline" id="btn_down" onclick="deriveExcel()">
+                            <a class="fa fa-arrow-circle-down"
+                               download="">下载模板</a>
+                        </button>
+                        <button class="btn btn-success  btn-outline" id="btn_import" onclick="Improt()">
+                            <i class="fa fa-arrow-circle-o-up">导入</i>
+                        </button>-->
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/js/template-native.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/common/common.js?"+Math.random()></script>
+<script src="../resource/js/tab.js"></script>
+<script src="../resource/js/touch.js"></script>
+<script>
+    var templateMap = {};
+    var schoolId=getUserInfo().sid;
+    var $table =  $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl+'/cookbook/getSchoolCookbookPager?sid=' + schoolId,         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType:'limit',
+                queryParams: function (params) {
+                    return {
+                        token:getUserInfo().token,
+                        page:(params.offset / params.limit) + 1,
+                        size: params.limit,
+                    };
+                },
+            });
+        };
+        return oTableInit;
+    };
+    function deriveExcel() {
+        document.location.href = serverUrl + '/cookbook/downloadTemplatesExcel?token='+encodeURIComponent(getUserInfo().token);
+    }
+
+
+    var columns = [
+        {field: "sid", title: "学校名称",align: "center", formatter: function (value, row, index) {
+            return getUserInfo().schoolName;
+        }},
+        {field: "day", title: "日期",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "type", title: "类型",align: "center", formatter: function (value, row, index) {
+            var content = '';
+            if(value == 0) content = '普通';
+            else if(value == 1) content = '清真';
+            return content;
+        }},
+        {field: "zaoCan", title: "早餐",align: "left", formatter: function (value, row, index) {
+            var content = '';
+            if(isNotBlank(value)) {
+                for(var i = 0; i < value.length; i++) {
+                    content += '名称 : ' + value[i].name + '<br />';
+                    content += '描述 : ' + value[i].desc + '<br />';
+                    content += '食材 : <br />';
+                    for(var j = 0; j < value[i].materials.length; j++) {
+                        content += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + value[i].materials[j].name + ' ' + value[i].materials[j].num + ' ' + value[i].materials[j].unit + '<br />';
+                    }
+                }
+            }
+            return content;
+        }},
+        {field: "zaoDian", title: "早点",align: "left", formatter: function (value, row, index) {
+            var content = '';
+            if(isNotBlank(value)) {
+                for(var i = 0; i < value.length; i++) {
+                    content += '名称 : ' + value[i].name + '<br />';
+                    content += '描述 : ' + value[i].desc + '<br />';
+                    content += '食材 : <br />';
+                    for(var j = 0; j < value[i].materials.length; j++) {
+                        content += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + value[i].materials[j].name + ' ' + value[i].materials[j].num + ' ' + value[i].materials[j].unit + '<br />';
+                    }
+                }
+            }
+            return content;
+        }},
+        {field: "wuCan", title: "午餐",align: "left", formatter: function (value, row, index) {
+            var content = '';
+            if(isNotBlank(value)) {
+                for(var i = 0; i < value.length; i++) {
+                    content += '名称 : ' + value[i].name + '<br />';
+                    content += '描述 : ' + value[i].desc + '<br />';
+                    content += '食材 : <br />';
+                    for(var j = 0; j < value[i].materials.length; j++) {
+                        content += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + value[i].materials[j].name + ' ' + value[i].materials[j].num + ' ' + value[i].materials[j].unit + '<br />';
+                    }
+                }
+            }
+            return content;
+        }},
+        {field: "wuDian", title: "午点",align: "left", formatter: function (value, row, index) {
+            var content = '';
+            if(isNotBlank(value)) {
+                for(var i = 0; i < value.length; i++) {
+                    content += '名称 : ' + value[i].name + '<br />';
+                    content += '描述 : ' + value[i].desc + '<br />';
+                    content += '食材 : <br />';
+                    for(var j = 0; j < value[i].materials.length; j++) {
+                        content += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + value[i].materials[j].name + ' ' + value[i].materials[j].num + ' ' + value[i].materials[j].unit + '<br />';
+                    }
+                }
+            }
+            return content;
+        }},
+        {field: "wanCan", title: "晚餐",align: "left", formatter: function (value, row, index) {
+            var content = '';
+            if(isNotBlank(value)) {
+                for(var i = 0; i < value.length; i++) {
+                    content += '名称 : ' + value[i].name + '<br />';
+                    content += '描述 : ' + value[i].desc + '<br />';
+                    content += '食材 : <br />';
+                    for(var j = 0; j < value[i].materials.length; j++) {
+                        content += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' + value[i].materials[j].name + ' ' + value[i].materials[j].num + ' ' + value[i].materials[j].unit + '<br />';
+                    }
+                }
+            }
+            return content;
+        }},
+        {field: "other", title: "编辑", align: "center", formatter: function (value, row, index) {
+            var html = '';
+            html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="存为模板" onclick=\'addTemplate('+JSON.stringify(row)+')\' >存为模板</a>';
+            html +='&nbsp';
+            html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="编辑" onclick=\'edit('+JSON.stringify(row)+')\' >编辑</a>';
+            html +='&nbsp';
+            html += '<a  class="btn btn-danger btn-sm btn-outline" href="javascript:void(0);" title="删除" onclick=\'removeData('+JSON.stringify(row)+')\'>删除</a>';
+            return html;
+        }},
+    ]
+
+    function addTemplate(rowData){
+        $("#template").hide();
+        $("#schoolToTemplate").show();
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '添加/更新',
+            area: ['40%','40%'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                var sid = schoolId;
+                var day= $.trim($('#day').val()).split(' ')[0].split('-');
+                var dayStr = day[0] + day[1] + day[2];
+                var type= $.trim($('#type').val());
+                var name = $("#name").val();
+                var allCookbookItems = {};
+                var key = '';
+                var fiveList = $('.fooditem');//五个餐种
+                for(var i=0;i<fiveList.length;i++){
+                    var fooditemlist = $(fiveList[i]).find('.caione');//所有菜集合
+                    if(i==0){
+                        key = 'zaoCan'
+                    }else if(i == 1){
+                        key = 'zaoDian'
+                    }else if(i == 2){
+                        key = 'wuCan'
+                    }else if(i == 3){
+                        key = 'wuDian'
+                    }else if(i == 4){
+                        key = 'wanCan'
+                    }
+                    allCookbookItems[key] = [];
+                    for(var j=0;j<fooditemlist.length;j++){
+                        var cai = {};
+                        var _thisFood = $(fooditemlist[j]);//每个菜
+                        var _thisCom = _thisFood.find('.scbox');//每个菜里的食材列表
+                        var _thisDesc = _thisFood.find('.desc');
+                        var _thisContent = _thisFood.find('.content');
+                        cai.name = _thisFood.find('.foodname').val();
+                        cai.imgs = [];
+                        cai.materials =[];
+                        cai.desc = _thisDesc.val();
+                        cai.content = _thisContent.val();
+                        for(var o=0;o<_thisCom.length;o++){//每个食材块儿
+                            var inputList = $(_thisCom[o]).find('input');
+                            for(var m=0;m<inputList.length;m++){
+                                if(inputList[m].value){ //如果食材三个中其中一个有值 就组装一个{} 如果没有 不组装
+                                    var mobj = {};
+                                    for(var l=0;l<inputList.length;l++){
+                                        mobj[$(inputList[l]).attr('data-type')] = inputList[l].value;
+                                    }
+                                    cai.materials.push(mobj);
+                                    break;
+                                }else{
+                                }
+                            }
+                        }
+                        for(var o=0;o<_thisFood.find('.imgboxupload').find('img').length;o++){
+                            var src = $(_thisFood.find('.imgboxupload').find('img')[i]).attr('src');
+                            cai.imgs.push(src)
+                        }
+
+                        allCookbookItems[key].push(cai);
+                    }
+                }
+
+                var result = {succ:'添加成功！',fail:'添加失败！'};
+                var params = {};
+                var url = '/cookbook/schoolToTemplate';
+                params.name = name;
+                params.sid = sid;
+                params.day = dayStr;
+                params.type = type;
+                params.zaoCanJson = JSON.stringify(allCookbookItems['zaoCan']);
+                params.zaoDianJson = JSON.stringify(allCookbookItems['zaoDian']);
+                params.wuCanJson = JSON.stringify(allCookbookItems['wuCan']);
+                params.wuDianJson = JSON.stringify(allCookbookItems['wuDian']);
+                params.wanCanJson = JSON.stringify(allCookbookItems['wanCan']);
+                if( params.name == 'undefined' || params.name == ''){
+                    layer.msg('请填写名称', {icon: 2,shade: 0.01});
+                    return;
+                }
+                console.log(params);
+                myAjax(url,params,handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        layer.close(index);
+                        handleTable("", 3, serverUrl + '/cookbook/getSchoolCookbookPager?sid=' + schoolId);
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                if(isNotBlank(rowData)){
+                    $("#type option[value='"+rowData.type+"']").attr("selected","selected");
+                    var dayStr = rowData.day.toString();
+                    $('#day').val(dayStr.substr(0, 4) + '-' + dayStr.substr(4, 2) + '-' + dayStr.substr(6, 2));
+                    var data = {data : rowData};
+                    var html = template("scriptSelectOrUpdateCookbookItems", data);
+                    document.getElementById("cookbookItems").innerHTML = html;
+                    $('.cookbookItems').Tabs({
+                        event:'click'
+                    });
+                    $(".tab_menu li").click(function () {
+                        activeIndex = $(this).index() + 1
+                    });
+                }
+            },
+        })
+
+
+    }
+
+    //删除
+    function removeData(row){
+        var url = "/cookbook/delete";
+        var param = {sid:schoolId, day:row.day, type:row.type};
+        var result = {succ:'删除成功!',fail:'删除失败'};
+        layer.msg("确定要删除该食谱？", {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            ,btn: ['确定','取消']
+            ,yes: function(index){
+                layer.close(index);
+                myAjax(url,param,handle);
+                function handle(data, param){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        handleTable("", 3, serverUrl + '/cookbook/getSchoolCookbookPager?sid=' + schoolId);
+                    }else{
+                        layer.msg(result.fail+msg, {icon: 2,shade: 0.01});
+                    }
+                }
+            },btn2: function(index, layero){
+            }
+        });
+    }
+
+    function selectT() {
+
+        var id = $('#selectTemplate option:selected') .val();
+        var data = {data : templateMap[id]};
+
+        var html = template("scriptSelectOrUpdateCookbookItems", data);
+        document.getElementById("cookbookItems").innerHTML = html;
+        $('.cookbookItems').Tabs({
+            event:'click'
+        });
+        $(".tab_menu li").click(function () {
+            activeIndex = $(this).index()+1
+        });
+    }
+
+
+
+    function add(){
+        $("#template").show();
+        $("#schoolToTemplate").hide();
+        formReset();
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '添加/更新',
+            area: ['40%','40%'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                var sid = schoolId;
+                var day= $.trim($('#day').val()).split(' ')[0].split('-');
+                var dayStr = day[0] + day[1] + day[2];
+                var type= $.trim($('#type').val());
+
+                var allCookbookItems = {};
+                var key = '';
+                var fiveList = $('.fooditem');//五个餐种
+                for(var i=0;i<fiveList.length;i++){
+                    var fooditemlist = $(fiveList[i]).find('.caione');//所有菜集合
+                    if(i==0){
+                        key = 'zaoCan'
+                    }else if(i == 1){
+                        key = 'zaoDian'
+                    }else if(i == 2){
+                        key = 'wuCan'
+                    }else if(i == 3){
+                        key = 'wuDian'
+                    }else if(i == 4){
+                        key = 'wanCan'
+                    }
+                    allCookbookItems[key] = [];
+                    for(var j=0;j<fooditemlist.length;j++){
+                        var cai = {};
+                        var _thisFood = $(fooditemlist[j]);//每个菜
+                        var _thisCom = _thisFood.find('.scbox');//每个菜里的食材列表
+                        var _thisDesc = _thisFood.find('.desc');
+                        var _thisContent = _thisFood.find('.content');
+                        cai.name = _thisFood.find('.foodname').val();
+                        cai.imgs = [];
+                        cai.materials =[];
+                        cai.desc = _thisDesc.val();
+                        cai.content = _thisContent.val();
+                        for(var o=0;o<_thisCom.length;o++){//每个食材块儿
+                            var inputList = $(_thisCom[o]).find('input');
+                            for(var m=0;m<inputList.length;m++){
+                                if(inputList[m].value){ //如果食材三个中其中一个有值 就组装一个{} 如果没有 不组装
+                                    var mobj = {};
+                                    for(var l=0;l<inputList.length;l++){
+                                        mobj[$(inputList[l]).attr('data-type')] = inputList[l].value;
+                                    }
+                                    cai.materials.push(mobj);
+                                    break;
+                                }else{
+                                }
+                            }
+                        }
+                        for(var o=0;o<_thisFood.find('.imgboxupload').find('img').length;o++){
+                            var src = $(_thisFood.find('.imgboxupload').find('img')[i]).attr('src');
+                            cai.imgs.push(src)
+                        }
+                        allCookbookItems[key].push(cai);
+                    }
+                }
+
+                var result = {succ:'添加成功！',fail:'添加失败！'};
+                var params = {};
+                var url = '/cookbook/add';
+
+                params.sid = sid;
+                params.day = dayStr;
+                params.type = type;
+                params.zaoCanJson = JSON.stringify(allCookbookItems['zaoCan']);
+                params.zaoDianJson = JSON.stringify(allCookbookItems['zaoDian']);
+                params.wuCanJson = JSON.stringify(allCookbookItems['wuCan']);
+                params.wuDianJson = JSON.stringify(allCookbookItems['wuDian']);
+                params.wanCanJson = JSON.stringify(allCookbookItems['wanCan']);
+
+                if( params.day == 'undefinedundefined' || params.day == ''){
+                    layer.msg('请选择时间', {icon: 2,shade: 0.01});
+                    return;
+                }
+                // if( JSON.stringify(allCookbookItems['zaoCan']) != '[{"name":"","imgs":[],"materials":[],"desc":""}]' ){
+                //     params.zaoCanJson = JSON.stringify(allCookbookItems['zaoCan']);
+                // }
+                // if( JSON.stringify(allCookbookItems['zaoDian']) != '[{"name":"","imgs":[],"materials":[],"desc":""}]' ){
+                //     params.zaoDianJson = JSON.stringify(allCookbookItems['zaoDian']);
+                // }
+                // if( JSON.stringify(allCookbookItems['wuCan']) != '[{"name":"","imgs":[],"materials":[],"desc":""}]' ){
+                //     params.wuCanCanJson = JSON.stringify(allCookbookItems['wuCan']);
+                // }
+                // if( JSON.stringify(allCookbookItems['wuDian']) != '[{"name":"","imgs":[],"materials":[],"desc":""}]' ){
+                //     params.wuDianJson = JSON.stringify(allCookbookItems['wuDian']);
+                // }
+                // if( JSON.stringify(allCookbookItems['wanCan']) != '[{"name":"","imgs":[],"materials":[],"desc":""}]' ){
+                //     params.wanCanJson = JSON.stringify(allCookbookItems['wanCan']);
+                // }
+                console.log(params);
+                myAjax(url,params,handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        handleTable("", 3, serverUrl + '/cookbook/getSchoolCookbookPager?sid=' + schoolId);
+                        layer.close(index);
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                var url = '/cookbook/getAllTemplates';
+                myAjax(url,{},handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        for(var i = 0; i < data.data.length; i++) {
+                            templateMap[data.data[i].id] = data.data[i];
+                        }
+                        var data = {list: data.data};
+                        var html = template("scriptTemplate", data);
+                        document.getElementById("selectTemplate").innerHTML = html;
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+
+                var data = {};
+                var html = template("scriptInitCookbookItems", data);
+                document.getElementById("cookbookItems").innerHTML = html;
+                $('.cookbookItems').Tabs({
+                    event:'click'
+                });
+                $(".tab_menu li").click(function () {
+                    activeIndex = $(this).index()+1
+                });
+            }
+        })
+    }
+
+    //添加修改
+    function edit(rowData){
+        $("#template").show();
+        $("#schoolToTemplate").hide();
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '添加/更新',
+            area: ['40%','40%'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                var sid = schoolId;
+                var day= $.trim($('#day').val()).split(' ')[0].split('-');
+                var dayStr = day[0] + day[1] + day[2];
+                var type= $.trim($('#type').val());
+
+                var allCookbookItems = {};
+                var key = '';
+                var fiveList = $('.fooditem');//五个餐种
+                for(var i=0;i<fiveList.length;i++){
+                    var fooditemlist = $(fiveList[i]).find('.caione');//所有菜集合
+                    if(i==0){
+                        key = 'zaoCan'
+                    }else if(i == 1){
+                        key = 'zaoDian'
+                    }else if(i == 2){
+                        key = 'wuCan'
+                    }else if(i == 3){
+                        key = 'wuDian'
+                    }else if(i == 4){
+                        key = 'wanCan'
+                    }
+                    allCookbookItems[key] = [];
+                    for(var j=0;j<fooditemlist.length;j++){
+                        var cai = {};
+                        var _thisFood = $(fooditemlist[j]);//每个菜
+                        var _thisCom = _thisFood.find('.scbox');//每个菜里的食材列表
+                        var _thisDesc = _thisFood.find('.desc');
+                        var _thisContent = _thisFood.find('.content');
+                        cai.name = _thisFood.find('.foodname').val();
+                        cai.imgs = [];
+                        cai.materials =[];
+                        cai.desc = _thisDesc.val();
+                        cai.content = _thisContent.val();
+                        for(var o=0;o<_thisCom.length;o++){//每个食材块儿
+                            var inputList = $(_thisCom[o]).find('input');
+                            for(var m=0;m<inputList.length;m++){
+                                if(inputList[m].value){ //如果食材三个中其中一个有值 就组装一个{} 如果没有 不组装
+                                    var mobj = {};
+                                    for(var l=0;l<inputList.length;l++){
+                                        mobj[$(inputList[l]).attr('data-type')] = inputList[l].value;
+                                    }
+                                    cai.materials.push(mobj);
+                                    break;
+                                }else{
+                                }
+                            }
+                        }
+                        for(var o=0;o<_thisFood.find('.imgboxupload').find('img').length;o++){
+                            var src = $(_thisFood.find('.imgboxupload').find('img')[i]).attr('src');
+                            cai.imgs.push(src)
+                        }
+
+                        allCookbookItems[key].push(cai);
+                    }
+                }
+
+                var result = {succ:'添加成功！',fail:'添加失败！'};
+                var params = {};
+                var url = '/cookbook/update';
+                layer.close(index);
+                params.sid = sid;
+                params.day = dayStr;
+                params.type = type;
+                params.zaoCanJson = JSON.stringify(allCookbookItems['zaoCan']);
+                params.zaoDianJson = JSON.stringify(allCookbookItems['zaoDian']);
+                params.wuCanJson = JSON.stringify(allCookbookItems['wuCan']);
+                params.wuDianJson = JSON.stringify(allCookbookItems['wuDian']);
+                params.wanCanJson = JSON.stringify(allCookbookItems['wanCan']);
+                console.log(params);
+                myAjax(url,params,handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        handleTable("", 3, serverUrl + '/cookbook/getSchoolCookbookPager?sid=' + schoolId);
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                var url = '/cookbook/getAllTemplates';
+                myAjax(url,{},handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        for(var i = 0; i < data.data.length; i++) {
+                            templateMap[data.data[i].id] = data.data[i];
+                        }
+                        var data = {list: data.data};
+                        var html = template("scriptTemplate", data);
+                        document.getElementById("selectTemplate").innerHTML = html;
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+
+                if(isNotBlank(rowData)){
+                    $("#type option[value='"+rowData.type+"']").attr("selected","selected");
+                    var dayStr = rowData.day.toString();
+                    $('#day').val(dayStr.substr(0, 4) + '-' + dayStr.substr(4, 2) + '-' + dayStr.substr(6, 2));
+                    var data = {data : rowData};
+                    var html = template("scriptSelectOrUpdateCookbookItems", data);
+                    document.getElementById("cookbookItems").innerHTML = html;
+                    $('.cookbookItems').Tabs({
+                        event:'click'
+                    });
+                    $(".tab_menu li").click(function () {
+                        activeIndex = $(this).index() + 1
+                    });
+                }
+            }
+
+        })
+    }
+
+
+    // 删除图片
+    function del(self){
+        $(self).parent().remove();
+    }
+
+
+    function formReset(){
+        $("#areaForm")[0].reset();
+    }
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click(add);
+        };
+        return oInit;
+    };
+    //主函数
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+
+        laydate.render({
+            elem: '#day'
+//            ,type: 'datetime'
+            ,format: 'yyyy-MM-dd'
+        });
+    });
+
+</script>
+
+<script type="text/javascript">
+
+    var activeIndex = 1;
+    var comIndex = 1;
+    var imgIndex = 1;
+    //上传图片
+    function uploadIcon1(index){
+        $("#uploadFormInput").attr('type','file');
+        imgIndex = index;
+        $('#uploadFormImg input').click();
+    }
+    //上传图片
+    function uploadImg(self,index) {
+        var formData = new FormData($(self).parent()[0]);
+        $.ajax({
+            url: serverUrl + '/storage/handle',  //Server script to process data
+            type: 'POST',
+            data: formData,
+            sync:false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType:"json",
+            success:function(result){
+                if(result.ok){
+                    var img = '<div class="imgWrap">' +
+                        '<img src="'+result.ok+'" alt="" />' + '<span onclick="del(this)"></span>' +
+                        '</div>';
+                    $("#item"+ activeIndex + " #imglist"+imgIndex).append(img);
+                    $("#uploadFormInput").attr('type','text');
+                    $("#uploadFormInput").val('');
+                }
+            },
+            error: function (err) {
+                $("#uploadFormInput").attr('type','text');
+                $("#uploadFormInput").val('');
+            }
+        });
+    }
+
+
+    //添加菜
+    function addCai(index) {
+        comIndex++;
+        var caiHtml = '<div class="caione">\
+            <div class="add" onclick="delCai(this)"> 删除</div>\
+            <div class="name">\
+            <span>名字</span>\
+            <input class="foodname" type="text">\
+            </div>\
+            <div class="sc">\
+            <span>食材</span>\
+            <div class="componenbox" id="comid'+ comIndex+'">\
+            <div class="scbox">\
+            <span onclick="addComponent(comIndex)">添加食材</span>\
+            <input data-type="name" placeholder="食材" type="text">\
+            <input data-type="num" placeholder="重量" type="number">\
+            <input data-type="unit" placeholder="单位" type="text">\
+            </div>\
+            </div>\
+            <div style="clear: both"></div>\
+            </div>\
+             <div class="imgbox">\
+            <span>图片</span>\
+            <div class="imglist" >\
+            <img onclick="uploadIcon1('+comIndex+')" id="cover" class="addimg" src="../resource/img/person5.png" alt="" />\
+             <div class="imgboxupload" id="imglist'+ comIndex +'"></div>\
+            </div>\
+            <div style="clear: both"></div>\
+            </div>\
+            <div class="detail">\
+            <span class="detailtitle">描述</span>\
+            <textarea name="" class="desc" cols="30" rows="10"></textarea>\
+            </div>\
+            </div>'
+        $("#item"+index).append(caiHtml)
+    }
+    //删除菜
+    function delCai(self) {
+        var caiparent = $(self).parent();
+        caiparent.remove()
+    }
+    //添加食材
+    function addComponent(index) {
+        var comhtml = '<div class="scbox">\
+                <span onclick="deeComponent(this)">删除食材</span>\
+                <input data-type="name" placeholder="食材" type="text">\
+                <input data-type="num"  placeholder="重量" type="number">\
+                <input data-type="unit"  placeholder="单位" type="text">\
+                </div>'
+        $("#item" +activeIndex +" #comid"+index).append(comhtml)
+
+    }
+    //删除食材
+    function deeComponent(self) {
+        var parentBox = $(self).parent();
+        parentBox.remove();
+    }
+    //记录当前所在tab
+
+</script>
+
+<script type = "text/html" id = "scriptTemplate">
+    <option value='0'>请选择</option>
+    <%for(var i = 0; i < list.length; i++){%>
+    <option value='<%=list[i].id%>'><%=list[i].name%></option>
+    <%}%>
+</script>
+
+<script type = "text/html" id = "scriptInitCookbookItems">
+    <ul class="tab_menu">
+        <li class="current">早餐</li>
+        <li>早点</li>
+        <li>午餐</li>
+        <li>午点</li>
+        <li>晚餐</li>
+    </ul>
+    <div class="tab_box">
+        <div  id="item1" class="fooditem items">
+            <div class="caione">
+                <div class="add" onclick="addCai(1)"> 添加菜</div>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text">
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid1">
+                        <div class="scbox">
+                            <span onclick="addComponent(1)">添加食材</span>
+                            <input data-type="name" placeholder="食材" type="text">
+                            <input data-type="num" placeholder="重量" type="number">
+                            <input data-type="unit" placeholder="单位" type="text">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <div class="imglist" >
+                        <img class="addimg" onclick="uploadIcon1(1)" id="cover" src="../resource/img/person5.png" alt="" />
+                        <div class="imgboxupload" id="imglist1">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+        </div>
+        <div id="item2" class="fooditem hide">
+            <div class="caione">
+                <div class="add" onclick="addCai(2)"> 添加菜</div>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text">
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid1">
+                        <div class="scbox">
+                            <span onclick="addComponent(1)">添加食材</span>
+                            <input data-type="name" placeholder="食材" type="text">
+                            <input data-type="num" placeholder="重量" type="number">
+                            <input data-type="unit" placeholder="单位" type="text">
+                        </div>
+
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <img style="margin-left: 15px;" class="addimg" onclick="uploadIcon1(1)" id="cover" src="../resource/img/person5.png" alt="" />
+                    <div class="imgboxupload" id="imglist1">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+        </div>
+        <div id="item3" class="fooditem hide">
+            <div class="caione">
+                <div class="add" onclick="addCai(3)"> 添加菜</div>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text">
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid1">
+                        <div class="scbox">
+                            <span onclick="addComponent(1)">添加食材</span>
+                            <input data-type="name" placeholder="食材" type="text">
+                            <input data-type="num" placeholder="重量" type="number">
+                            <input data-type="unit" placeholder="单位" type="text">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <img style="margin-left: 15px;" class="addimg" onclick="uploadIcon1(1)" id="cover" src="../resource/img/person5.png" alt="" />
+                    <div class="imgboxupload" id="imglist1">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+        </div>
+        <div id="item4" class="fooditem hide">
+            <div class="caione">
+                <div class="add" onclick="addCai(4)"> 添加菜</div>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text">
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid1">
+                        <div class="scbox">
+                            <span onclick="addComponent(1)">添加食材</span>
+                            <input data-type="name" placeholder="食材" type="text">
+                            <input data-type="num" placeholder="重量" type="number">
+                            <input data-type="unit" placeholder="单位" type="text">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <img style="margin-left: 15px;" class="addimg" onclick="uploadIcon1(1)" id="cover" src="../resource/img/person5.png" alt="" />
+                    <div class="imgboxupload" id="imglist1">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+        </div>
+        <div id="item5" class="fooditem hide">
+            <div class="caione">
+                <div class="add" onclick="addCai(5)"> 添加菜</div>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text">
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid1">
+                        <div class="scbox">
+                            <span onclick="addComponent(1)">添加食材</span>
+                            <input data-type="name" placeholder="食材" type="text">
+                            <input data-type="num" placeholder="重量" type="number">
+                            <input data-type="unit" placeholder="单位" type="text">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <img style="margin-left: 15px;" class="addimg" onclick="uploadIcon1(1)" id="cover" src="../resource/img/person5.png" alt="" />
+                    <div class="imgboxupload" id="imglist1">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type = "text/html" id = "scriptSelectOrUpdateCookbookItems">
+    <ul class="tab_menu">
+        <li class="current">早餐</li>
+        <li>早点</li>
+        <li>午餐</li>
+        <li>午点</li>
+        <li>晚餐</li>
+    </ul>
+    <div class="tab_box">
+        <div id="item1" class="fooditem items">
+            <%if(null == data.zaoCan || data.zaoCan.length == 0) {%>
+            <div class="caione">
+                <div class="add" onclick="addCai(1)"> 添加菜</div>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text">
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid1">
+                        <div class="scbox">
+                            <span onclick="addComponent(1)">添加食材</span>
+                            <input data-type="name" placeholder="食材" type="text">
+                            <input data-type="num" placeholder="重量" type="text">
+                            <input data-type="unit" placeholder="单位" type="text">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <div class="imglist">
+                        <img class="addimg" onclick="uploadIcon1(1)" id="cover" src="../resource/img/person5.png"
+                             alt=""/>
+                        <div class="imgboxupload" id="imglist1">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+            <%} else {%>
+            <%for(var i = 0; i < data.zaoCan.length; i++){%>
+            <div class="caione">
+                <%if(i == 0){%>
+                <div class="add" onclick="addCai(1)"> 添加菜</div>
+                <%}else{%>
+                <div class="add" onclick="delCai(this)"> 删除</div>
+                <%}%>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text" value="<%=data.zaoCan[i].name%>"/>
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid<%=i+1%>">
+                        <%for(var j = 0; j < data.zaoCan[i].materials.length; j++){%>
+                        <div class="scbox">
+                            <%if(j == 0){%>
+                            <span onclick="addComponent(<%=i + 1%>)">添加食材</span>
+                            <%}else{%>
+                            <span onclick="deeComponent(this)">删除食材</span>
+                            <%}%>
+                            <input data-type="name" placeholder="食材" type="text"
+                                   value="<%=data.zaoCan[i].materials[j].name%>">
+                            <input data-type="num" placeholder="重量" type="text"
+                                   value="<%=data.zaoCan[i].materials[j].num%>">
+                            <input data-type="unit" placeholder="单位" type="text"
+                                   value="<%=data.zaoCan[i].materials[j].unit%>">
+                        </div>
+                        <%}%>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <div class="imglist">
+                        <img class="addimg" onclick="uploadIcon1(<%=i + 1%>)" id="cover"
+                             src="../resource/img/person5.png" alt=""/>
+                        <div class="imgboxupload" id="imglist<%=i+1%>">
+                            <%for(var j = 0; j < data.zaoCan[i].imgs.length; j++){%>
+                            <div class="imgWrap">
+                                <!--<img class="addimg" id="cover<%=j+1%>" src="<%=data.zaoCan[i].imgs[j]%>"/>-->
+                                <img src="<%=data.zaoCan[i].imgs[j]%>"/>
+                                <span onclick="del(this)"></span>
+                            </div>
+                            <%}%>
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10">
+                                                        <%=data.zaoCan[i].desc%>
+                                                    </textarea>
+                </div>
+            </div>
+            <%}%>
+            <%}%>
+        </div>
+        <div id="item2" class="fooditem hide">
+            <%if(null == data.zaoDian || data.zaoDian.length == 0) {%>
+            <div class="caione">
+                <div class="add" onclick="addCai(2)"> 添加菜</div>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text">
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid1">
+                        <div class="scbox">
+                            <span onclick="addComponent(1)">添加食材</span>
+                            <input data-type="name" placeholder="食材" type="text">
+                            <input data-type="num" placeholder="重量" type="text">
+                            <input data-type="unit" placeholder="单位" type="text">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <img style="margin-left: 15px;" class="addimg" onclick="uploadIcon1(1)" id="cover"
+                         src="../resource/img/person5.png" alt=""/>
+                    <div class="imgboxupload" id="imglist1">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+            <%} else {%>
+            <%for(var i = 0; i < data.zaoDian.length; i++){%>
+            <div class="caione">
+                <%if(i == 0){%>
+                <div class="add" onclick="addCai(2)"> 添加菜</div>
+                <%}else{%>
+                <div class="add" onclick="delCai(this)"> 删除</div>
+                <%}%>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text" value="<%=data.zaoDian[i].name%>"/>
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid<%=i+1%>">
+                        <%for(var j = 0; j < data.zaoDian[i].materials.length; j++){%>
+                        <div class="scbox">
+                            <%if(j == 0){%>
+                            <span onclick="addComponent(<%=i + 1%>)">添加食材</span>
+                            <%}else{%>
+                            <span onclick="deeComponent(this)">删除食材</span>
+                            <%}%>
+                            <input data-type="name" placeholder="食材" type="text"
+                                   value="<%=data.zaoDian[i].materials[j].name%>">
+                            <input data-type="num" placeholder="重量" type="text"
+                                   value="<%=data.zaoDian[i].materials[j].num%>">
+                            <input data-type="unit" placeholder="单位" type="text"
+                                   value="<%=data.zaoDian[i].materials[j].unit%>">
+                        </div>
+                        <%}%>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <div class="imglist">
+                        <img class="addimg" onclick="uploadIcon1(<%=i + 1%>)" id="cover"
+                             src="../resource/img/person5.png" alt=""/>
+                        <div class="imgboxupload" id="imglist<%=i+1%>">
+                            <%for(var j = 0; j < data.zaoDian[i].imgs.length; j++){%>
+                            <div class="imgWrap">
+                                <!--<img class="addimg" id="cover<%=j+1%>" src="<%=data.zaoCan[i].imgs[j]%>"/>-->
+                                <img src="<%=data.zaoCan[i].imgs[j]%>"/>
+                                <span onclick="del(this)"></span>
+                            </div>
+                            <%}%>
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10">
+                                                        <%=data.zaoDian[i].desc%>
+                                                    </textarea>
+                </div>
+            </div>
+            <%}%>
+            <%}%>
+        </div>
+        <div id="item3" class="fooditem hide">
+            <%if(null == data.wuCan || data.wuCan.length == 0) {%>
+            <div class="caione">
+                <div class="add" onclick="addCai(3)"> 添加菜</div>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text">
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid1">
+                        <div class="scbox">
+                            <span onclick="addComponent(1)">添加食材</span>
+                            <input data-type="name" placeholder="食材" type="text">
+                            <input data-type="num" placeholder="重量" type="text">
+                            <input data-type="unit" placeholder="单位" type="text">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <img style="margin-left: 15px;" class="addimg" onclick="uploadIcon1(1)" id="cover"
+                         src="../resource/img/person5.png" alt=""/>
+                    <div class="imgboxupload" id="imglist1">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+            <%} else {%>
+            <%for(var i = 0; i < data.wuCan.length; i++){%>
+            <div class="caione">
+                <%if(i == 0){%>
+                <div class="add" onclick="addCai(3)"> 添加菜</div>
+                <%}else{%>
+                <div class="add" onclick="delCai(this)"> 删除</div>
+                <%}%>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text" value="<%=data.wuCan[i].name%>"/>
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid<%=i+1%>">
+                        <%for(var j = 0; j < data.wuCan[i].materials.length; j++){%>
+                        <div class="scbox">
+                            <%if(j == 0){%>
+                            <span onclick="addComponent(<%=i + 1%>)">添加食材</span>
+                            <%}else{%>
+                            <span onclick="deeComponent(this)">删除食材</span>
+                            <%}%>
+                            <input data-type="name" placeholder="食材" type="text"
+                                   value="<%=data.wuCan[i].materials[j].name%>">
+                            <input data-type="num" placeholder="重量" type="text"
+                                   value="<%=data.wuCan[i].materials[j].num%>">
+                            <input data-type="unit" placeholder="单位" type="text"
+                                   value="<%=data.wuCan[i].materials[j].unit%>">
+                        </div>
+                        <%}%>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <div class="imglist">
+                        <img class="addimg" onclick="uploadIcon1(<%=i + 1%>)" id="cover"
+                             src="../resource/img/person5.png" alt=""/>
+                        <div class="imgboxupload" id="imglist<%=i+1%>">
+                            <%for(var j = 0; j < data.wuCan[i].imgs.length; j++){%>
+                            <div class="imgWrap">
+                                <!--<img class="addimg" id="cover<%=j+1%>" src="<%=data.zaoCan[i].imgs[j]%>"/>-->
+                                <img src="<%=data.zaoCan[i].imgs[j]%>"/>
+                                <span onclick="del(this)"></span>
+                            </div>
+                            <%}%>
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10">
+                                                        <%=data.wuCan[i].desc%>
+                                                    </textarea>
+                </div>
+            </div>
+            <%}%>
+            <%}%>
+        </div>
+        <div id="item4" class="fooditem hide">
+            <%if(null == data.wuDian || data.wuDian.length == 0) {%>
+            <div class="caione">
+                <div class="add" onclick="addCai(4)"> 添加菜</div>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text">
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid1">
+                        <div class="scbox">
+                            <span onclick="addComponent(1)">添加食材</span>
+                            <input data-type="name" placeholder="食材" type="text">
+                            <input data-type="num" placeholder="重量" type="text">
+                            <input data-type="unit" placeholder="单位" type="text">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <img style="margin-left: 15px;" class="addimg" onclick="uploadIcon1(1)" id="cover"
+                         src="../resource/img/person5.png" alt=""/>
+                    <div class="imgboxupload" id="imglist1">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+            <%} else {%>
+            <%for(var i = 0; i < data.wuDian.length; i++){%>
+            <div class="caione">
+                <%if(i == 0){%>
+                <div class="add" onclick="addCai(4)"> 添加菜</div>
+                <%}else{%>
+                <div class="add" onclick="delCai(this)"> 删除</div>
+                <%}%>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text" value="<%=data.wuDian[i].name%>"/>
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid<%=i+1%>">
+                        <%for(var j = 0; j < data.wuDian[i].materials.length; j++){%>
+                        <div class="scbox">
+                            <%if(j == 0){%>
+                            <span onclick="addComponent(<%=i + 1%>)">添加食材</span>
+                            <%}else{%>
+                            <span onclick="deeComponent(this)">删除食材</span>
+                            <%}%>
+                            <input data-type="name" placeholder="食材" type="text"
+                                   value="<%=data.wuDian[i].materials[j].name%>">
+                            <input data-type="num" placeholder="重量" type="text"
+                                   value="<%=data.wuDian[i].materials[j].num%>">
+                            <input data-type="unit" placeholder="单位" type="text"
+                                   value="<%=data.wuDian[i].materials[j].unit%>">
+                        </div>
+                        <%}%>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <div class="imglist">
+                        <img class="addimg" onclick="uploadIcon1(<%=i + 1%>)" id="cover"
+                             src="../resource/img/person5.png" alt=""/>
+                        <div class="imgboxupload" id="imglist<%=i+1%>">
+                            <%for(var j = 0; j < data.wuDian[i].imgs.length; j++){%>
+                            <div class="imgWrap">
+                                <!--<img class="addimg" id="cover<%=j+1%>" src="<%=data.zaoCan[i].imgs[j]%>"/>-->
+                                <img src="<%=data.zaoCan[i].imgs[j]%>"/>
+                                <span onclick="del(this)"></span>
+                            </div>
+                            <%}%>
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10">
+                                                        <%=data.wuDian[i].desc%>
+                                                    </textarea>
+                </div>
+            </div>
+            <%}%>
+            <%}%>
+        </div>
+        <div id="item5" class="fooditem hide">
+            <%if(null == data.wanCan || data.wanCan.length == 0) {%>
+            <div class="caione">
+                <div class="add" onclick="addCai(5)"> 添加菜</div>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text">
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid1">
+                        <div class="scbox">
+                            <span onclick="addComponent(1)">添加食材</span>
+                            <input data-type="name" placeholder="食材" type="text">
+                            <input data-type="num" placeholder="重量" type="text">
+                            <input data-type="unit" placeholder="单位" type="text">
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <img style="margin-left: 15px;" class="addimg" onclick="uploadIcon1(1)" id="cover"
+                         src="../resource/img/person5.png" alt=""/>
+                    <div class="imgboxupload" id="imglist1">
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10"></textarea>
+                </div>
+            </div>
+            <%}else{%>
+            <%for(var i = 0; i < data.wanCan.length; i++){%>
+            <div class="caione">
+                <%if(i == 0){%>
+                <div class="add" onclick="addCai(5)"> 添加菜</div>
+                <%}else{%>
+                <div class="add" onclick="delCai(this)"> 删除</div>
+                <%}%>
+                <div class="name">
+                    <span>名字</span>
+                    <input class="foodname" type="text" value="<%=data.wanCan[i].name%>"/>
+                </div>
+                <div class="sc">
+                    <span>食材</span>
+                    <div class="componenbox" id="comid<%=i+1%>">
+                        <%for(var j = 0; j < data.wanCan[i].materials.length; j++){%>
+                        <div class="scbox">
+                            <%if(j == 0){%>
+                            <span onclick="addComponent(<%=i + 1%>)">添加食材</span>
+                            <%}else{%>
+                            <span onclick="deeComponent(this)">删除食材</span>
+                            <%}%>
+                            <input data-type="name" placeholder="食材" type="text"
+                                   value="<%=data.wanCan[i].materials[j].name%>">
+                            <input data-type="num" placeholder="重量" type="text"
+                                   value="<%=data.wanCan[i].materials[j].num%>">
+                            <input data-type="unit" placeholder="单位" type="text"
+                                   value="<%=data.wanCan[i].materials[j].unit%>">
+                        </div>
+                        <%}%>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="imgbox">
+                    <span>图片</span>
+                    <div class="imglist">
+                        <img class="addimg" onclick="uploadIcon1(<%=i + 1%>)" id="cover"
+                             src="../resource/img/person5.png" alt=""/>
+                        <div class="imgboxupload" id="imglist<%=i+1%>">
+                            <%for(var j = 0; j < data.wanCan[i].imgs.length; j++){%>
+                            <div class="imgWrap">
+                                <!--<img class="addimg" id="cover<%=j+1%>" src="<%=data.zaoCan[i].imgs[j]%>"/>-->
+                                <img src="<%=data.zaoCan[i].imgs[j]%>"/>
+                                <span onclick="del(this)"></span>
+                            </div>
+                            <%}%>
+                        </div>
+                    </div>
+                    <div style="clear: both"></div>
+                </div>
+                <div class="detail">
+                    <span class="detailtitle">描述</span>
+                    <textarea name="" class="desc" cols="30" rows="10">
+                                                        <%=data.wanCan[i].desc%>
+                                                    </textarea>
+                </div>
+            </div>
+            <%}%>
+            <%}%>
+        </div>
+    </div>
+    </div>
+</script>
+
+</html>

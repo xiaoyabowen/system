@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>添加通知</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <form method="get" class="form-horizontal">
+        <div class="ibox float-e-margins">
+            <div class="step1">
+                <div class="ibox-title">
+                    <h5>发布通知</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">标题</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="title" placeholder="请输入标题">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed "></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">接收类型</label>
+                        <div class="col-sm-5">
+                            <select id="recvType" class="  form-control">
+
+                                <option value="1">本班教职工</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed "></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否签收</label>
+                        <div class="col-sm-5">
+                            <select id="signNeed" class="  form-control">
+                                <option value="0">不需要签收</option>
+                                <option value="1">需要签收</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed "></div>
+
+                    <div class="form-group ">
+                        <label class="col-sm-3 control-label">内容</label>
+                        <div class="col-sm-5">
+                            <textarea id="content" placeholder="请输入内容" class="col-sm-5" style="width: 100%;height: 150px; resize: none;"></textarea>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed "></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">上传图片</label>
+                        <div class="col-sm-5 ">
+                            <div class="input-group">
+                                <input id="cover" type="hidden">
+                                <input id="photoCover" type="text" disabled="disabled" class="form-control"
+                                       placeholder="请选择图片">
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                            </span>
+
+                            </div>
+                            <img src="" class="img-rounded" id="iconView" width="15%" height="100%"
+                                 style="display: none">
+                            <span class="help-block m-b-none validate">请上传图片</span>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+
+                    <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-3">
+                            <button class="btn btn-primary" type="button" id="btn_submit">提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+    <input style="height: 0;width: 0;" type="file" name="file"
+           accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+</form>
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!----select2----->
+<script src="../resource/js/plugins/select2/js/select2.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+
+<script src="../resource/common/common.js"></script>
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+
+<script src="../resource/common/newscontent.js"></script>
+
+<script>
+    //如果是班级发布通知，那么就不选班级
+    //如果是学校发布通知，那么可以选择多个班级
+    //如果是集团发布通知，那么是可以选择多个学校
+
+    var clazzId = getQueryString("id");
+    var uid = getUserInfo().id;
+    var sid = getUserInfo().sid;
+    console.log(clazzId)
+
+    var numberFlag = false;
+
+    function submitSchoolData() {
+        var url = "/notice/publicNotice";
+        var title = $("#title").val();
+        var content = $("#content").val();
+        var params = {};
+
+        if (isBlank(title)) {
+            showValidate("#title");
+            return;
+        }
+
+        if (isBlank(content)) {
+            showValidate($("#content"));
+            return;
+        }
+
+        params.title = title;
+        params.content = content;
+        params.uid = uid;
+        params.sid = sid;
+        params.cid = clazzId;
+        params.type = $("#type").val();
+        params.recvType = $("#recvType").val();
+        params.sign = $("#signNeed").val();
+        params.imagesJson = $("#cover").val();
+
+        myAjax(url, params, handle);
+
+        function handle(data, params) {
+            if (data && data.success) {
+
+                layer.msg('添加成功', {icon: 1,time:1000}, function (index) {
+
+                    addMenuItem("../schoolClazz/clazzNoticeList.html?id=" + clazzId)     //新开一个tab页
+                    layer.close(index);
+                    reLoad();   // 刷新页面
+                    closeMyselfInIframe()
+                });
+            } else {
+                var msg = isBlank(data.msg) ? "" : data.msg;
+                layer.msg("添加失败" + msg, {icon: 2,time:1000});
+            }
+        }
+
+    }
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $("#btn_submit").click(submitSchoolData);
+        };
+
+        return oInit;
+    };
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+</script>
+</body>
+
+</html>

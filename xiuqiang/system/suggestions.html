@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title></title>
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated  fadeInDown  content-view  ">
+        <form method="get" class="form-horizontal" id="areaForm">
+           
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">名称</label>
+
+                <div class="col-sm-8">
+                    <input type="hidden" class="form-control hiddenid" id="dId">
+                    <input type="text" class="form-control"  id="pname" placeholder="请输入名称">
+                    <span class="help-block m-b-none validate">请输入名称</span>
+                </div>
+
+            </div>
+            
+            
+            <div class="form-group">
+                <label class="col-sm-3 control-label">值</label>
+
+                <div class="col-sm-8">
+                    <input type="hidden" class="form-control hiddenid" id="dId">
+                    <input type="text" class="form-control"  id="pvalue" placeholder="请输入值">
+                    <span class="help-block m-b-none validate">请输入值</span>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">设置状态</label>
+
+                <div class="col-sm-8">
+                    <select id="status"  class="  form-control"  title="请选择状态" >
+                        <option  value="2" >下线</option>
+                        <option  value="1" >上线</option>
+                    </select>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!-- Panel Other -->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>反馈列表</h5>
+            </div>
+            
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <table id="tb_table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Panel Other -->
+    </div>
+
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+    <script src="../resource/js/content.js?v=1.0.0"></script>
+
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+
+    <!-- Bootstrap table -->
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+    <script src="../resource/common/common.js?"+Math.random()></script>
+    <script>
+        var $table =  $('#tb_table');
+        var TableInit = function (columns) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $table.bootstrapTable({
+                    url: serverUrl+'/suggestions/getAllList',         //请求后台的URL（*）
+                    method: 'get',                      //请求方式（*）
+                    toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: false,                     //是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                  //  sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    showRefresh: true,                   //是否显示刷新按钮
+                    pageNumber:1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [10,30,50],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: true,
+                    showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                    minimumCountColumns: 2,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                   //是否显示父子表
+                    columns: columns,
+
+                    queryParams: function (params) {
+                        return {
+                            token:getUserInfo().token
+                        };
+                    },
+                });
+            };
+            $table.on('refresh.bs.table', function (params) {
+
+                    });
+            return oTableInit;
+        };
+        var columns = [
+            {field: "id", title: "序号",align:"center",formatter: function (value, row, index) {
+                return index+1;
+            }},
+            {field: "uid", title: "用户id",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+             {field: "content", title: "内容",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+           
+            {field: "images", title: "图片", align: "center", formatter: function (value, row, index) {
+                 var thumbs=''; 
+                 for(var i=0;i< value.length;i++){
+                 	thumbs=thumbs+ImageThumb(value[i], 80, 80, false);
+                 }
+                 return thumbs;
+            }},
+//
+            {field: "name", title: "编辑", align: "center", formatter: function (value, row, index) {
+                var html = '';
+                html +='&nbsp';
+                html += '<a  class="btn btn-danger btn-sm btn-outline" href="javascript:void(0);" title="删除" onclick=\'removeData('+JSON.stringify(row)+')\'>删除</a>';
+                return html;
+            }},
+
+        ]
+
+      //删除
+        function removeData(row){
+           
+            var did = row.id;
+            var url = "/suggestions/delete";
+            var param = {id:did};
+            var result = {succ:'删除成功!',fail:'删除失败'};
+            layer.msg("确定要删除该记录？", {
+                shade: [0.1, '##f5f5f5'],
+                time: 0 //不自动关闭
+                ,btn: ['确定','取消']
+                ,yes: function(index){
+                    layer.close(index);
+                    myAjax(url,param,handle);
+                    function handle(data,param){
+                        var msg = (data.msg == undefined ? '':','+data.msg);
+                        if(data.success) {
+                            layer.msg(result.succ, {icon: 1,shade: 0.01});
+                            handleTable(did,4);
+                        }else{
+                            layer.msg(result.fail+msg, {icon: 2,shade: 0.01});
+                        }
+                    }
+                },btn2: function(index, layero){
+                }
+            });
+        }
+//        //上下线
+//        function updateStatus(sta,id){
+//            if(sta==0){
+//                sta=1;
+//            }else{
+//                sta=0;
+//            }
+//            var url = "/area/updateStatus";
+//            var param = {id:id,status:sta};
+//            myAjax(url,param,handle);
+//            function handle(data,param){
+//                var msg = (data.msg == undefined ? '':','+data.msg);
+//                if(data.success) {
+//                    layer.msg('切换成功!', {icon: 1,shade: 0.01});
+//                    handleTable(param,1);
+//                }else{
+//                    layer.msg('切换失败'+data.msg, {icon: 1,shade: 0.01});
+//                }
+//            }
+//        }
+
+        //添加修改
+        function addOrEdit(rowData){
+            var subType ;
+            if(isNotBlank(rowData)){
+                subType  = 1;
+            }else{
+                subType  = 0;
+                formReset();
+            }
+            var index= layer.open({
+                type: 1 , shade: 0.01,
+                id: 'area', //设定一个id，防止重复弹出
+                title: '添加/更新',
+                area: ['40%','40%'],
+                content: $('.content-view'),
+                btn: ['提交', '关闭'],
+                yes:function(index){
+                    submitData(index,subType);
+                },
+                shadeClose: true, //开启遮罩关闭
+                success: function(layero, index){
+                    if(isNotBlank(rowData)){
+                        $('#dId').val(rowData.id);
+                        $('#pname').val(rowData.name);
+                        $('#pvalue').val(rowData.value);
+                        $("#status").val(rowData.status);
+                    }
+                }
+
+            })
+        }
+
+
+        function submitData(index,type){
+            var dId=$('#dId').val();
+            var pname= $.trim($('#pname').val());
+            var pvalue=$.trim($('#pvalue').val());
+            var status = $("#status option:selected").val();
+            var result ;
+            var params = {};
+            var url;
+            if(type == 0){
+                url = "/dictionary/addDictionary";
+                result = {succ:'添加成功！',fail:'添加失败！'};
+            }else{
+                url = "/dictionary/updataDictionary";
+                result = {succ:'更新成功！',fail:'更新失败'};
+            }
+            if(isBlank(pname)){
+                showValidate('#pname');
+                return  ;
+            }
+
+            if(isNotBlank(dId)){
+                params.id = dId;
+            }
+
+            layer.close(index);
+            params.name = pname;
+            params.status = status;
+            params.value = pvalue;
+            myAjax(url,params,handle);
+            function handle(data,params){
+                var msg = (data.msg == undefined ? '':','+data.msg);
+                if(data.success) {
+                    layer.msg(result.succ, {icon: 1,shade: 0.01});
+                    handleTable("",3,serverUrl+"/dictionary/getAllList");
+                }else{
+                    layer.msg(result.fail+msg, {icon: 1,shade: 0.01});
+                }
+            }
+
+        }
+
+        function openPOP(){
+            addOrEdit();
+        }
+        function formReset(){
+            $("#areaForm")[0].reset();
+        }
+
+        //初始化页面上面的按钮事件
+        var ButtonInit = function () {
+            var oInit = new Object();
+            oInit.Init = function () {
+                $('#btn_add').click(openPOP);
+            };
+
+            return oInit;
+        };
+        //主函数
+        $(function () {
+            var Table = new TableInit(columns);
+            Table.Init();
+            var oButtonInit = new ButtonInit();
+            oButtonInit.Init();
+        });
+
+    </script>
+</html>

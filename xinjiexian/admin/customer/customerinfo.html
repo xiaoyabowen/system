@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+<style>
+    body, html {
+        font-size: 14px;
+        height: 100%;
+    }
+
+    i {
+        display: inline-block;
+        margin-right: 5px;
+    }
+
+    /*咨询师资料*/
+    .details-header {
+        display: flex;
+    }
+
+    .detail-userimg {
+        width: 180px;
+        height: 200px;
+        border-radius: 5px;
+    }
+
+    .name {
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+        padding: 6px 0;
+    }
+
+    .name > strong {
+        display: inline-block;
+        width: 33%;
+    }
+
+    .locations {
+        padding: 5px 0;
+        border-top: 1px solid #ececec;
+        border-bottom: 1px solid #ececec;
+        line-height: 26px;
+    }
+
+    .certifications {
+        margin-top: 5px;
+        line-height: 26px;
+    }
+
+</style>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>客户详情</h5>
+        </div>
+        <div class="ibox-content">
+            <!--<form method="get" class="form-horizontal">-->
+                <div class="form-group">
+                    <div class="details-header">
+                        <div class="detail-avatar col-sm-3">
+                            <img src="../resource/img/userdefault.png" id="icon" class="img-responsive detail-userimg" alt="咨询师头像">
+                        </div>
+                        <div class="detail-info col-sm-5">
+                            <div class="name"><strong><span id="userName" name="userName"> </span></strong><strong><span
+                                    id="sex" name="sex"> </span></strong><strong>北京</strong>
+                            </div>
+
+
+                            <div class="locations">
+                                <i class="fa fa-location-arrow"></i>北京丰台区<br>
+                                <i class="fa fa-phone"></i><span id="yemianphone" name="phone"> </span><br>
+                            </div>
+                            <div class="certifications">
+                                <i class="fa fa-check"></i>咨询师认证：<span>新手咨询师</span><br>
+                                <i class="fa fa-check"></i>新界线机构<br>
+                                <i class="fa fa-check"></i>审核状态：<span class="status">已通过</span><br>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button"  onclick="editUser()"  class="btn btn-info" id="editUser" name="editUser">
+                                <i class="fa fa-edit"></i> 编辑资料
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-solided"></div>
+                    <ul class="nav nav-tabs">
+                        <span class="pull-right small text-muted">1406 个客户</span>
+                        <li class="active">
+                            <a data-toggle="tab" href="#tab-1" aria-expanded="true"><i class="fa fa-user"></i> 跟进记录</a>
+                        </li>
+                        <li class="">
+                            <a data-toggle="tab" href="#tab-2" aria-expanded="false" onclick="clazzList()"><i
+                                    class="fa fa-briefcase"></i> 消费记录</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div id="tab-1" class="tab-pane active">
+                            <div class="slimScrollDiv" style="position: relative; width: auto; height: 100%;">
+                                <div class="full-height-scroll" style="width: auto; height: 100%;">
+                                    <div class=" timeline" style="    padding: 15px 20px 20px 20px;">
+                                        <div class="pull-left">
+                                            <p> 跟进记录</p>
+                                        </div>
+                                        <div class="pull-right">
+                                            <a class="btn btn-xs btn-white"><i class="fa fa-plus"></i> 添加</a>
+                                        </div>
+
+                                        <div class="hr-line-solided"></div>
+                                        <br/>
+
+                                        <div class="timeline-item">
+                                            <div class="row">
+                                                <div class="col-xs-3 date">
+                                                    <i class="fa fa-briefcase"></i> 6:00 <br>
+                                                    <small class="text-navy">2 小时前</small>
+                                                </div>
+                                                <div class="col-xs-7 content no-top-border">
+                                                    <p class="m-b-xs"><strong>添加用户信息</strong>
+                                                    </p>
+
+                                                    <p>操作人：王小二</p>
+
+                                                    <p>
+                                                        场馆：郑州店
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                                <div class="slimScrollBar"
+                                     style="background: rgb(0, 0, 0); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 366.226px;"></div>
+                                <div class="slimScrollRail"
+                                     style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                            </div>
+                        </div>
+                        <div id="tab-2" class="tab-pane">
+                            <div class="slimScrollDiv" style="position: relative; width: auto; height: 100%;">
+                                <div class="full-height-scroll" style="width: auto; height: 100%;">
+                                    <div id="toolbar" class="btn-group">
+                                        <div class="btn-group">
+                                            <span class="text-success tabletitle"></span>
+                                        </div>
+                                    </div>
+                                    <table id="tb_table"></table>
+                                </div>
+                                <div class="slimScrollBar"
+                                     style="background: rgb(0, 0, 0); width: 4px; position: absolute; top: 0px; opacity: 0.4; display: block; border-radius: 7px; z-index: 99; right: 1px;"></div>
+                                <div class="slimScrollRail"
+                                     style="width: 4px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <!--</form>-->
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<div class="wrapper wrapper-content animated fadeInDown  content-view  ">
+    <form method="get" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">姓名</label>
+
+            <div class="col-sm-6">
+                <input type="text" id="name" placeholder="请输入名称" class="form-control">
+                <label class="help-block m-b-none validate">请输入名称</label>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">性别</label>
+
+            <div class="col-sm-6">
+                <div class="radio radio-info radio-inline ">
+                    <input type="radio" name="sex" id="sex1" value="0" checked>
+                    <label for="sex1">男</label>
+                </div>
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <div class="radio radio-info radio-inline">
+                    <input type="radio" name="sex" id="sex2" value="1">
+                    <label for="sex2">女</label>
+                </div>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">手机号</label>
+
+            <div class="col-sm-6">
+                <input type="text" maxlength="11" id="phone" placeholder="请输入手机号" class="form-control"
+                       maxlength="11"
+                       onkeyup="return ValidateNumber(this,value)"
+                       onpaste="return ValidateNumber(this,value)"
+                >
+                <label class="help-block m-b-none validate">手机号为空或输入有误</label>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">头像</label>
+
+            <div class="col-sm-6 ">
+                <div class="input-group">
+                    <input id="cover" type="hidden">
+                    <input id="photoCover" type="text" class="form-control" placeholder="请选择图片" readonly>
+                    <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                                </span>
+
+                </div>
+                <img src="../resource/img/upload.png" class="img-rounded" id="iconView" width="15%"
+                     height="100%" style="display: none">
+                <span class="help-block m-b-none validate">请上传图片</span>
+            </div>
+        </div>
+        <!--<div class="hr-line-dashed"></div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-3 control-label">等级</label>-->
+
+            <!--<div class="col-sm-6">-->
+                <!--<select id="type" class="  form-control" title="请选择等级">-->
+                    <!--<option value="0">暂无级别</option>-->
+                    <!--<option value="1">初级咨询师</option>-->
+                    <!--<option value="2">中级咨询师</option>-->
+                    <!--<option value="3">高级咨询师</option>-->
+                    <!--<option value="4">教授级咨询师</option>-->
+                    <!--<option value="5">专家级咨询师</option>-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+
+        <!--<div class="form-group">-->
+            <!--<label    class="col-sm-3 control-label">所属机构</label>-->
+
+            <!--<div hidden="hidden" class="col-sm-6">-->
+                <!--<input type="text" id="companyId" placeholder="请输入所属机构" class="form-control">-->
+                <!--<label class="help-block m-b-none validate">请输入所属机构</label>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+        <!--<div class="form-group" hidden="hidden" >-->
+            <!--<label   class="col-sm-3 control-label">审核状态 </label>-->
+
+            <!--<div class="col-sm-6">-->
+                <!--<select id="checkStatus" class="  form-control" title="请选择审核状态">-->
+
+                    <!--<option value="0">申请中</option>-->
+                    <!--<option value="1">已通过</option>-->
+                    <!--<option value="2">被驳回</option>-->
+                <!--</select>-->
+            <!--</div>-->
+        <!--</div>-->
+
+
+
+    </form>
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"
+               accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+    </form>
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../resource/js/content.js?v=1.0.0"></script>
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script>
+
+    var queryParam = getQueryParam();
+    var paramData = {};
+    var userData  = {};
+
+    if(isNotBlank(paramData)){
+        paramData = JSON.parse(queryParam.data);
+    }
+
+    //根据页面传来的参数，从后台查询对象
+    ajaxSubmit("/customer/editUser",paramData,function(data){
+        if(isNotBlank(data)){
+            getUserData(data.data)
+            userData = data.data;
+        }
+
+    });
+
+
+
+    function getUserData(data) {
+
+        $("#userName").text(data.name);
+        var sexs = {0:"男",1:"女"};
+        $("#sex").text(sexs[data.sex]);
+        $("#yemianphone").text(data.phone);
+        if(data.icon){
+            $("#icon").attr("src",data.icon);
+        }
+    }
+
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+
+        };
+        return oInit;
+    };
+
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        laydate.render({
+            elem: '#birthday'
+        });
+
+    });
+
+    function editUser() {
+
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['550px', '500px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function () {
+                submitTeacherData(index, userData);
+            },
+            btn2: function () {
+            },
+            success: function (layero, index) {
+                echoUser(userData);
+
+            }
+        });
+    }
+
+    //弹窗回显数据
+    function echoUser(data) {
+        $("#name").val(data.name);
+        setRadioChecked("sex", data.sex);
+        $("#phone").val(data.phone);
+        $("#cover").val(data.icon);
+        $("#photoCover").val(data.icon);
+        $("#iconView").attr("src", data.icon);
+        $("#iconView").show();
+
+    }
+
+
+    function submitTeacherData(index, data) {
+        var params = {};
+        var url = "/customer/editUser";
+
+        var name = $("#name").val();
+        var sex = getRadioChecked("sex");
+        var phone = $("#phone").val();
+        var icon = $('#cover').val();
+        //验证
+        if (isBlank(name)) {
+            showValidate($("#name").parent());
+            return;
+        }
+        if (isBlank(phone)) {
+            showValidate($("#phone").parent());
+            return;
+        }
+
+        params.id = data.id;
+
+        params.name = name;
+        params.sex = sex[0];
+        params.phone = phone;
+
+        params.icon = icon;
+
+        layer.close(index);
+
+        ajaxSubmit(url, params, function (data) {
+            var msg = (data.msg == undefined ? '' : '' + data.msg);
+            if (data && data.success) {
+                msgSuccess("修改成功");
+                getUserData(data.data);
+                userData = data.data;
+
+            } else {
+                msgFail("修改失败");
+            }
+        });
+    }
+
+    /*-------------------------------------表格-------------------------------*/
+    var $table = $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: '',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                //	height: 600,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                //                  detailView: true,                   //是否显示父子表
+                columns: columns,
+                queryParams: function (params) {
+                },
+                onRefresh: function (params) {
+                }
+            });
+            return true;
+        };
+
+        return oTableInit;
+    };
+    var columns = [
+        {
+            field: "id", title: "ID", align: "center", formatter: function (value, row, index) {
+            return value;
+        }
+        },
+        {
+            field: "aname", title: "订单时间", align: "center", formatter: function (value, row, index) {
+            return value || "";
+        }
+        },
+
+        {
+            field: "type", title: "咨询师", align: "center", formatter: function (value, row, index) {
+            return value || "";
+        }
+        },
+        {
+            field: "ctime", title: "咨询时长", align: "center", formatter: function (value, row, index) {
+            return value || "";
+        }
+        },
+        {
+            field: "utime", title: "费用", align: "center", formatter: function (value, row, index) {
+            return value || "";
+        }
+        },
+        {
+            field: "cname", title: "付款方式", align: "center", formatter: function (value, row, index) {
+            return value || "";
+        }
+        },
+        {
+            field: "gname", title: "平台", align: "center", formatter: function (value, row, index) {
+            return value || "";
+        }
+        },
+    ]
+    var Table = new TableInit(columns);
+    var init = false;
+    function clazzList() {
+        if (init) {
+            $table.bootstrapTable('refreshOptions', {pageNumber: 1});
+        } else {
+            init = Table.Init();
+        }
+    }
+
+
+
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>秀强家园后台</title>
+
+    <meta name="keywords" content="后台">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content  animated fadeInRight">
+
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>目录信息</h5>
+                        <div class="ibox-tools">
+                            <a class="close-refresh">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="ibox-content">
+                        <ul id="treeDemo" class="ztree">
+
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-8">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <h5>配置数据</h5>
+                        <div class="ibox-tools">
+                            <a class="close-refresh refresh1">
+                                <i class="fa fa-refresh"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <form class="form-horizontal" id="myform">
+                            <div class="form-group">
+                                <input type="hidden" id="id" class="form-control">
+                                <label class="col-sm-3 control-label">目录名称：</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" id="name" placeholder="请填写目录名称" class="form-control">
+                                    <span class="help-block m-b-none validate">请填写目录名称</span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">顺序：</label>
+
+                                <div class="col-sm-8">
+                                    <input type="text" id="sort" placeholder="请填写顺序" class="form-control">
+                                    <span class="help-block m-b-none validate">请填写顺序</span>
+                                </div>
+                            </div>
+                           
+                            
+                            
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">是否应用到教师端：</label>
+
+                                <div class="col-sm-8">
+                                    <input type="checkbox" id="useToTeacher" class="form-control">
+                                </div>
+                            </div>
+                            
+                             <div class="form-group">
+                                <label class="col-sm-3 control-label">是否应用到家长端：</label>
+
+                                <div class="col-sm-8">
+                                    <input type="checkbox" id="useToUser" class="form-control">
+                                </div>
+                            </div>
+                            
+                            
+                            <div class="form-group">
+                                <div class="col-sm-offset-3 col-sm-8">
+                                    <button type="button" id="btnadd" class="btn btn-outline btn-primary">新增</button>&nbsp;&nbsp;
+                                    <button type="button" id="btnedit" class="btn btn-outline btn-warning">更新</button>&nbsp;&nbsp;
+                                    <button type="button" id="btndelete" class="btn btn-outline btn-danger">删除</button>&nbsp;&nbsp;
+                                    <button type="button" id="btnclear" class="btn btn-outline btn-white">清空</button>&nbsp;&nbsp;
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+    <!-- 自定义js -->
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+
+    <script src="../resource/js/plugins/bootstrap-menu/bootstrap-contextmenu.js"></script>
+    <script src="../resource/js/plugins/bootstrapzTree/jquery.min.js"></script>
+    <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
+    <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
+    <script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.exedit.js"></script>
+    <script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../resource/common/common.js?"+Math.random()></script>
+
+    <style>
+    </style>
+    <script>
+        var sid=getUserInfo().sid;
+    		var type=2;
+    		
+        var zNodes =[];
+        var zTree;
+        var nowNode;
+        var setting = {
+            view: {
+                selectedMulti: false
+            },
+//            edit: { //增删改图标
+//                enable: true,
+////                showRemoveBtn: false,
+////                showRenameBtn: false
+//            },
+            check: {
+                enable: false,
+//                chkStyle: "checkbox",
+//                chkboxType: { "Y" : "", "N" : "" }
+            },
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            },
+            callback: {
+                onClick: zTreeOnClick,
+                onRightClick: onRightClick,
+            },
+        };
+        function initZtree(){
+            var url = serverUrl+"/path/getAllList";
+            myAjax(url,{sid:sid,type:type},handle);
+            function handle(data,param){
+                if(data&& data.data.length>0){
+                    var treeData = transTreeData(data.data);
+                    zNodes = treeData;
+                }
+                $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+                zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            }
+        }
+
+        function viewPermissionData(data){
+            $("#name").val(data.name);
+            $("#sort").val(data.sort);
+            if(data.useToUser>0){
+            		$("#useToUser").attr("checked",true);
+            }else{
+            	    $("#useToUser").attr("checked",false);
+            }
+            if(data.useToTeacher>0){
+            		$("#useToTeacher").attr("checked",true);
+            }else{
+            	    $("#useToTeacher").attr("checked",false);
+            }
+        }
+        function transTreeData(data){
+            var temp = [];
+            for(var i = 0;i<data.length;i++){
+                var obj = {};
+                if(data[i].pid == 0){
+                    obj.open = true;
+                }
+                obj.id = data[i].id;
+                obj.sort = data[i].sort;
+                obj.name = data[i].name;
+                obj.pId = data[i].pid;
+                obj.useToUser = data[i].useToUser;
+                obj.useToTeacher = data[i].useToTeacher;
+                temp.push(obj)
+            }
+
+            return temp;
+        }
+
+        function zTreeOnClick(event, treeId, treeNode) {
+
+            viewPermissionData(treeNode);
+            nowNode = treeNode;
+        };
+        function onRightClick(event, treeId, treeNode) {
+            var id = event.target.attributes.id;
+            console.log(event.target.attributes.id)
+            $('#'+id).contextmenu();
+        }
+        $(document).ready(function(){
+//            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+//            zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            initZtree();
+        });
+
+        function removeNode() {
+            var trNode = nowNode;
+            if(isBlank(trNode)){
+                layer.msg("请点击选择一个节点");
+                return;
+            }
+
+            layer.msg("确定删除吗?", {
+                shade: [0.1, '##f5f5f5'],
+                time: 0 //不自动关闭
+                ,btn: ['确定','取消']
+                ,yes: function(index){
+                    layer.close(index);
+                    myAjax(serverUrl+"/path/delete",{did:trNode.id},handle);
+                    function handle(data,param){
+                        if(data.success){
+                            layer.msg("删除成功", {icon: 1});
+                            zTree.removeNode(trNode, false);
+                        }else{
+                            layer.msg(data.msg, {icon: 2});
+                        }
+                    }
+                },btn2: function(index, layero){
+                }
+            });
+
+
+        }
+
+        function updateNode() {
+            var trNode = nowNode;
+            if(isBlank(trNode)){
+                layer.msg("请点击选择一个节点");
+                return;
+            }
+            var param = {};
+            var name =  $("#name").val();
+            var sort =  $("#sort").val();
+            var useToUser =  $("#useToUser").is(':checked')?1:0;
+            var useToTeacher =  $("#useToTeacher").is(':checked')?1:0;
+
+            param.id = trNode.id;
+            if(isNotBlank(name)){
+                param.name = name;
+                trNode.name = name;
+            }
+            if(isNotBlank(sort)){
+                param.sort = sort;
+                trNode.sort = sort;
+            }
+           
+            if(isNotBlank(useToUser)){
+                param.useToUser = useToUser;
+                trNode.useToUser = useToUser;
+            }
+            
+            if(isNotBlank(useToTeacher)){
+                param.useToTeacher = useToTeacher;
+                trNode.useToTeacher = useToTeacher;
+            }
+            param.schoolId=sid;
+            param.type=type;
+
+            myAjax(serverUrl+"/path/updata",param,handle);
+            function handle(data,param){
+                if(data.success){
+                    layer.msg("更新成功", {icon: 1});
+                    zTree.updateNode(trNode, false);
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                }
+            }
+        }
+        function addNode() {
+            var trNode = nowNode;
+            var param = {};
+            var name =  $("#name").val();
+            var sort =  $("#sort").val();
+            var useToUser =  $("#useToUser").is(':checked')?1:0;
+            var useToTeacher =  $("#useToTeacher").is(':checked')?1:0;
+            if(isBlank(name)){
+                showValidate('#name');
+                return ;
+            }
+            if(isBlank(sort)){
+                showValidate('#sort');
+                return ;
+            }
+           
+            if(isBlank(trNode)){
+                param.pid = 0;
+            }else{
+                param.pid = trNode.id;
+            }
+            param.name = $.trim(name);
+            param.sort = sort;
+            param.useToUser=useToUser;
+            param.useToTeacher=useToTeacher;
+            param.schoolId=sid;
+			param.type=type;
+			
+            myAjax(serverUrl+"/path/add",param,handle);
+            function handle(data,param){
+                if(data.success){
+                    layer.msg("添加成功", {icon: 1});
+                    data=data.data;
+                    zTree.addNodes(trNode, {
+                        id: data.id,
+                        pId: data.pid,
+                        name: data.name,
+                        sort : data.sort,
+                        useToUser:data.useToUser,
+                        useToTeacher:data.useToTeacher
+                    });
+                }else{
+                    layer.msg(data.msg, {icon: 2});
+                }
+            }
+        }
+
+
+        function clearDom(){
+            $("#name").val('');
+            $("#sort").val('');
+            $("#useToTeacher").attr('checked',false);
+            $("#useToUser").attr('checked',false);
+        }
+        function refreshTree(){
+            zTree.checkAllNodes(false);
+            zTree.refresh();
+            nowNode = '';
+        }
+        function refreshForm(){
+            $("#myform")[0].reset();
+        }
+        //初始化页面上面的按钮事件
+        var ButtonInit = function () {
+            var oInit = new Object();
+            oInit.Init = function () {
+                $('#btnadd').click(addNode)
+                $('#btndelete').click(removeNode)
+                $('#btnedit').click(updateNode)
+                $('#btnclear').click(clearDom)
+                $('.close-refresh').click(refreshTree)
+                $('.refresh1').click(refreshForm)
+            };
+
+            return oInit;
+        };
+
+        $(function () {
+            //初始化Button的点击事件
+            var oButtonInit = new ButtonInit();
+            oButtonInit.Init();
+
+            $("#treeDemo").slimScroll({
+                height: '400px'
+            });
+        });
+
+    </script>
+</body>
+
+</html>

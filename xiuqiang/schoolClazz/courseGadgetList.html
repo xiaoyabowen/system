@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title></title>
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    
+
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated  fadeInDown  content-view  ">
+        <form method="get" class="form-horizontal" id="areaForm">
+           
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">名称</label>
+                <div class="col-sm-8">
+                    <input type="hidden" class="form-control hiddenid" id="id">
+                    <input type="text" class="form-control"  id="title" placeholder="请输入名称">
+                    <span class="help-block m-b-none validate">请输入名称</span>
+                </div>
+
+            </div>
+            
+            
+            <div class="form-group">
+                <label class="col-sm-3 control-label">描述</label>
+                <div class="col-sm-8">
+                    <input type="hidden" class="form-control hiddenid" id="id">
+                    <input type="text" class="form-control"  id="info" placeholder="请输入描述">
+                    <span class="help-block m-b-none validate">请输入描述</span>
+                </div>
+
+            </div>
+
+
+            
+            <div class="form-group">
+                <label class="col-sm-3 control-label">教师</label>
+                <div class="col-sm-8">
+                    <input type="hidden" class="form-control hiddenid" id="id">
+                    <input type="text" class="form-control"  id="tid" placeholder="请选择教师">
+                    <span class="help-block m-b-none validate">请输入描述</span>
+                </div>
+
+            </div>
+            
+            
+            
+            <div class="form-group">
+                <label class="col-sm-3 control-label">位置</label>
+                <div class="col-sm-8">
+                    <input type="hidden" class="form-control hiddenid" id="id">
+                    <input type="text" class="form-control"  id="site" placeholder="请输入位置">
+                    <span class="help-block m-b-none validate">请输入位置</span>
+                </div>
+
+            </div>
+            
+            
+            
+            <div class="form-group">
+                <label class="col-sm-3 control-label">教具</label>
+                <div class="col-sm-8">
+                    <input type="hidden" class="form-control hiddenid" id="id">
+                    <input type="text" class="form-control"  id="teachingAid" placeholder="请输入教具">
+                    <span class="help-block m-b-none validate">请输入教具</span>
+                </div>
+
+            </div>
+           
+
+        </form>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!-- Panel Other -->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>课目列表</h5>
+            </div>
+            <div id="toolbar" class="btn-group">
+                <button class="btn btn-success  btn-outline" id="btn_add">
+                    <i class="fa fa-plus">  添加</i>
+                </button>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <table id="tb_table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Panel Other -->
+    </div>
+
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+    <script src="../resource/js/content.js?v=1.0.0"></script>
+
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+
+    <!-- Bootstrap table -->
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+    <script src="../resource/common/common.js?"+Math.random()></script>
+    <script>
+        var sid=getUserInfo().sid;
+
+    	
+        var $table =  $('#tb_table');
+        var TableInit = function (columns) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $table.bootstrapTable({
+                    url: serverUrl+'/courseTemplate/search',         //请求后台的URL（*）
+                    method: 'get',                      //请求方式（*）
+                    toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: false,                     //是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber:1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: true,
+                    showColumns: true,                  //是否显示所有的列
+				showRefresh: true,                  //是否显示刷新按钮
+                    minimumCountColumns: 2,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+//				height: 600,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                   //是否显示父子表
+                    columns: columns,
+//                    showFooter:true,            //表格底部
+                    onClickRow: function (row) {
+//                        console.log(row)
+                    },
+                    queryParamsType:'limit', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+                    // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+                    queryParams: function (params) {
+                        
+                        return {
+                            token:getUserInfo().token,
+                            page:(params.offset / params.limit) + 1,
+                            size: params.limit,
+                            sid:sid,
+                        };
+                    },
+                });
+            };
+
+            return oTableInit;
+        };
+        
+        
+        var columns = [
+            {field: "id",title: "序号",align:"center",formatter: function (value, row, index) {
+                return index+1;
+            }},
+            {field: "title", title: "名称",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+             {field: "info", title: "课程信息",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+             {field: "teacherName", title: "教师",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+             {field: "site", title: "位置",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+            
+             {field: "teachingAid", title: "教具",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+            
+            {field: "ctime", title: "创建时间",align: "center", formatter: function (value, row, index) {
+                return formatDateTime(value);
+            }},
+           
+            
+            {field: "name", title: "编辑", align: "center", formatter: function (value, row, index) {
+                var html = '';
+                html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="编辑" onclick=\'addOrEdit('+JSON.stringify(row)+')\' >编辑</a>';
+                html +='&nbsp';
+                html += '<a  class="btn btn-danger btn-sm btn-outline" href="javascript:void(0);" title="删除" onclick=\'removeData('+JSON.stringify(row)+')\'>删除</a>';
+                return html;
+            }},
+
+        ]
+
+      //删除
+        function removeData(row){
+            var id = row.id;
+            var url = "/courseTemplate/delete";
+            var param = {id:id};
+            var result = {succ:'删除成功!',fail:'删除失败'};
+            layer.msg("确定要删除该字段？", {
+                shade: [0.1, '##f5f5f5'],
+                time: 0 //不自动关闭
+                ,btn: ['确定','取消']
+                ,yes: function(index){
+                    layer.close(index);
+                    myAjax(url,param,handle);
+                    function handle(data,param){
+                        var msg = (data.msg == undefined ? '':','+data.msg);
+                        if(data.success) {
+                            layer.msg(result.succ, {icon: 1,shade: 0.01});
+                            handleTable(id,4);
+                        }else{
+                            layer.msg(result.fail+msg, {icon: 2,shade: 0.01});
+                        }
+                    }
+                },btn2: function(index, layero){
+                }
+            });
+        }
+
+
+        //添加修改
+        function addOrEdit(rowData){
+            var subType ;
+            if(isNotBlank(rowData)){
+                subType  = 1;
+            }else{
+                subType  = 0;
+                formReset();
+            }
+            var index= layer.open({
+                type: 1 , shade: 0.01,
+                id: 'area', //设定一个id，防止重复弹出
+                title: '添加/更新',
+                area: ['40%','40%'],
+                content: $('.content-view'),
+                btn: ['提交', '关闭'],
+                yes:function(index){
+                    submitData(index,subType);
+                },
+                shadeClose: true, //开启遮罩关闭
+                success: function(layero, index){
+                    if(isNotBlank(rowData)){
+                        $('#id').val(rowData.id);
+                        $('#title').val(rowData.title);
+                        $('#info').val(rowData.info);
+                        $('#tid').val(rowData.tid);
+                        $('#site').val(rowData.site);
+                        $('#teachingAid').val(rowData.teachingAid);
+                    }
+                }
+
+            })
+        }
+
+
+        function submitData(index,type){
+            var id=$('#id').val();
+            var title= $.trim($('#title').val());
+            var info=$.trim($('#info').val());
+            var tid=$.trim($('#tid').val());
+            var site=$.trim($('#site').val());
+            var teachingAid=$.trim($('#teachingAid').val());
+            var result ;
+            var params = {};
+            var url;
+            if(type == 0){
+                url = "/courseTemplate/add";
+                result = {succ:'添加成功！',fail:'添加失败！'};
+            }else{
+                url = "/courseTemplate/updata";
+                result = {succ:'更新成功！',fail:'更新失败'};
+            }
+            if(isBlank(title)){
+                showValidate('#title');
+                return  ;
+            }
+            if(isBlank(tid)){
+              	tid=0;
+            }
+
+            if(isNotBlank(id)){
+                params.id = id;
+            }
+
+            layer.close(index);
+            params.title = title;
+            params.info = info;
+            params.tid = tid;
+            params.site = site;
+            params.sid=sid;
+            params.teachingAid = teachingAid;
+            myAjax(url,params,handle);
+            function handle(data,params){
+                var msg = (data.msg == undefined ? '':','+data.msg);
+                if(data.success) {
+                    layer.msg(result.succ, {icon: 1,shade: 0.01});
+                    handleTable("",3,serverUrl+"/courseTemplate/search?sid="+sid);
+                }else{
+                    layer.msg(result.fail+msg, {icon: 1,shade: 0.01});
+                }
+            }
+
+        }
+
+        function openPOP(){
+            addOrEdit();
+        }
+        function formReset(){
+            $("#areaForm")[0].reset();
+        }
+
+        //初始化页面上面的按钮事件
+        var ButtonInit = function () {
+            var oInit = new Object();
+            oInit.Init = function () {
+                $('#btn_add').click(openPOP);
+            };
+
+            return oInit;
+        };
+        //主函数
+        $(function () {
+            var Table = new TableInit(columns);
+            Table.Init();
+            var oButtonInit = new ButtonInit();
+            oButtonInit.Init();
+        });
+
+    </script>
+</html>

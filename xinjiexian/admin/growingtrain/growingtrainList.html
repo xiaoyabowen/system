@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>成长训练营列表</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <div id="toolbar">
+
+                    </div>
+
+                    <form class="form-horizontal" role="form">
+
+                            <label class="col-sm-1 control-label">训练营名称</label>
+
+                            <div class="col-sm-3">
+                                <input type="text" id="title" placeholder="请输入名称" class="form-control">
+                            </div>
+
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info" id="user_search" name="like_search" onclick="reInitTable()">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+
+                    </form>
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- ztree -->
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/common/common.js?time=" +Math.random()></script>
+<script>
+    var RoleList = "";
+    var $table = $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl + '/growingtrain/growingtrainList?token=' + getUserToken(),         //请求后台的URL（*）
+                method: 'post',                      //请求方式（*）
+                contentType : "application/x-www-form-urlencoded",
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType: 'limit',
+                queryParams: function (params) {
+                    var title = $("#title").val();
+
+                    return {
+                        title:title || "",
+                        pageNumber: (params.offset / params.limit) + 1,
+                        pageSize: params.limit
+                    };
+                }
+            });
+        };
+
+        return oTableInit;
+    };
+
+    var columns = [
+        {field: "title", title: "训练营名称",align: "center",},
+//        {field: "info", title: "训练营简介"},
+        {field: "teacherName", title: "训练营老师",align: "center",},
+//        {field: "courseList", title: "课程列表"},
+        {field: "fee", title: "训练营价格" ,align: "center",},
+        {
+            field: "info", title: "训练营简介",align: "center", formatter: function (value, row, index) {
+            var html="";
+            var l = value.length;
+            if (l > 20) {
+                html += value.substring(0,20) + "...";
+                return "<p style='cursor:pointer;' onclick=\'view("+JSON.stringify(value)+")\'>"+html+"</p>";
+            } else {
+                html += value;
+                return html;
+            }
+
+        }},
+        {field: "icon", title: "训练营封面", align: "center", formatter: function (value, row, index) {
+            if(value){
+                var thumb = ImageThumb(value, 60, 60, false);
+                return thumb;
+            }
+        }},
+        {field: "status", title: "上线状态",align: "center", formatter: function (value, row, index) {
+            var html = '';
+            var colume = {0:"删除",1:"已下线",2:"已上线"};
+            if(value == 1)
+                return '<p class="text-warning">'+colume[value];+'</p>';
+            if(value == 2)
+                return '<p class="text-success">'+colume[value];+'</p>';
+        }},
+        {
+            field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+            var data = JSON.stringify(row);
+            var html = '';
+            var stopOrRecover = "上线";
+            if (row.status == 2){
+                stopOrRecover = "下线";
+            }
+            html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'addCourse(" + data + ")\'>添加课程</a>";
+            html += '&nbsp';
+            html += "<a  class='btn btn-success btn-sm btn-outline' href='javascript:void(0)' onclick=\'courseList(" + data + ")\'>查看课程列表</a>";
+            html += '&nbsp';
+            html += "<a  class='btn btn-primary btn-sm btn-outline' href='javascript:void(0)' onclick=\'changeStatus(" + data + ")\'>"+ stopOrRecover +"</a>";
+//            html += '&nbsp';
+//            html += '<a class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" onclick="deleteUser(' + row.id + ')" >删除</a>';
+
+            return html;
+        }}
+
+    ]
+    //页面层-自定义
+
+
+    function view(data){
+        var Index = layer.open({
+            type: 1,
+            title: false,
+            shadeClose: true,
+            skin: 'layui-layer-demo', //样式类名
+            content: data,
+            shade: [0.1, '##f5f5f5'],
+            closeBtn: 1
+        });
+    }
+
+    function reInitTable() {
+        $table.bootstrapTable('refreshOptions', {pageNumber: 1});
+    }
+
+
+    function addCourse(data) {
+        addMenuItem("../course/addCourse.html?"+"id="+encodeURI(data.id),"添加课程");
+    }
+
+    function courseList(data) {
+        var courses = "";
+        if (isNotBlank(data.courseList)){
+            courses = data.courseList;
+        }
+//        addMenuItem("../course/courseList.html?"+"courseList="+encodeURI(courses)+"&cid=1","课程列表");
+        addMenuItem("../course/courseList.html?"+"courseList="+encodeURI(courses),"课程列表");
+    }
+
+    function echoUser(data) {
+        $("#name").val(data.name);
+        $("#userName").val(data.userName);
+        $("#phone").val(data.phone);
+        $("#address").val(data.address);
+        if (data.rid) {
+            $("#rtype").val(data.rid);
+        }
+        $("#password").val("");
+
+    }
+
+
+    //上下线功能
+    function changeStatus(data) {
+        var url = "/growingtrain/changeStatus";
+        var result = {succ: '下线成功！', fail: '下线失败！'};
+        var msg_info = "确认下线吗?";
+        var status = 2;
+        if(isBlank(data.courseList)){
+            layer.msg("请先添加课程");
+            handleTable({id:data.id},1);
+            return;
+        }
+        if (data.status == 1){
+            result = {succ: '上线成功！', fail: '上线失败！'};
+            msg_info = "确认上线吗?";
+        }else{
+            status  = 1;
+        }
+        var row = {id:data.id,status:status};
+        layer.msg(msg_info, {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+                ajaxSubmit(url, {id: data.id}, function(data){
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        msgSuccess(result.succ);
+                        handleTable(row, 1);
+                    } else {
+                        msgFail(result.fail + msg);
+                    }
+                });
+
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+
+    function deleteUser(id) {
+        var url = "/backend/deleteUser";
+        var result = {succ: '删除成功！', fail: '删除失败！'};
+        layer.msg('确认删除吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+
+                ajaxWithUser(url, {id: id}, handle);
+
+                function handle(data, param) {
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        msgSuccess(result.succ);
+                        handleTable(param, 2);
+                    } else {
+                        msgFail(result.fail + msg);
+                    }
+                }
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click();
+            $('#btn_edit').click();
+        };
+
+        return oInit;
+    };
+</script>
+</body>
+
+</html>

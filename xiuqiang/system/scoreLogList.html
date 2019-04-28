@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <style>
+        #exp{
+            margin-left: -14px;
+        }
+    </style>
+</head>
+
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>用户积分日志</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+
+                    <form class="form-horizontal" role="form">
+
+                        <div class="form-group">
+
+                            <label class="col-sm-1 control-label">开始时间</label>
+                            <div class="col-sm-2">
+                                <input type="text" id="startTime" class="form-control" placeholder="请选择开始时间" readonly>
+                            </div>
+                            <label class="col-sm-1 control-label">结束时间</label>
+                            <div class="col-sm-2">
+                                <input type="text" id="endTime" class="form-control" placeholder="请选择结束时间" readonly>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">用户ID</label>
+
+                            <div class="col-sm-2">
+                                <input type="number" id="uid" placeholder="请输入用户ID" class="form-control">
+                            </div>
+
+                            <label class="col-sm-1 control-label">用户类型</label>
+
+                            <div class="col-sm-2">
+                                <select id="type"  class="  form-control" >
+                                    <option value="-1">全部</option>
+                                    <option value="0">普通用户</option>
+                                    <option value="1">教职工</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label"></label>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info" id="btn_search" name="like_search">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="col-sm-2">
+                        <a class="btn btn-info" id="exp" href="">
+                            <i class="fa fa-toggle-down"></i> 导出数据
+                        </a>
+                    </div>
+                    <table id="tb_table"></table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!----bootstrap-select----->
+<script type="text/javascript" src="../resource/js/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrap-select/js/i18n/defaults-zh_CN.min.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+
+<script src="../resource/common/common.js"></script>
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+<script>
+
+    var actionMap={'1':'登录','2':'分享','3':'发表评论','4':'发表精彩瞬间','5':'发表周评语',};
+    var $table =  $('#tb_table');
+    var HREF;
+    var initChildTable = function(index, row, $detail) {
+        var tempData = [];
+        tempData.push(row);
+        var current_table = $detail.html('<table id="child_table"></table>').find('table');
+        current_table.bootstrapTable({
+            data:tempData,
+            columns: childcolumns,
+        });
+    }
+
+    var schoolId=getUserInfo().sid;
+
+    function intTable() {
+        $table.bootstrapTable({
+            url: serverUrl+'/scoreLog/getPager',         //请求后台的URL（*）
+            method: 'get',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber:1,                       //初始化加载第一页，默认第一页
+            pageSize: 50,                       //每页的记录行数（*）
+            pageList: [50,100,150,200],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: false,                //是否启用点击选中行
+            //	height: 600,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            // showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            columns: [
+                {field: "id",title: "序号",align:"center",formatter: function (value, row, index) {
+                    return index+1;
+                }},
+                {field: "type", align: "center",title: "用户类型", formatter: function (value, row, index) {
+                    var t = {0:"普通用户",1:"教职工"};
+                    return t[value];
+                }},
+                {field: "uid", align: "center",title: "用户名"},
+                {field: "action", align: "center",title: "动作", formatter: function (value, row, index) {
+                    return actionMap[value];
+                }},
+                {field: "score", align: "center",title: "分数"},
+
+                {field: "time", title: "时间",align: "center", formatter: function (value, row, index) {
+                    return formatDateTime(value);
+                }},
+                {field: "currentScore", align: "center",title: "当前分数"}
+            ],
+
+            queryParams: function (params) {
+                var uid = isBlank($("#uid").val()) ? 0 : $("#uid").val();
+                var startTime =  isBlank($("#startTime").val()) ? 0 : new Date($("#startTime").val()).getTime();
+                var endTime = isBlank($("#endTime").val()) ? 0 : new Date($("#endTime").val()).getTime();
+                var type = $("#type").val();
+//                alert(schoolId);
+                var href = serverUrl + "/scoreLog/exportScoreLog?token=" + getUserToken() + "&uid=" + uid + "&startTime=" + startTime + "&endTime=" + endTime + "&type=" + type + "&sid=" + getUserInfo().sid;
+                $('#exp').attr('href',href); // 动态参数添加href
+                var p = queryParams(params);
+                return p;
+            },
+        });
+    };
+    function  queryParams(params){
+        var uid = $("#uid").val();
+        var startTime = $("#startTime").val();
+        var endTime = $("#endTime").val();
+        var type = $("#type").val();
+        return {
+            token:getUserInfo().token,
+            page: params.offset/params.limit+1,
+            size: params.limit,
+            uid : isBlank(uid)?0:uid,
+            startTime:isBlank(startTime)?0:new Date(startTime).getTime(),
+            endTime :isBlank(endTime)?0:new Date(endTime).getTime(),
+            type:type,
+            sid:schoolId
+        };
+    }
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_search').click(reInitTable);
+        };
+        return oInit;
+    };
+
+    //导出
+    function expExport() {
+        var Type = $('#type option:selected ').val();
+        var Uid = $('#uid').val();
+        var StartTime = $('#startTime').val();
+        var EndTime = $('#endTime').val();
+        var param = {
+            type:Type,
+            uid:Uid,
+            startTime:StartTime,
+            endTime:EndTime,
+        };
+
+    }
+
+
+    function getUserToken() {
+        var user = getUserInfo();
+        return encodeURIComponent(user.token);
+    }
+
+    //条件搜索刷新
+    function reInitTable(){
+        $table.bootstrapTable('refreshOptions',{page:1});
+    }
+
+    //主函数
+    $(function () {
+        intTable();
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+
+        laydate.render({
+            elem: '#startTime'
+            ,type: 'datetime'
+        });
+        laydate.render({
+            elem: '#endTime'
+            ,type: 'datetime'
+        });
+    });
+</script>
+</body>
+
+</html>

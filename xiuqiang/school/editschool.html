@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <form method="get" class="form-horizontal">
+        <div class="ibox float-e-margins">
+            <div class="step1">
+                <div class="ibox-title">
+                    <h5>添加学校</h5>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">学校名称</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="name" placeholder="请输入学校名称">
+                            <span class="help-block m-b-none validate">请输入学校名称</span>
+                        </div>
+
+                    </div>
+                    <div class="hr-line-dashed "></div>
+
+
+
+                    <div class="form-group ">
+                        <label class="col-sm-3 control-label">渠道</label>
+                        <div class="col-sm-5">
+                            <select id="channel" class="js-data-example-ajax form-control" style="width: 100%" >
+
+                            </select>
+                        </div>
+                        <span class="help-block m-b-none validate">请选择渠道</span>
+                    </div>
+                    <div class="hr-line-dashed "></div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-3">
+                            <button class="btn btn-primary" type="button" id="btn_submit" >提交</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- select2 -->
+<script src="../resource/js/plugins/select2/js/select2.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+
+<script src="../resource/common/common.js"></script>
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+
+<script src="../resource/common/newscontent.js"></script>
+
+<script>
+    var id=getQueryString("id");
+    //initSelectSubject
+    initSelectSubject("#channel","/channel/getAllListByName?token="+encodeURI(getUserInfo().token),false,true);
+    function formatSubject(item) {
+        if (item.loading) return item;
+        var markup = '<div> <p class="text-primary">名称:' + item.name + '-----id:'+item.id+'</p>';
+        //markup += '这里可以添加其他选项...';
+        markup += ' </div>';
+        return markup;
+    }
+
+
+    //回显数据
+    function echo(data){
+        echoSelect2("#channel",[{id:data.cid,name:data.channel}]);
+        $("#name").val(data.name);
+    }
+
+    var numberFlag = false;
+    function submitSchoolData(){
+        var url = "/school/updateSchool";
+        var name = $("#name").val();
+        var cid=$("#channel").val();
+        var params  ={};
+
+        if(isBlank(name)){
+            showValidate("#name");
+            return;
+        }
+
+        if(isBlank(cid)){
+            showValidate($("#channel").parent());
+            return;
+        }
+        params.id=id;
+        params.name=name;
+        params.cid =cid;
+
+        myAjax(url,params,handle);
+        function handle(data,params){
+            if(data && data.success){
+                layer.msg("修改成功", {icon: 1});
+                reLoad();
+            }else{
+                var msg = isBlank(data.msg)? "":data.msg;
+                layer.msg("修改失败"+msg, {icon: 2});
+            }
+        }
+
+    }
+
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $("#btn_submit").click(submitSchoolData);
+        };
+
+        return oInit;
+    };
+    $(function () {
+        myAjax("/school/getSchool",{id:id},handle);
+        function handle(data,params){
+            if(data && data.success){
+                echo(data.data);
+            }else{
+                var msg = isBlank(data.msg)? "":data.msg;
+                layer.msg("添加失败"+msg, {icon: 2});
+            }
+        }
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+</script>
+</body>
+
+</html>

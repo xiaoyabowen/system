@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/js/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <style>
+        .newsource,.hideContent{
+            display: none;
+        }
+
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>添加课程</h5>
+        </div>
+        <div class="ibox-content">
+            <form method="get" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">课程名称</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="clazzName" placeholder="请输入课程名称" class="form-control">
+                        <label class="help-block m-b-none validate">请输入课程名称</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed "></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">课程信息</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="clazzInfo" placeholder="请输入课程信息" class="form-control">
+                        <label class="help-block m-b-none validate">请输入课程信息</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed "></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">课程封面</label>
+                    <div class="col-sm-6 ">
+                        <div class="input-group">
+                            <input id="cover" type="hidden">
+                            <input id="photoCover" type="text" class="form-control" placeholder="请选择图片" readonly>
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                                </span>
+                        </div>
+                        <img src="/resource/img/upload.png" class="img-rounded" id="iconView" width="15%"
+                             height="100%" style="display: none">
+                        <span class="help-block m-b-none validate">请上传课程封面</span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed "></div>
+                <div class="form-group ">
+                    <label class="col-sm-3 control-label">上传视频</label>
+                    <div class="col-sm-5" >
+                        <input  id="coverVideo" type="text" class="form-control" readonly >
+                    </div>
+
+                    <div class="col-sm-3 ">
+                        <button class=" btn btn-default upload" type="button" id="selectButton">选择文件</button>
+                        <button class=" btn btn-default upload" type="button" id="view">预览</button>
+                    </div>
+                    <span class="help-block m-b-none validate">请上传课程视频</span>
+                </div>
+                <div id="showVideo">
+                    <!--<div class="form-group">-->
+                    <!--<label class="col-sm-2 control-label">视频预览</label>-->
+                    <!--<div  class="col-sm-6">-->
+                    <!--<video id="video" controls src="http://p3d4kx22h.bkt.clouddn.com/1.%20%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E7%9B%B8%E5%85%B3API%E8%AF%B4%E6%98%8E.mp4" >-->
+
+                    <!--</video>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-sm-1 ">-->
+                    <!--<button class=" btn btn-default upload" type="button" >开始上传</button>-->
+                    <!--</div>-->
+                    <!--</div>-->
+
+                    <!--<div class="form-group">-->
+                    <!--<div  class="col-sm-6 col-sm-offset-2">-->
+                    <!--<div class="progress progress-striped active">-->
+                    <!--<div class="progress-bar progress-bar-success" role="progressbar"-->
+                    <!--aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"-->
+                    <!--style="width: 40%;">-->
+                    <!--<span class="sr-only">40% 完成</span>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                    <!--</div>-->
+                </div>
+
+                <div class="hr-line-dashed "></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="col-sm-5">
+                        <button class="btn btn-primary" type="button" id="btn" >保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"
+               accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+    </form>
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight" style="display: none">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>视频预览</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <video id="video" controls src="http://p3d4kx22h.bkt.clouddn.com/1.%20%E7%BD%91%E7%BB%9C%E9%80%9A%E8%AE%AF%E7%9B%B8%E5%85%B3API%E8%AF%B4%E6%98%8E.mp4" >
+
+                    </video>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+
+<!--<script src="../resource/common/common.js?"+Math.random()></script>-->
+<script src="../resource/common/storge_new.js"></script>
+<!----select2----->
+
+<script src="../resource/js/plugins/select2/js/select2.full.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+
+<script src="../resource/js/plugins/dropzone/dropzone.js"></script>
+<script src="../resource/js/plugins/dropzone/mydropzone.js"></script>
+
+<script src="../resource/common/multiselect.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script>
+
+
+    var serverUrl = "http://127.0.0.1:10004";//线上
+
+    //selectButton 点击上传的按钮
+    //showVideo  展示进度条
+    //view  预览按钮
+
+    //cover最后要提交到后台的地址
+    initUploadForm("#selectButton","#showVideo","#view","#coverVideo");
+
+//    var dropZone = myDropzone();
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn').click(submitData)
+        };
+
+        return oInit;
+    };
+
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        laydate.render({
+            elem: '#birthday'
+        });
+    });
+
+    function submitData() {
+        var params = {};
+        var url = "/course/addCourse";
+        var gid = getQueryParam().id;
+        var title = $("#clazzName").val();
+        var info = $("#clazzInfo").val();
+        var icon = $("#cover").val();
+        var videoUrl = $("#coverVideo").val();
+
+        //验证
+        if (isBlank(title)) {
+            showValidate($("#clazzName").parent());
+            return;
+        }
+        if (isBlank(info)) {
+            showValidate($("#clazzInfo").parent());
+            return;
+        }
+        if (isBlank(icon)) {
+            showValidate($("#cover").parent());
+            return;
+        }
+        if (isBlank(videoUrl)) {
+            showValidate($("#coverVideo").parent());
+            return;
+        }
+
+        params.gid = gid;
+        params.title = title;
+        params.info = info;
+        params.icon = icon;
+        params.videoUrl = videoUrl;
+
+        ajaxSubmit(url, params, function(data){
+            var msg = (data.msg == undefined ? '' : '' + data.msg);
+            if (data && data.success) {
+                msgSuccess("添加成功");
+                reLoad();
+            } else {
+                msgFail("添加失败");
+            }
+        });
+    }
+</script>
+</body>
+
+</html>

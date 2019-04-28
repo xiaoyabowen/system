@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>添加校园通知</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <!--手机模型外壳-->
+    <link rel="stylesheet" href="../resource/css/phone/iphone-x.css">
+
+    <link href="../resource/js/plugins/bootstrap-wysiwyg-master/external/font-awesome.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstrap-wysiwyg-master/index.css" rel="stylesheet">
+    
+    <style>
+
+        .deleteimg{
+            width: 20px !important;height: 20px !important;
+            position: absolute;top:3px;right: 3px;
+        }
+        .imgbox{
+            float: left;position: relative;
+            margin-left: 10px; margin-top: 10px;overflow: hidden;
+        }
+        ul li {
+            list-style: none;
+        }
+        #iconView li{
+            width:100px;
+            height:100px;
+            float:left;
+            margin:0 10px 10px 0;
+        }
+        #iconview li{
+            width:100px;
+            height:100px;
+            float:left;
+            margin:0 10px 10px 0;
+        }
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <form method="get" class="form-horizontal">
+        <div class="ibox float-e-margins">
+            <div class="step1">
+                <div class="ibox-title">
+                    <h5>发布通知</h5>
+                </div>
+                <div class="ibox-content">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">标题</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" id="title" placeholder="请输入标题">
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed "></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">接收类型</label>
+                        <div class="col-sm-5">
+                            <select id="recvType"  class="  form-control"   >
+                                <option value="0">全园教职工</option>
+                                <!--<option value="1">本班教职工</option>
+                                <option value="2">本班教职工和家长</option>-->
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed "></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否签收</label>
+                        <div class="col-sm-5">
+                            <select id="signNeed"  class="  form-control"   >
+                                <option value="0">不需要签收</option>
+                                <option value="1">需要签收</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed "></div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">内容</label>
+                        <div class="col-sm-5 ">
+                            <textarea class="form-control" id="textarea"></textarea>
+
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed "></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">上传图片</label>
+                        <div class="col-sm-5 ">
+                            <div class="input-group">
+                                <input  id="cover" type="hidden">
+                                <input id="photoCover" type="text" disabled="disabled" class="form-control" placeholder="请选择图片">
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon1()">选择文件</button>
+                            </span>
+
+                            </div>
+                            <ul id="iconView">
+
+                            </ul>
+                            <span class="help-block m-b-none validate">请上传图片</span>
+                        </div>
+                    </div>
+
+                    <div class="hr-line-dashed"></div>
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否分享</label>
+                        <div class="col-sm-5">
+                            <select id="shareStatus" class="form-control">
+                                <option value="0">不可以分享</option>
+                                <option value="1">可以分享</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="hr-line-dashed "></div>
+                    <div class="form-group">
+                        <div class="col-sm-10 col-sm-offset-3">
+                            <button class="btn btn-primary" type="button" id="btn_submit" >提交</button>
+                            <button class="btn btn-primary" type="button" id="preview" >预览</button>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+    <input style="height: 0;width: 0;" type="file" name="file"   accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe" />
+</form>
+
+
+<!--点击预览的手机模型-->
+<section id="iphone-x" class="silver" style="display:none;">
+    <div class="wrap">
+        <!--<h1 class="new">iPhone X</h1>-->
+        <div class="marvel-device iphone-x">
+            <div class="notch">
+                <div class="camera"></div>
+                <div class="speaker"></div>
+            </div>
+            <div class="top-bar"></div>
+            <div class="sleep"></div>
+            <div class="bottom-bar"></div>
+            <div class="volume"></div>
+            <div class="overflow">
+                <div class="shadow shadow--tr"></div>
+                <div class="shadow shadow--tl"></div>
+                <div class="shadow shadow--br"></div>
+                <div class="shadow shadow--bl"></div>
+            </div>
+            <div class="inner-shadow"></div>
+            <div class="screen">
+                <!--<div class="ziTitle"><p id="title0">从清晨开始</p></div><div class="release_content"><p id="text0">美好的一天，是从清晨开始</p></div><div id="imglist1" class="contentImg" style="border-radius: 5px;"><span style="overflow: hidden"><img src="http://store.quakoo.com/storage/miaomuhuahui/870*561*a2b70c9d1fde52a9e0af7ee67eb3e04f.jpg" id="img0" style="border-radius: 5px;"></span><div style="clear: both;"></div></div>-->
+            </div>
+        </div>
+
+    </div>
+
+
+</section>
+
+<div class="mask" style="display:none;"></div>
+
+
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!----select2----->
+<script src="../resource/js/plugins/select2/js/select2.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+<script src="../resource/js/template-native.js"></script>
+<script src="../resource/common/common.js"></script>
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+
+<script src="../resource/common/newscontent.js"></script>
+
+<script src="../resource/js/plugins/ckeditor/ckeditor.js" type="text/javascript" charset="utf-8"></script>
+<script src="../resource/js/plugins/ckeditor/lang/zh-cn.js" type="text/javascript" charset="utf-8"></script>
+
+
+<!--上传图片-->
+<script type="text/html" id="imgTm">
+    <%for(var i=0;i<list.length;i++){%>
+    <li style="position:relative" class="imgBox">
+        <img onclick="deleteThisImg(<%=i%>)" src="../resource/img/deleteimg.png" class="deleteimg" alt="">
+        <img class="img-rounded"  width="100%" height="100%" src="<%=list[i]%>" alt="">
+    </li>
+    <%}%>
+</script>
+<script>
+    //如果是班级发布通知，那么就不选班级
+    //如果是学校发布通知，那么可以选择多个班级
+    //如果是集团发布通知，那么是可以选择多个学校
+
+
+    //富文本编辑器      replace 是文本框的id    后面是图片上传的接口
+    var ckeditor = CKEDITOR.replace('textarea');
+
+
+
+    // 点击预览进行的操作
+    function preview(rowData) {
+        $("#iphone-x").toggleClass('hidden-phone');
+        if(!$("#iphone-x").hasClass('hidden-phone')){
+//      	alert(1)
+            $(window).bind('mousewheel', boxScroll)
+        }else{
+            $(window).unbind('mousewheel', boxScroll)
+        }
+        $(".silver").slideDown()
+        $(".mask").show()
+        $(".phone-id").html(rowData.id)
+        //获取富文本框的内容
+        var iphoneText = CKEDITOR.instances.textarea.getData();
+        //预览标题
+        var iphoneTitle = $("#title").val();
+        $(".screen").html("<p style='text-align: center;width: 100%;font-size: 18px;'>"+iphoneTitle+"</p>"+"<br />"+iphoneText);
+        return;
+
+    }
+    function boxScroll(event, delta) {
+        if (delta > 0) {
+            scrollTop -= 30;
+        } else {
+            scrollTop += 30;
+        }
+        $("#iphone-x").scrollTop(scrollTop);
+        return false;
+    }
+    $(".mask").click(function () {
+        $(this).hide()
+        $(".silver").slideUp()
+    })
+    // 点击预览进行的操作结束
+
+
+    var schoolId=getUserInfo().sid;   //校园 ID
+    var uid = getUserInfo().id;        //uid
+    var clazzId=getQueryString("id");
+
+    var numberFlag = false;
+    function submitSchoolData(){
+        var url = "/notice/publicNotice";
+        var title = $("#title").val();
+//        var content=$("#editor").text();
+        var params  ={};
+
+        if(isBlank(title)){
+            layer.msg('标题不能为空', {icon: 2});
+            return;
+        }
+
+        var contentText  = CKEDITOR.instances.textarea.getData();   //
+        var reg=/<\/?.+?\/?>/g;     //使用正则表达式去除所有html标签只保留文字
+        var content = contentText.replace(reg,'')     //
+        if(isBlank(contentText)){
+            layer.msg('内容不能为空', {icon: 2});
+            return;
+        }
+
+
+        params.title=title;
+        params.content=content;
+        params.sid=schoolId;
+        params.uid=uid;
+        params.ext= contentText;
+        params.type=$("#type").val();
+        params.recvType=0;
+        params.signNeed=$("#signNeed").val();    //是否签收
+        params.shareStatus=$("#shareStatus").val();   //是否分享
+        params.imagesJson=JSON.stringify(imgList);
+
+
+
+        console.log(params)
+        myAjax(url,params,handle);
+        function handle(data,params){
+            if(data.success){
+                console.log(data);
+                layer.msg("添加成功", {icon: 1,time:1000},function(){
+                    addMenuItem("../schoolClazz/schoolNoticeList.html")     //新开一个tab页
+                    reLoad();   // 刷新页面
+                    closeMyselfInIframe()
+                });
+
+            }else{
+                var msg = isBlank(data.msg)? "":data.msg;
+                layer.msg("添加失败"+msg, {icon: 2,time:1000});
+            }
+        }
+
+    }
+
+
+
+
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $("#btn_submit").click(submitSchoolData);
+            $("#preview").click(preview);
+        };
+
+        return oInit;
+    };
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+    var imgList = [];
+    /*--------------图片上传-----------*/
+    function uploadIcon1() {
+        $("#uploadForm input").click();
+    }
+    /*--------------图片上传后台-----------*/
+    $("#uploadForm input").change(function() {
+        $('#photoCover').val($(this).val());
+        var formData = new FormData($(this).parent()[0]);
+        $.ajax({
+            url: serverUrl + '/storage/handle', //Server script to process data
+            type: 'POST',
+            data: formData,
+            sync: false,
+            cache: false,
+            contentType: false,
+            processData: false,
+            dataType: "json",
+            success: function(result) {
+                if (result.ok != undefined) {
+                    console.log(result.ok);
+                    // $("#iconView").attr('src', result.ok);
+                    var objimg = {};
+                    // objimg.img = result.ok;
+                    var data = JSON.stringify(result);
+                    $("#cover").val(result.ok);
+                    imgList.push(result.ok);
+                    console.log(imgList);
+                    var data = {list:imgList};
+                    var html = template('imgTm',data);
+                    document.getElementById("iconView").innerHTML = html;
+                    $("#iconView").show();
+                } else {
+                    layer.msg('上传失败！', {
+                        icon: 2
+                    });
+                }
+            },
+            error: function() {
+                layer.msg('上传失败！', {
+                    icon: 2
+                });
+            }
+        });
+    })
+    //删除图片
+    function deleteThisImg(index) {
+        // imgList[index].flag = false;
+        if(index==0){
+            imgList.splice(index,index+1);
+        }else{
+            imgList.splice(index,index+1);
+        }
+        $($('.imgBox')[index]).hide();
+
+    }
+</script>
+
+
+</body>
+
+</html>

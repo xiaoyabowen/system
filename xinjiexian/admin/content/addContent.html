@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <style>
+        .newsource,.hideContent{
+            display: none;
+        }
+
+    </style>
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>添加文章资讯</h5>
+        </div>
+        <div class="ibox-content">
+            <form method="get" class="form-horizontal">
+                <div class="form-group ">
+                    <label class="col-sm-3 control-label">标题</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="title">
+                        <span class="help-block m-b-none validate">请输入标题</span>
+                    </div>
+
+                </div>
+                <div class="hr-line-dashed "></div>
+                <div class="form-group ">
+                    <label class="col-sm-3 control-label">来源</label>
+                    <div class="col-sm-6">
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="newsource1" value="1"  name="newsource" checked="">
+                            <label for="newsource1">原创</label>
+                        </div>
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="newsource2" value="2"  name="newsource">
+                            <label for="newsource2">转载 </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="hr-line-dashed newsource"></div>
+                <div class="form-group newsource">
+                    <label class="col-sm-3 control-label">转载地址</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="org" placeholder="请输入转载地址">
+                        <span class="help-block m-b-none validate">请输入转载地址</span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed newsource"></div>
+                <div class="form-group newsource">
+                    <label class="col-sm-3 control-label">转载名称</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="orgName" placeholder="请输入转载名称">
+                        <span class="help-block m-b-none validate">请输入转载名称</span>
+                    </div>
+                </div>
+
+                <!--<div class="hr-line-dashed "></div>-->
+                <!--<div class="form-group ">-->
+                    <!--<label class="col-sm-3 control-label">资讯</label>-->
+                    <!--<div class="col-sm-6">-->
+                        <!--<div class="radio radio-info radio-inline">-->
+                            <!--<input type="radio" id="newtype1" value="1"  name="newType" >-->
+                            <!--<label for="newtype1">考试资讯</label>-->
+                        <!--</div>-->
+                        <!--<div class="radio radio-info radio-inline">-->
+                            <!--<input type="radio" id="newtype2" value="2"  name="newType">-->
+                            <!--<label for="newtype2">品质文章 </label>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <div class="hr-line-dashed "></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">封面</label>
+                    <div class="col-sm-6 ">
+                        <div class="input-group">
+                            <input id="cover" type="hidden">
+                            <input id="photoCover" type="text" class="form-control" placeholder="请选择图片">
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                                </span>
+
+                        </div>
+                        <img src="../resource/img/upload.png" class="img-rounded" id="iconView" width="15%" height="100%" style="display: none" >
+                        <span class="help-block m-b-none validate">请上传图片</span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed "></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">日期</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="startTime" class="form-control " placeholder="请选择时间">
+                        <span class="help-block m-b-none validate">请选择时间</span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed "></div>
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">内容</label>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="col-sm-8">
+                       <textarea name="newContent" id="newContent" rows="10" cols="80">
+
+                        </textarea>
+                    </div>
+
+                </div>
+
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <div class="col-sm-3 col-sm-offset-2">
+                        <button class="btn btn-primary" type="button" id="btn_submit">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"   accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe" />
+    </form>
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!----ckeditor----->
+<script src="../resource/js/plugins/ckeditor/ckeditor.js"></script>
+<script src="../resource/js/plugins/ckeditor/lang/zh-cn.js"></script>
+
+
+
+<script src="../resource/common/common.js?"+Math.random()></script>
+<script>
+    laydate.render({
+        elem: '#startTime'
+    });
+    //富文本编辑器
+    var ckeditor = CKEDITOR.replace('newContent');
+
+    function submitData(){
+        var param  = {};
+        var url = "/news/addNew";
+        var title = $("#title").val();
+        var newsource = $("input[name='newsource']:checked").val();
+        var newType = $('input[name=newType]:checked').val();
+        var areatype = $("input[name='areatype']:checked").val();
+        var org = $("#org").val();
+        var orgName = $("#orgName").val();
+        var cover = $("#cover").val();
+        var startTime=$('#startTime').val();
+
+        var subject =  $("#subject").val();
+        var areaId ;
+
+        var content = MyCKeditor.getData();
+
+        if(isBlank(title)){
+            showValidate($("#title"));
+            return;
+        }
+        if(isBlank(cover)){
+            showValidate($("#cover"));
+            return;
+        }
+
+        if(isNotBlank(startTime)){
+            param.contentTime = new Date(startTime).getTime();
+        }
+
+        if(newsource == 2){
+            if(isBlank(org)){
+                showValidate($("#org"));
+                return;
+            }
+            if(isBlank(orgName)){
+                showValidate($("#orgName"));
+                return;
+            }
+        }
+//        if(isBlank(newtype) || newtype.length<0){
+//            showValidate($("#newtype").parent().parent());
+//            return ;
+//        }
+
+
+        if(isNotBlank(areatype)){
+            if(areatype == 2){
+                areaId = getSelectArea("#code");
+            }else{
+                areaId = ["0"];
+            }
+        }
+
+
+        param.subjectIdJson = "";
+        param.testTypeIdJson = "";
+        param.levelJson = "";
+        param.areaJson = "";
+
+
+//        if(isNotBlank(testType) && testType.length>0){
+//            param.testTypeIdJson = JSON.stringify(testType);
+//        }
+
+//        if(isNotBlank(dictionary) && dictionary.length>0){
+//            param.levelJson = JSON.stringify(dictionary);
+//        }
+
+        if(isNotBlank(subject)){
+            param.subjectIdJson = JSON.stringify(subject);
+        }
+        if(isNotBlank(areaId)){
+            param.areaJson = JSON.stringify(areaId);
+        }
+
+
+        param.type = newsource;
+        param.title = title;
+        param.status = 0;
+        param.cover = cover;
+        param.org = org;
+        param.orgName = orgName;
+
+
+        param.content = encodeURIComponent(content);
+//        param.newsTypeIdJson = JSON.stringify(newtype);
+
+
+        ajaxSubmit(url,param,handle);
+
+        function handle(data,param){
+            if(data && data.success){
+                layer.msg("添加成功", {icon: 1});
+                reLoad();
+            }else{
+                layer.msg("添加失败", {icon: 2});
+            }
+        }
+    }
+
+
+
+
+
+
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $("input[name='newsource']").change(newSourceChange);
+            $("input[name='newType']").change(newTypeChange);
+            $("input[name='areatype']").change(areaChange);
+            $('#btn_submit').click(submitData);
+            $('#hideContent').click(getHideContent);
+
+
+        };
+
+        return oInit;
+    };
+
+    function areaChange(){
+        var value = $(this).val();
+        if(value == 2){
+            $(".totalarea").show();
+        }else{
+            $(".totalarea").hide();
+        }
+    }
+
+    function newSourceChange(){
+        var value = $(this).val();
+        if(value == 2){
+            $(".newsource").show();
+        }else{
+            $(".newsource").hide();
+        }
+    }
+
+
+    function newTypeChange(){
+        var type =  $(this).val();
+//        getAllNewType(type);
+    }
+
+    function getHideContent(){
+        var v = $(this).html();
+        if(v == '<i class="fa fa-plus"></i>展开'){
+            $(this).html('<i class="fa fa-minus"></i>隐藏');
+        }else{
+            $(this).html('<i class="fa fa-plus"></i>展开');
+        }
+
+        $(".hideContent").toggle();
+
+    }
+
+    function getTestType(){
+        var url = "/testType/getAllList";
+        doAjax(url,"",handle);
+        function handle(data,param){
+            multipleSelect(data,"#testType");
+        }
+    }
+    function getDictionary(){
+        var url = "/dictionary/getDictionaryByType";
+        doAjax(url,{type:1},handle);
+        function handle(data,param){
+            multipleSelect(data,"#dictionary");
+        }
+    }
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+
+    });
+</script>
+</body>
+
+</html>

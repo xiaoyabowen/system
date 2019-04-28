@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <style>
+        .col-sm-2{
+            margin-bottom: 10px;
+        }
+        .btn-int{
+            outline: none;
+            cursor: default;
+        }
+    </style>
+</head>
+
+
+<body class="gray-bg">
+
+<!--编辑轮播图-->
+<div class="wrapper wrapper-content animated fadeInDown  content-view  content-view-banner">
+    <!-- Panel Other -->
+    <form method="get" class="form-horizontal" id="areaForm">
+
+        <div class="hr-line-dashed outer"></div>
+        <div class="form-group bannerTerminal">
+            <label class="col-sm-3 control-label">轮播显示终端</label>
+            <div class="col-sm-8">
+                <input type="hidden" class="form-control hiddenid" id="id">
+                <select name="" id="Terminal" class="form-control">
+                    <option value="0">--请选择显示终端--</option>
+                    <option value="1">家长端</option>
+                    <option value="2">教师端</option>
+                    <option value="3">园务端</option>
+                    <option value="4">考勤机</option>
+                </select>
+            </div>
+        </div>
+        <div class="hr-line-dashed outer"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">轮播位置</label>
+            <div class="col-sm-8">
+
+                <select id="addBannertype"  class=" form-control"  title="请选择模式类型" >
+                    <option  value="1" >首页</option>
+                    <option  value="2" >我们班</option>
+                    <option  value="3" >通知</option>
+                </select>
+
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+<!--
+        <div class="form-group">
+            <label class="col-sm-3 control-label">设置状态</label>
+
+            <div class="col-sm-8">
+                <select id="status"  class="  form-control"  title="请选择状态" >
+                    <option  value="0" >下线</option>
+                    <option  value="1" >上线</option>
+                </select>
+            </div>
+        </div>-->
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">失效时间</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="utime" placeholder="请选择失效时间" readonly>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+        <div class="form-group outer">
+            <label class="col-sm-3 control-label">图片链接</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="imgUrl">
+                <span class="help-block m-b-none validate">请输入图片链接</span>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上传图片</label>
+            <div class="col-sm-8">
+                <div class="input-group">
+                    <input id="cover" type="hidden">
+                    <input id="photoCover" type="text" class="form-control" placeholder="请选择图片">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                    </span>
+                </div>
+                <img src="" class="img-rounded" id="iconView" width="15%" height="100%"
+                     style="display: none">
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+    </form>
+
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"
+               accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+    </form>
+</div>
+
+<!--查询-->
+<div class="wrapper wrapper-content animated fadeInDown  content-view   content-view-SubjectArea">
+    <!-- Panel Other -->
+    <form method="get" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">参考区域</label>
+
+            <div class="col-sm-6">
+                <div class="radio radio-info radio-inline">
+                    <input type="radio" id="areaRadio1" value="1" name="areatype" checked="">
+                    <label for="areaRadio1">全国</label>
+                </div>
+                <div class="radio radio-info radio-inline">
+                    <input type="radio" id="areaRadio2" value="2" name="areatype">
+                    <label for="areaRadio2">部分地区</label>
+                </div>
+                <div class="hr-line-dashed totalarea"></div>
+                <input type="text" class="form-control totalarea" id="mutiarea" value="请选择" data-value=""
+                       onclick="appendCity(this,'duoxuan')">
+                <label class="help-block m-b-none selectArea validate">请选择参考区域</label>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>轮播图片</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">选择类型</label>
+                            <div class="col-sm-2">
+                                <select id="bannerTerminal" class="  form-control">
+                                    <option value="1">家长端</option>
+                                    <option value="2">教师端</option>
+                                    <option value="3">园务端</option>
+                                    <option value="4">考勤机</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <select id="bannerType" class="  form-control">
+                                    <option value="1">首页</option>
+                                    <option value="2">资讯</option>
+                                    <option value="3">文章</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info" id="user_search" name="like_search">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="toolbar" class="btn-group">
+                        <button class="btn btn-success btn-sm btn-outline" id="btn_add">
+                            <i class="fa fa-plus">添加</i>
+                        </button>
+                    </div>
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+        <!--<table id="tb_table"></table>-->
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/common/common.js"></script>
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+<script>
+    var $table = $('#tb_table');
+    var schoolId=getUserInfo().sid;
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+        $table.bootstrapTable({
+            url: serverUrl + "/banner/getAllListBySchool",         //请求后台的URL（*）
+            //  data:datas,
+            method: 'get',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+            // striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,                       //每页的记录行数（*）
+            pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+            // search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            //height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            //showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            columns: columns,
+            queryParams: function (params) {
+                    return {
+                        token:getUserInfo().token,
+                        sid:schoolId,
+                        terminalType:$('#bannerTerminal').val(),
+                        bannerType:$('#bannerType').val()
+                    };
+                },
+             });
+
+        };
+        $table.on('refresh.bs.table', function (params) {
+
+        });
+        return oTableInit;
+    };
+
+    var columns = [
+
+            {
+                field: "id", title: "序号",align:"center",formatter: function (value, row, index) {
+                return index+1;
+            }},
+            {
+                field: "terminalType", title: "显示终端", align: "center", formatter: function (value, row, index) {
+                var pototype = {1: '家长端', 2: '教师端', 3: "园务端",4:"考勤机"};
+                return pototype[value];
+            }
+            },
+            {
+                field: "bannerType", title: "轮播位置", align: "center", formatter: function (value, row, index) {
+                var pototype = {1: '首页', 2: '我们班', 3: "通知"};
+                return pototype[value];
+            }
+            },
+            {
+                field: "image", title: "图片浏览", align: "center", formatter: function (value, row, index) {
+
+                var thumb = ImageThumb(value, 80, 80, false);
+                return thumb;
+            }
+            },
+
+            {
+                field: "url", title: "图片链接", align: "center", formatter: function (value, row, index) {
+                return value;
+            }
+            },
+
+            {
+                field: "failureTime", title: "失效时间", align: "center", formatter: function (value, row, index) {
+
+                return formatDateTime(value);
+            }
+            },
+
+
+            {
+                field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+                // var data = JSON.stringify(row);
+                var html = '';
+                html = "<a  class='btn btn-info  btn-sm btn-outline' href='javascript:void(0)' onclick=\'editBanner(" +JSON.stringify(row)+")\'>编辑</a>";
+
+                html += '&nbsp';
+                html += "<a  class='btn btn-danger  btn-sm btn-outline' href='javascript:void(0)' onclick=\'deleteBanner("  +JSON.stringify(row)+ ")\'>删除</a>";
+                return html;
+            }
+            },
+
+        ]
+
+/*    //搜索
+    function seekTable() {
+        // $table.bootstrapTable('refresh', {url: getAllListBySchool});
+        Table(getAllListBySchool);
+    };*/
+
+
+    //编辑  添加
+    function editBanner(data) {
+//        console.log(data)
+        /*if (data.status == 1) {
+            layer.msg('上线状态无法编辑!', {icon: 2, shade: 0.01});
+            return;
+        }*/
+
+        var subType ;
+        if(isNotBlank(data)){
+            subType  = 1;
+        }else{
+            subType  = 0;
+            formReset();
+        }
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            id:'area',   //设定一个id，防止重复弹出
+            title: '添加/更新',
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '400px'],
+            anim: 2,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-banner'),
+            btn: ['提交', '关闭'],
+            yes: function () {
+                submitData(index,subType,data);
+            },
+            success: function (layero, index) {
+                if(isNotBlank(data)){
+                    $('#Terminal').val(data.terminalType);   //  显示终端
+                    $('#addBannertype').val(data.bannerType);   //  显示终端
+                    $('#imgUrl').val(data.url);   //  显示终端
+                    if(data.failureTime>0){
+                        $("#utime").val(formatDateTime(data.failureTime));
+                    }
+                    $("#cover").attr('value', data.image);  //图片显示
+                    $("#iconView").attr("src", data.image);
+                    $("#iconView").show();
+
+                }
+            }
+        });
+    }
+    //提交修改轮波图数据
+    function submitData(index,subType,data) {
+
+        if(subType == 0){
+            serverurl = "/banner/addBanner";
+            result = {succ:'添加成功！',fail:'添加失败！'};
+        }else{
+
+            serverurl = "/banner/updateBanner";
+            result = {succ:'更新成功！',fail:'更新失败'};
+        }
+
+        // alert(1)
+//        var id=$('#id').val();
+
+        if(subType == 0){
+
+        }else{
+            var id=data.id
+
+        }
+
+        var param = {};
+//        var serverurl;
+        var image = $("#cover").val();
+        param.id = id;
+        param.status = 1;
+        param.image = image;
+        param.url = $("#imgUrl").val();
+        param.terminalType = $("#Terminal option:selected").val();
+        param.bannerType = $("#addBannertype option:selected").val();
+        param.failureTime = (new Date($('#utime').val())).getTime();
+        param.sid=schoolId;
+        if (isNotBlank(id)) {
+            param.id = id;
+        }
+
+
+        if (isBlank(image)) {
+            showValidate($("#cover").parent().parent());
+            layer.msg("请选择图片",{icon: 1,time:1000,shade: 0.01});
+            return;
+        }
+        if (isBlank($('#utime').val())) {
+            layer.msg("请选择失效时间",{icon: 1,time:1000,shade: 0.01});
+            return;
+        }
+        layer.close(index);
+        myAjax(serverurl, param, handle);
+
+        function handle(data, param) {
+            var msg = (data.msg == undefined ? '':','+data.msg);
+            if(data.success) {
+                layer.msg(result.succ, {icon: 1,time:1000,shade: 0.01});
+                handleTable("",3,getAllListBySchool);
+//              formReset();
+
+            }else{
+                layer.msg(result.fail+msg, {icon: 1,time:1000,shade: 0.01});
+            }
+        }
+    }
+
+
+
+    //删除轮波图
+    function deleteBanner(data) {
+/*        if (data.status == 1) {
+            layer.msg('上线状态无法删除!', {icon: 2, shade: 0.01});
+            return;
+        }*/
+        var id = data.id;
+        var url = "/banner/deleteBanner";
+        layer.msg('确认删除该轮播图吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+                myAjax(url, {id: id}, handle);
+
+                function handle(data, param) {
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        layer.msg('删除成功', {icon: 1,time:1000, shade: 0.01});
+                        handleTable(param, 2);
+                    } else {
+                        layer.msg('删除失败' + msg, {icon: 2,time:1000, shade: 0.01});
+                    }
+                }
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+    //轮波图数据回显
+   /* function echo(data) {
+        if (data.type == 2) {
+            $(".objecttype[value=" + data.objectType + "]").trigger('click');
+            if (data.objectId != 0) {
+                $("#objectid").val(data.objectId);
+            }
+            $('.inner').show();
+            $('.outer').hide();
+        } else {
+            $("#url").val(data.url);
+            $('.inner').hide();
+            $('.outer').show();
+        }
+        $(".bannertype[value=" + data.bannerType + "]").trigger('click');
+        $("#id").val(data.id);
+
+        $("#status option[value='" + data.status + "']").attr("selected", "selected");
+
+
+        $("#cover").attr('value', data.image);
+        $("#iconView").attr("src", data.image);
+        $("#iconView").show();
+        $('#utime').val(formatDateTime(data.failureTime));
+    }*/
+
+    //查改城市
+    function editarea(data) {
+        if (data.status == 1) {
+            layer.msg('上线状态无法编辑!', {icon: 2, shade: 0.01});
+            return;
+        }
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '400px'],
+            anim: 2,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view-SubjectArea'),
+            btn: ['提交', '关闭'],
+            zIndex: 500,
+            yes: function () {
+                submitCityData(index, data);
+            },
+            btn2: function () {
+            },
+            success: function (layero, index) {
+                echoArea(data);
+            }
+        });
+    }
+
+    //回显城市数据
+    function echoArea(data) {
+        console.log(data);
+        var areaList = [];
+        var aname = '';
+        var code = '';
+        var areas = data.areaListpojo;
+        for (var i in areas) {
+            areaList.push(areas[i].id);
+        }
+        if (areaList == '') {
+            $('#areaRadio1').trigger('click');
+        } else {
+            $('#areaRadio2').trigger('click');
+            $("#Area").show();
+            for (var i in areas) {
+                aname += areas[i].name + '-';
+                code += areas[i].code + '-'
+            }
+            aname = aname.substring(0, aname.length - 1);
+            code = code.substring(0, code.length - 1);
+            $('#mutiarea').val(aname);
+            $('#mutiarea').data("value", code);
+
+        }
+    }
+
+    //提交关联城市
+    function submitCityData(index, data) {
+        var param = {};
+        param.id = data.id;
+        var areaType = $('input[name=areatype]:checked').val();
+        if (areaType == 1) {
+            param.areajson = '["0"]';
+        } else {
+            var areas = getSelectArea();
+            if (areas.length == 0) {
+                showValidate($('#mutiarea').parent());
+                return;
+            }
+            param.areajson = JSON.stringify(areas);
+        }
+        layer.close(index);
+        var url = "/banner/updateArea";
+        myAjax(url, param, handle);
+
+        function handle(data, param) {
+            var msg = (data.msg == undefined ? '' : ',' + data.msg);
+            if (data && data.success) {
+                layer.msg('操作成功!', {icon: 1, shade: 0.01});
+                $(".btn[name='refresh']").trigger("click");
+            } else {
+                layer.msg('操作失败' + msg, {icon: 2, shade: 0.01});
+            }
+        }
+    }
+
+
+    // 刷新表格
+    function formReset(){
+        $("#areaForm")[0].reset();
+        $("#iconView").attr("src",'');
+        $("#iconView").hide();
+    }
+    function openAdd(){
+        editBanner();
+    }
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_delete').click();
+            $('#btn_edit').click();
+            $("input[name='areatype']").change(areaChange);
+             $('#user_search').click(reInitTable);
+            $('#btn_add').click(openAdd);   //添加
+        };
+        return oInit;
+    };
+
+    function reInitTable(){
+        $table.bootstrapTable('refreshOptions',{page:1});
+    }
+
+
+    $(function () {
+        // 初始化table
+//        Table(getAllListBySchool);
+        var Table = new TableInit(columns);
+        Table.Init();
+        //时间插件初始化
+        laydate.render({
+            elem:'#utime',
+            type: 'datetime'
+        });
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+
+
+    });
+</script>
+</body>
+</html>

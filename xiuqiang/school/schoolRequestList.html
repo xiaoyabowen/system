@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated  fadeInDown  content-view ">
+    <form method="get" class="form-horizontal" id="areaForm">
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">园长姓名</label>
+            <div class="col-sm-8">
+                <!--<input id="adminName"type="text" class="form-control" >-->
+                <span id="adminName" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">手机号</label>
+            <div class="col-sm-8">
+                <span id="phone" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">QQ号码</label>
+            <div class="col-sm-8">
+                <span id="qq" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">邮箱</label>
+            <div class="col-sm-8">
+                <span id="mail" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">身份证</label>
+            <div class="col-sm-8">
+                <span id="idCard" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">幼儿园姓名</label>
+            <div class="col-sm-8">
+                <span id="name" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">幼儿园性质</label>
+            <div class="col-sm-8">
+                <span id="schoolType" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">班级数量</label>
+            <div class="col-sm-8">
+                <span id="clazzNum" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">学生数量</label>
+            <div class="col-sm-8">
+                <span id="studentNum" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">教职工数量</label>
+            <div class="col-sm-8">
+                <span id="teachNum" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">省</label>
+            <div class="col-sm-8">
+                <span id="province" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">城市</label>
+            <div class="col-sm-8">
+                <span id="city" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">详细地址</label>
+            <div class="col-sm-8">
+                <span id="address" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">状态</label>
+            <div class="col-sm-8">
+                <span id="checkStatus" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">邀请码</label>
+            <div class="col-sm-8">
+                <span id="code" class="help-block"></span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">申请时间</label>
+            <div class="col-sm-8">
+                <span id="ctime" class="help-block"></span>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+<!--分配渠道-->
+<!--<div class="wrapper wrapper-content animated content-view2 " style="display:none;">-->
+    <!--<div class="form-group">-->
+        <!--<label class="col-sm-2 control-label" >渠道</label>-->
+        <!--<select id="channelAudit" class="js-data-example-ajax form-control" style="width: 100%;">-->
+
+        <!--</select>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>学校申请列表</h5>
+        </div>
+
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">学校名称</label>
+                            <div class="col-sm-3">
+                                <input type="text" class="form-control" id="schoolname" placeholder="请输入学校名称">
+                                <span class="help-block m-b-none validate">请输入学校名称</span>
+                            </div>
+
+                            <label class="col-sm-2 control-label">状态筛选</label>
+                            <div class="col-sm-3">
+                                <select id="status" class="form-control">
+                                    <option value="">--请选择状态--</option>
+                                    <option value="0">待审核</option>
+                                    <option value="1">审核通过</option>
+                                    <option value="2">未通过</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >渠道</label>
+                            <div class="col-sm-3">
+                                <select id="channel" class="js-data-example-ajax form-control">
+
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" ></label>
+                            <div class="col-sm-3" >
+                                <button type="button" class="btn btn-info" id="btn_search" name="like_search">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+
+<script src="../resource/common/common.js?" +Math.random()></script>
+
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+
+
+<script src="../resource/js/plugins/select2/js/select2.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+<script src="../resource/common/newscontent.js?" +Math.random()></script>
+
+<script>
+
+    initSelectSubject("#channel", "/channel/getAllListByName?token=" + encodeURI(getUserInfo().token), false, true);
+    //审核分配渠道channelAudit
+    initSelectSubject("#channelAudit", "/channel/getAllListByName?token=" + encodeURI(getUserInfo().token), false, true);
+
+    var $table = $('#tb_table');
+
+    function Table() {
+        $table.bootstrapTable({
+            url: serverUrl + '/schoolRequest/getPager',        //请求后台的URL（*）
+            method: 'get',                      //请求方式（*）
+            toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: false,                     //是否启用排序
+            sortOrder: "asc",                   //排序方式
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            showRefresh: true,                   //是否显示刷新按钮
+            pageNumber: 1,                       //初始化加载第一页，默认第一页
+            pageSize: 10,                       //每页的记录行数（*）
+            pageList: [10, 30, 50],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                   //是否显示父子表
+            columns: [
+                {
+                    field: "id", title: "序号", align: "center", formatter: function (value, row, index) {
+                    return index+1;
+                }
+                },
+                {
+                    field: "name", title: "幼儿园", align: "center", formatter: function (value, row, index) {
+                        return value;
+                    }
+                },
+                {
+                    field: "schoolType", title: "性质", align: "center", formatter: function (value, row, index) {
+                        return schoolTypeMap[value];
+                    }
+                },
+                {
+                    field: "clazzNum", title: "班级数量", align: "center", formatter: function (value, row, index) {
+                        return value;
+                    }
+                },
+
+                {
+                    field: "studentNum", title: "在校人数", align: "center", formatter: function (value, row, index) {
+                        return value;
+                    }
+                },
+
+                {
+                    field: "teachNum", title: "教职工人数", align: "center", formatter: function (value, row, index) {
+                        return value;
+                    }
+                },
+
+                {
+                    field: "provinceSchool", title: "所在地", align: "center", formatter: function (value, row, index) {
+                        return value + row.citySchool;
+                    }
+                },
+                {
+                    field: "adminName", title: "园长姓名", align: "center", formatter: function (value, row, index) {
+                        return value;
+                    }
+                },
+                {
+                    field: "channel", title: "渠道", align: "center", formatter: function (value, row, index) {
+                        return value;
+                    }
+                },
+                {
+                    field: "phone", title: "手机号", align: "center", formatter: function (value, row, index) {
+                        return value;
+                    }
+                },
+                {
+                    field: "ctime", title: "创建时间", align: "center", formatter: function (value, row, index) {
+                        return formatDateTime(value);
+                    }
+                },
+
+                {
+                    field: "checkStatus", title: "状态", align: "center", formatter: function (value, row, index) {
+                        var data = JSON.stringify({id: row.id, checkStatus: row.checkStatus});
+                        var content = '';
+                        if (value == 0) {
+                            content += "<button  class='btn btn-xs btn-default'  onclick=\'updateStatus(" + data + ")\'>待审核</button>";
+                        } else if (value == 1) {
+                            content += "<button  class='btn btn-xs btn-info'><i class='fa fa-arrow-up'></i>通过</button>";
+                        } else {
+                            content += "<button  class='btn btn-xs btn-default'><i class='fa fa-arrow-down'></i>不通过</button>";
+                        }
+                        return content;
+                    }
+                },
+
+                {
+                    field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+                        var html = '';
+                        html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="查看详情" onclick=\'openDetail(' + JSON.stringify(row) + ')\'>查看详情</a>';
+                        html += '&nbsp';
+                        html += '<a  class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" title="删除" onclick="removeData(' + row.id + ')" >删除</a>';
+                        return html;
+                    }
+                },
+
+            ],
+            queryParams: function (params) {
+                var name = $("#schoolname").val();
+                var status = $('#status').val();
+                var cid = $('#channel').val();
+                return {
+                    token: getUserInfo().token,
+                    page: params.offset / params.limit + 1,
+                    size: params.limit,
+                    name: name,
+                    checkStatus: status,
+                    cid: cid,
+                };
+            },
+        });
+    };
+
+    var state = {'1': '上线', '0': '下线'};
+    var checkStatusMap = {'0': '待审核', '1': '通过', '2': '不通过'};
+    var schoolTypeMap = {'0': '其他', '1': '公办', '2': '民营', '3': '公私合办'};
+
+
+    //删除
+    function removeData(sid) {
+        var url = "/schoolRequest/delete";
+        var param = {id: sid};
+        var result = {succ: '删除成功!', fail: '删除失败'};
+        layer.msg("确定要删除该学校吗？", {
+            shade: [0.1, '##f5f5f5'], btnAlign: 'c',
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+                myAjax(url, param, handle);
+
+                function handle(data, param) {
+                    var msg = (data.msg == undefined ? '' : data.msg);
+                    if (data.success) {
+                        layer.msg(result.succ, {icon: 1, shade: 0.01});
+                        handleTable(sid, 4);
+                    } else {
+                        layer.msg(msg, {icon: 2, shade: 0.01});
+                    }
+                }
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+    function openDetail(data) {
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '查看详情',
+            area: ['500px', '400px'],
+            content: $('.content-view'),
+            //btn: ['关闭'],
+            yes: function (index) {
+                //submitData(index,data.id);
+            },
+            zIndex: 500,
+            shadeClose: true, //开启遮罩关闭
+            success: function (layero, index) {
+                $("#adminName").html(data.adminName);
+                $("#phone").html(data.phone);
+                $("#qq").html(data.qq);
+                $("#mail").html(data.mail);
+                $("#idCard").html(data.idCard);
+                $("#name").html(data.name);
+                $("#schoolType").html(schoolTypeMap[data.schoolType]);
+                $("#clazzNum").html(data.clazzNum);
+                $("#studentNum").html(data.studentNum);
+                $("#teachNum").html(data.teachNum);
+                $("#province").html(data.province);
+                $("#city").html(data.city);
+                $("#address").html(data.address);
+                $("#status").html(data.status);
+                $("#checkStatus").html(checkStatusMap[data.checkStatus]);
+                $("#code").html(data.code);
+                $("#ctime").html(formatDateTime(data.ctime));
+            }
+
+        })
+    }
+
+
+    //审核
+    function updateStatus(obj) {
+        // var index= layer.open({
+        //      type: 1 , shade: 0.01,
+        //      id: 'area', //设定一个id，防止重复弹出
+        //      title: '分配渠道',
+        //      area: ['450px','300px'],
+        //      content: $('.content-view2'),
+        //      btn: ['提交', '关闭'],
+        //      yes:function(index){
+        //
+        //      },
+        //      zIndex:500 ,
+        //      shadeClose: true, //开启遮罩关闭
+        //      success: function(layero, index){
+        //
+        //      }
+        //
+        //  })
+
+        var params = {};
+        if (obj.checkStatus == 0) {
+            params.checkStatus = 1;
+        } else if (obj.checkStatus == 1) {
+            params.checkStatus = 2;
+        } else {
+            params.checkStatus = 1;
+        }
+        params.id = obj.id;
+
+        myAjax("/schoolRequest/update", params, handle);
+
+        function handle(data, params) {
+            if (data && data.success) {
+                layer.msg('更新成功!', {icon: 1, shade: 0.01});
+                handleTable({id: params.id, checkStatus: params.checkStatus}, 1);
+            } else {
+                layer.msg('更新失败!', {icon: 2, shade: 0.01});
+            }
+        }
+    }
+
+
+    function submitData(index, id) {
+        var name = $.trim($('#name').val());
+        var cid = $("#channel").val();
+        var params = {};
+        var url = "/school/updateSchool";
+        var result = {succ: "更新成功!", fail: "更新失败"};
+        if (isBlank(name)) {
+            showValidate('#name');
+            return;
+        }
+
+        if (isBlank(cid)) {
+            showValidate($('#channel').parent());
+            return;
+        }
+
+        layer.close(index);
+        params.id = id;
+        params.name = name;
+        params.cid = cid;
+        myAjax(url, params, handle);
+
+        function handle(data, params) {
+            var msg = (data.msg == undefined ? '' : ',' + data.msg);
+            if (data.success) {
+                layer.msg(result.succ, {icon: 1, shade: 0.01});
+                handleTable("", 5, "");
+            } else {
+                layer.msg(result.fail + msg, {icon: 1, shade: 0.01});
+            }
+        }
+
+    }
+
+    function openPOP() {
+        //addOrEdit();
+        //addMenuItem("../school/addschool.html","添加学校");
+
+    }
+
+    function formReset() {
+        $("#areaForm")[0].reset();
+    }
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            //$('#btn_add').click(openPOP);
+            $('#btn_search').click(searchSchool);
+
+        };
+
+        return oInit;
+    };
+
+    function searchSchool() {
+        handleTable("", 5, "");
+    }
+
+    //主函数
+    $(function () {
+        // 获取所有列表
+        Table();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+</script>
+</html>

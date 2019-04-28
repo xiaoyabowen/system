@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>App使用率</title>
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <link href="../resource/layui/css/layui.css" rel="stylesheet">
+
+</head>
+
+<body class="layui-layout-body" style="overflow-y:scroll;">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>APP</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+
+                    <form class="form-horizontal" role="form">
+
+                        <div class="form-group lay">
+                            <label class="col-sm-1 control-label">日期</label>
+                            <div class="col-sm-2">
+                                <input type="text" id="testStart" class="layui-input" placeholder="请选择时间">
+                            </div>
+                            <label class="col-sm-1 control-label">日期</label>
+                            <div class="col-sm-2">
+                                <input type="text" id="testEnd" class="layui-input" placeholder="请选择时间">
+                            </div>
+                            <label class="col-sm-1 control-label">类型</label>
+                            <div class="col-sm-2">
+                                <select id="signNeed" class="form-control">
+                                    <option value="5">家长APP</option>
+                                    <option value="6">教师APP</option>
+                                </select>
+                            </div>
+<!--                            <label class="col-sm-1 control-label">学校ID</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="content" placeholder="请输入内容">
+                            </div>-->
+
+
+
+                        </div>
+                        <label class="col-sm-1 control-label"></label>
+                        <div class="col-sm-2" style="float: right;">
+                            <button type="button" class="btn  btn-info " id="btn_submit" name="like_search">
+                                <i class="fa fa-search"></i> 提交
+                            </button>
+                            <button type="reset" class="btn  btn-info " id="btn_reset" name="like_search">
+                                <i class="fa fa-delicious"></i> 重置
+                            </button>
+                        </div>
+                    </form>
+
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+
+<!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+<div id="main" style="height:400px"></div>
+<div id="main2" style="height:400px"></div>
+<div id="main3" style="height:400px"></div>
+<!-- ECharts单文件引入 -->
+<!--<script src="http://echarts.baidu.com/build/dist/echarts.js"></script>-->
+<script src="http://echarts.baidu.com/build/dist/echarts-all.js"></script>
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/common/common.js?"+Math.random()></script>
+<script src="../resource/layui/layui.all.js"></script>
+
+
+<script type="text/javascript">
+
+
+    // 日期自定义
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#testStart',
+            type: 'month'  //  年月类型
+        });
+    });
+    // 结束日期
+    layui.use('laydate', function(){
+        var laydate = layui.laydate;
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#testEnd',
+            type: 'month'  //  年月类型
+        });
+    });
+
+
+
+    $(function() {
+        // 默认展示数据
+        var one = 0;
+        var years = [];
+        var top5 = [];
+        var topClass = [];
+        var today = new Date();
+        var today = new Date();
+        var yyyy = today.getFullYear();
+        var yearStart = yyyy+"01"
+        var yearEnd = yyyy+"12"
+        $.ajax({
+            type: "GET",
+            url: serverUrl + "/statistics/StatisticsBySmonthAndEmonthPercent",
+            dataType: "json",
+            data:{
+                smonth:yearStart,
+                emonth:yearEnd,
+                sid:getUserInfo().sid,
+                type:$("#signNeed").val(),
+                token:getUserInfo().token
+            },
+            success: function(data) {
+                console.log(data.data.top5)
+                for(var i = 0, len = data.data.years.length; i < len; i++) {
+                    years.push(data.data.years[i].percent)
+                }
+
+                for(var i = 0, len = data.data.top5.length; i < len; i++) {
+                    top5.push(data.data.top5[i].result)
+                }
+
+                for(var i = 0, len = data.data.top5.length; i < len; i++) {
+                    topClass.push(data.data.top5[i].class)
+                }
+                console.log(years)
+                one += data.data.one[0].result;
+                // 基于准备好的dom，初始化echarts图表
+                var myChart = echarts.init(document.getElementById('main'));
+                var option = {
+                    tooltip: {
+                        formatter: "{a} <br/>{b} : {c}%"
+                    },
+                    toolbox: {
+                        feature: {
+                            restore: {},
+                            saveAsImage: {}
+                        }
+                    },
+                    series: [{
+                        name: '指标.',
+                        type: 'gauge',
+                        detail: {
+                            formatter: '{value}%'
+                        },
+                        data: [{
+                            value: one,
+                            name: 'APP使用率'
+                        }]
+                    }]
+                };
+                // 为echarts对象加载数据
+                myChart.setOption(option);
+
+                // 基于准备好的dom，初始化echarts图表
+                var myChart2 = echarts.init(document.getElementById('main3'));
+
+                var option = {
+                    tooltip: {
+                        show: true
+                    },
+                    legend: {
+                        data: ['最低Top5']
+                    },
+                    xAxis: [{
+                        type: 'category',
+                        //							data: ["一班", "二班", "三班", "四班", "五班"]
+                        data: topClass,
+                    }],
+                    yAxis: [{
+                        type: 'value'
+                    }],
+                    series: [{
+                        "name": "利率",
+                        "type": "bar",
+                        //							"data": [5, 20, 40, 10, 10, 20]
+                        "data": top5
+                    }]
+                };
+
+                // 为echarts对象加载数据
+                myChart2.setOption(option);
+                // 获取到这个DOM节点，然后初始化
+
+                var myChart3 = echarts.init(document.getElementById("main2"));
+                var option = {
+                    // 标题
+                    title: {
+                        text: '年度APP使用利率数据',
+//                        subtext: '数据来源：雀科科技-dancer'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    //图例名
+                    legend: {
+                        data: ['月使用率']
+                    },
+                    grid: {
+                        left: '3%', //图表距边框的距离
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    //工具框，可以选择
+                    toolbox: {
+                        feature: {
+                            saveAsImage: {}
+                        }
+                    },
+                    //x轴信息样式
+                    xAxis: {
+                        type: 'category',
+                        boundaryGap: false,
+                        data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                        //坐标轴颜色
+                        axisLine: {
+                            lineStyle: {
+                                color: 'red'
+                            }
+                        },
+                        //x轴文字旋转
+                        axisLabel: {
+                            rotate: 30,
+                            interval: 0
+                        },
+                    },
+
+                    yAxis: [{
+                        type: 'value',
+                        axisLabel: {
+                            formatter: '{value} %'
+                        }
+                    }],
+                    series: [
+                        //虚线
+                        {
+                            name: '月招学生利率',
+                            type: 'line',
+                            symbolSize: 4, //拐点圆的大小
+                            color: [''], //折线条的颜色
+                            //								data: [1000, 300, 500, 800, 300, 600, 500, 800, 300, 500, 800, 300, 600, 500],
+                            data: years,
+                            smooth: false, //关键点，为true是不支持虚线的，实线就用true
+                            itemStyle: {
+                                normal: {
+                                    lineStyle: {
+                                        width: 3,
+                                        type: 'dotted' //'dotted'虚线 'solid'实线
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                myChart3.setOption(option);
+
+            }
+
+        });
+
+        $('#btn_submit').click(function(){
+            var one = 0;
+            var years = [];
+            var top5 = [];
+            var topClass = [];
+            var smonth = $('#testStart').val();
+            var emonth = $('#testEnd').val();
+            smonth = smonth.replace("-","");
+            emonth = emonth.replace("-","");
+            $.ajax({
+                type: "GET",
+                url: serverUrl + "/statistics/StatisticsBySmonthAndEmonthPercent",
+                dataType: "json",
+                data:{
+                    smonth:smonth,
+                    emonth:emonth,
+                    sid:getUserInfo().sid,
+                    type:$("#signNeed").val(),
+                    token:getUserInfo().token
+                },
+                success: function(data) {
+                    console.log(data.data.top5)
+                    for(var i = 0, len = data.data.years.length; i < len; i++) {
+                        years.push(data.data.years[i].percent)
+                    }
+
+                    for(var i = 0, len = data.data.top5.length; i < len; i++) {
+                        top5.push(data.data.top5[i].result)
+                    }
+
+                    for(var i = 0, len = data.data.top5.length; i < len; i++) {
+                        topClass.push(data.data.top5[i].class)
+                    }
+                    console.log(years)
+                    one += data.data.one[0].result;
+                    // 基于准备好的dom，初始化echarts图表
+                    var myChart = echarts.init(document.getElementById('main'));
+                    var option = {
+                        tooltip: {
+                            formatter: "{a} <br/>{b} : {c}%"
+                        },
+                        toolbox: {
+                            feature: {
+                                restore: {},
+                                saveAsImage: {}
+                            }
+                        },
+                        series: [{
+                            name: '指标.',
+                            type: 'gauge',
+                            detail: {
+                                formatter: '{value}%'
+                            },
+                            data: [{
+                                value: one,
+                                name: 'APP使用率'
+                            }]
+                        }]
+                    };
+                    // 为echarts对象加载数据
+                    myChart.setOption(option);
+
+                    // 基于准备好的dom，初始化echarts图表
+                    var myChart2 = echarts.init(document.getElementById('main3'));
+
+                    var option = {
+                        tooltip: {
+                            show: true
+                        },
+                        legend: {
+                            data: ['最低Top5']
+                        },
+                        xAxis: [{
+                            type: 'category',
+                            //							data: ["一班", "二班", "三班", "四班", "五班"]
+                            data: topClass,
+                        }],
+                        yAxis: [{
+                            type: 'value'
+                        }],
+                        series: [{
+                            "name": "利率",
+                            "type": "bar",
+                            //							"data": [5, 20, 40, 10, 10, 20]
+                            "data": top5
+                        }]
+                    };
+
+                    // 为echarts对象加载数据
+                    myChart2.setOption(option);
+                    // 获取到这个DOM节点，然后初始化
+
+                    var myChart3 = echarts.init(document.getElementById("main2"));
+                    var option = {
+                        // 标题
+                        title: {
+                            text: '年度APP使用利率数据',
+//                            subtext: '数据来源：雀科科技-dancer'
+                        },
+                        tooltip: {
+                            trigger: 'axis'
+                        },
+                        //图例名
+                        legend: {
+                            data: ['月使用率']
+                        },
+                        grid: {
+                            left: '3%', //图表距边框的距离
+                            right: '4%',
+                            bottom: '3%',
+                            containLabel: true
+                        },
+                        //工具框，可以选择
+                        toolbox: {
+                            feature: {
+                                saveAsImage: {}
+                            }
+                        },
+                        //x轴信息样式
+                        xAxis: {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'],
+                            //坐标轴颜色
+                            axisLine: {
+                                lineStyle: {
+                                    color: 'red'
+                                }
+                            },
+                            //x轴文字旋转
+                            axisLabel: {
+                                rotate: 30,
+                                interval: 0
+                            },
+                        },
+
+                        yAxis: [{
+                            type: 'value',
+                            axisLabel: {
+                                formatter: '{value} %'
+                            }
+                        }],
+                        series: [
+                            //虚线
+                            {
+                                name: '月招学生利率',
+                                type: 'line',
+                                symbolSize: 4, //拐点圆的大小
+                                color: [''], //折线条的颜色
+                                //								data: [1000, 300, 500, 800, 300, 600, 500, 800, 300, 500, 800, 300, 600, 500],
+                                data: years,
+                                smooth: false, //关键点，为true是不支持虚线的，实线就用true
+                                itemStyle: {
+                                    normal: {
+                                        lineStyle: {
+                                            width: 3,
+                                            type: 'dotted' //'dotted'虚线 'solid'实线
+                                        }
+                                    }
+                                }
+                            }
+                        ]
+                    };
+
+                    myChart3.setOption(option);
+
+                }
+
+            });
+        })
+
+    })
+</script>
+
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+        //监听提交
+        form.on('submit(formDemo)', function(data){
+            layer.msg(JSON.stringify(data.field));
+            return false;
+        });
+    });
+</script>
+
+</body>
+
+
+</html>

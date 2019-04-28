@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+
+    <style>
+        body, html {
+            font-size: 14px;
+            height: 100%;
+        }
+        i{
+            display: inline-block;
+            margin-right: 5px;
+        }
+        /*咨询师资料*/
+        .details-header {
+            display: flex;
+        }
+
+        .detail-userimg {
+            width: 200px;
+            height: 200px;
+        }
+
+        .name {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            padding: 6px 0;
+        }
+        .name>strong{
+            display: inline-block;
+            width: 33%;
+        }
+        .locations {
+            padding: 5px 0;
+            border-top: 1px solid #ececec;
+            border-bottom: 1px solid #ececec;
+            line-height: 26px;
+        }
+        .detail-info-locations{
+            padding: 5px 0;
+            border-bottom: 1px solid #ececec;
+            line-height: 26px;
+        }
+
+        .certifications {
+            margin-top: 5px;
+            line-height: 26px;
+        }
+
+        .detail-title {
+            /*border-bottom: 1px solid #e8e8e8;*/
+            width: 58%;
+            margin: 15px 0 10px 0;
+        }
+        .detail-title:after {
+            content: "";
+            border-top: 2px solid #129994;
+            width: 80px;
+            display: block;
+        }
+        .detail-summary{
+            line-height: 26px;
+        }
+        .status{
+            color: #129994;
+        }
+        .learn-box:last-of-type{
+            border-bottom: none !important;
+            margin-bottom: 0 !important;
+        }
+        .workExperience:last-of-type{
+            border-bottom: none !important;
+            padding-bottom: 6px;
+        }
+        .education-box:last-of-type{
+            margin-bottom: 0 !important;
+        }
+    </style>
+
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>咨询师详情</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="details-header">
+                <div class="detail-avatar col-sm-3">
+                    <img src="../resource/img/userdefault.png" id="icon" class="img-responsive detail-userimg" alt="咨询师头像">
+                </div>
+                <div class="detail-info col-sm-5">
+                    <div class="name"><strong><span id="userName"></span></strong><strong><span
+                            id="sex"> </span></strong><strong><span id="age"></span>岁</strong></div>
+                    <div class="locations">
+                        <i class="fa fa-location-arrow"></i><span id="areaId"></span><br>
+                        <i class="fa fa-phone"></i><span id="phone"></span><br>
+                        <i class="fa fa-mail-forward"></i>邮箱：<span id="mail"></span><br>
+                        <i class="fa fa-adjust"></i>工作年限：<span id="jobYear"></span><br>
+                    </div>
+                    <div class="certifications">
+                        <i class="fa fa-check"></i>咨询师认证：<span id="type"></span><br>
+                        <i class="fa fa-android"></i>新界线机构<br>
+                        <i class="fa fa-check"></i>审核状态：<span class="status"></span><br>
+                    </div>
+                </div>
+            </div>
+            <div class="detail-title"><span>个人介绍</span></div>
+            <div class="detail-summary desc"></div>
+            <div class="detail-title"><span>擅长领域</span></div>
+            <div class="detail-summary" >
+                <span id="label"></span>
+            </div>
+            <div class="detail-title"><span>身份证信息</span></div>
+            <div class="detail-avatar" style="display: flex;">
+                <img src="../resource/img/userdefault.png" id="idCard" class="img-responsive detail-userimg" style="margin-right: 10px;width:120px; height: 120px" alt="身份证正面">
+                <img src="../resource/img/userdefault.png" id="idCardback" class="img-responsive detail-userimg" style="margin-right: 10px;width:120px; height: 120px" alt="身份证反面">
+            </div>
+            <br><br>
+            <div class="detail-title"><span>资质</span></div>
+            <div class="detail-avatar detail-main" style="display: flex;">
+
+            </div>
+            <br><br>
+            <div class="detail-title"><span>教育经历</span></div>
+            <div class="detail-summary education-main">
+
+            </div>
+            <br><br>
+            <div class="detail-title"><span>学习经历</span></div>
+            <div class="detail-summary learn-main" style="display: flex">
+
+            </div>
+            <br><br>
+            <div class="detail-title"><span>工作经历</span></div>
+            <div class="detail-summary work-main" >
+                <!--<table id="work"></table>-->
+
+
+            </div>
+            <br><br>
+
+
+            <div class="form-group" id="show" >
+
+                <div class="col-sm-1" style="margin-bottom: 10px" >
+                    <button class="btn btn-success" type="button" id="btnAccess" onclick="rating(data)" >通过审核</button>
+                </div>
+                <div class="col-sm-1" style="margin-bottom: 10px" >
+                    <button class="btn btn-danger" type="button" id="btnBack" onclick="checkTeacher(data)">驳回申请</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script>
+
+    var data = JSON.parse(getQueryParam().data);
+    console.log(data)
+
+
+    /*//审核状态0申请中  1已通过 2被驳回
+    if(data.checkStatus == 0){
+        var o =document.getElementById("show").style.display;
+        if(o=="none"){
+            $("show").css("display","block");
+        }
+    }else{
+        $("show").css("display","none");
+    }
+*/
+
+
+    //页面回显数据
+    function getTeacherData() {
+        //审核状态0申请中  1已通过 2被驳回
+
+        //审核状态
+        var checkType = ["申请中","已通过","被驳回"];
+        var checkvalue;//用于存放取出的数组的值
+        for (var i=0;i<checkType.length;i++){
+            checkvalue = checkType[data.checkStatus]
+            $(".status").text(checkvalue);
+        }
+
+        $("#userName").text(data.realName);   //真实姓名
+        var sex = {0: "男", 1: "女"}  //性别
+        $("#sex").text(sex[data.sex]);
+        $("#age").text(data.age);  //年龄
+        $("#areaId").text(data.areaId);  //地区
+        $("#phone").text(data.phone);   //手机号
+        $("#mail").text(data.mail);  //邮箱
+        $("#jobYear").text(data.jobYear);   //工作年限
+        $("#label").text(data.label);  //擅长领域
+        $(".desc").text(data.desc);  //个人介绍
+
+        //咨询师类型
+        var contentType = ["","初级","中级专家","高级专家","教授专家","专家"];
+        var arrvalue;//用于存放取出的数组的值
+        for (var i=0;i<contentType.length;i++){
+            arrvalue = contentType[data.type]  //根据对应的返回值取
+            $("#type").text(arrvalue);
+        }
+        //咨询师类型结束
+
+
+        if (data.icon) {
+            $("#icon").attr("src", data.icon);
+        }
+        if (data.idCard) {
+            $("#idCard").attr("src", data.idCard);
+        }
+        if (data.idCarback) {
+            $("#idCardback").attr("src", data.idCardback);
+        }
+
+        //资质回显
+        var objectArr = JSON.parse(data.qualification)   //数组转换成对象
+        var detailContent = ""    //用来存储内容
+        for (var i=0;i<objectArr.length;i++){
+            detailContent += '<div class="detail-fications">\n' +
+                '                    <img src="'+objectArr[i].iamge+'" class="img-responsive" alt="资质证书" style="margin-right: 10px;width:120px; height: 120px">\n' +
+                '                    <span style="display: block;text-align: center;width: 120px;margin-top: 10px;">'+objectArr[i].number+'</span>\n' +
+                '                </div>'
+        }
+        $(".detail-main").html(detailContent)
+
+        //教育经历回显
+        var objectArr = JSON.parse(data.education)   //数组转换成对象
+        var educationContent = ""
+        for (var i=0;i<objectArr.length;i++){
+            educationContent += '<div class="education-box" style="display: flex;width: 58%;margin-bottom:20px;border-bottom: 1px solid #e8e8e8">\n' +
+                '                    <div class="detail-avatar" style="padding-bottom: 20px">\n' +
+                '                        <img src="'+objectArr[i].iamge+'"" class="img-responsive detail-userimg" style="display: block;width: 80px;height: 80px;margin-right: 30px" alt="学历头像">\n' +
+                '                    </div>\n' +
+                '                    <div class="detail-info" style="width: 100%;">\n' +
+                '                        <div class="detail-info-locations" style="border-bottom: none">\n' +
+               '                            <i class="fa fa-mail-forward"></i>学校名称：<span>'+objectArr[i].number+'</span><br>\n' +
+                /* '                            <i class="fa fa-adjust"></i>起止年月：<span>'+objectArr[i].starTime+'</span>-----<span>'+learnArr[i].endTime+'</span><br>\n' +
+                '                            <i class="fa fa-adjust"></i>学位：<span>'+objectArr[i].content+'</span><br>\n' +
+                '                            <i class="fa fa-adjust"></i>专业名称：<span>'+objectArr[i].content+'</span><br>\n' +*/
+                '                        </div>\n' +
+                '                    </div>\n' +
+                '                </div>'
+        }
+        $(".education-main").html(educationContent)
+
+        //学习经历回显
+        var learnArr = JSON.parse(data.learn)   //数组转换成对象
+        var learnContent = ""
+        for (var i=0;i<learnArr.length;i++){
+            learnContent += '<div class="learn-box" style="display: flex;width: 58%;margin-bottom:20px;border-bottom: 1px solid #e8e8e8">\n' +
+                '                    <div class="detail-avatar" style="padding-bottom: 20px">\n' +
+                '                        <img src="'+learnArr[i].iamge+'"" class="img-responsive detail-userimg" style="display: block;width: 80px;height: 80px;margin-right: 30px" alt="学历头像">\n' +
+                '                    </div>\n' +
+                '                    <div class="detail-info" style="width: 100%;">\n' +
+                '                        <div class="detail-info-locations" style="border-bottom: none">\n' +
+                '                            <i class="fa fa-mail-forward"></i>学校名称：<span>'+learnArr[i].learnName+'</span><br>\n' +
+                '                            <i class="fa fa-adjust"></i>起止年月：<span>'+learnArr[i].starTime+'</span>-----<span>'+learnArr[i].endTime+'</span><br>\n' +
+                '                            <i class="fa fa-adjust"></i>学位：<span>'+learnArr[i].content+'</span><br>\n' +
+                '                        </div>\n' +
+                '                    </div>\n' +
+                '                </div>'
+        }
+        $(".learn-main").html(learnContent)
+
+
+
+        //工作经历回显
+        var workArr = JSON.parse(data.work)   //数组转换成对象
+        var workContent = ""
+        for (var i=0;i<objectArr.length;i++){
+            workContent += '<div class="certifications workExperience" style="display: flex;width: 58%; border-bottom: 1px solid #e8e8e8">\n' +
+                '                    <i class="fa fa-check" style="padding-top: 6px;"></i>公司名：<span style="margin-right: 30px">'+workArr[i].company+'</span>\n' +
+                '                    <i class="fa fa-android" style="padding-top: 6px;"></i>工作时间：<span style="margin-right: 30px">'+workArr[i].job+'</span>\n' +
+                '                </div>'
+        }
+        $(".work-main").html(workContent)
+
+
+    }
+
+
+
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+        };
+
+        return oInit;
+    };
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        getTeacherData()
+        laydate.render({
+            elem: '#startTime', type: 'datetime'
+        });
+    });
+
+
+    /*function submitData(){
+        addMenuItem("../teacher/teacherList.html","咨询师列表")     //新开一个tab页
+        closeMyselfInIframe();
+    }*/
+
+
+
+
+
+
+    // 驳回申请点击事件
+    function checkTeacher(data) {
+        layer.prompt({title: '请输入驳回原因', formType: 2}, function (text, index) {
+//            layer.msg('您最后写下了：'+text);
+            submitCheckFail(data, index);
+        });
+    }
+    function submitCheckFail(data, index) {
+        layer.close(index);
+        var param = {};
+        var url = "/teacher/checkTeacher";
+        param.uid = data.uid;
+        param.checkStatus = 2;
+        param.type = 0;
+//        param.reason = text;
+        ajaxSubmit(url, param, handle);
+        function handle(data, param) {
+            var msg = (data.msg == undefined ? '' : ',' + data.msg);
+            if (data.success) {
+                msgSuccess("驳回成功");
+                handleTable("", 3, serverUrl + '/teacher/checkTeacherList?token=' + getUserToken());
+            } else {
+                msgFail("驳回失败");
+            }
+        }
+    }
+    function closeLayer(index) {
+        layer.close(layer.index);
+    }
+
+
+    // 通过审核
+
+    function rating(data) {
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['350px', '250px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['确定', '关闭'],
+            yes: function () {
+                submitCheckTeacher(index, data);
+            },
+            btn2: function () {
+            },
+            success: function (layero, index) {
+                // echoType(data);
+            }
+        });
+    }
+
+    function submitCheckTeacher(index, data) {
+        layer.close(index);
+        var url = "/teacher/checkTeacher";
+        rank_type = getRadioChecked("rank");
+//                var row = {id: data.uid, type: rank_type};
+//                data.type = rank_type[0];
+//                handleTable(row, 1, "");
+        var param = {};
+        param.uid = data.uid;
+        param.checkStatus = 1;
+        param.type = rank_type[0];
+        ajaxSubmit(url, param, handle);
+        function handle(data, param) {
+            var msg = (data.msg == undefined ? '' : ',' + data.msg);
+            if (data.success) {
+                msgSuccess("审核成功");
+                handleTable("", 3, serverUrl + '/teacher/checkTeacherList?token=' + getUserToken());
+            } else {
+                msgFail("审核失败" + msg);
+            }
+        }
+    }
+
+
+
+
+
+/*
+
+    function echoType(data) {
+
+        switch (data.type) {
+            case 0:
+                $("#type").text("");
+                break;
+            case 1:
+                $("#type").text("1");
+                break;
+            case 2:
+                $("#type").text("2");
+                break;
+            case 3:
+                setRadioChecked("rank", 3);
+                break;
+            case 4:
+                setRadioChecked("rank", 4);
+                break;
+            case 5:
+                setRadioChecked("rank", 5);
+                break;
+            default :
+                setRadioChecked("rank", 0);
+                break
+        }
+    }
+*/
+
+
+</script>
+</body>
+
+</html>

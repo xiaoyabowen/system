@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title></title>
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <!--iCheck样式-->
+    <link rel="stylesheet" type="text/css" href="../resource/css/plugins/iCheck/custom.css"/>
+
+    <style>
+        .tab_box {
+            display: flex;
+            margin: 10px;
+        }
+
+        .time-card-box {
+            box-sizing: border-box;
+            border: 1px dashed #ccc;
+            margin: 0 10px 10px 0;
+            padding: 10px;
+            position: relative;
+        }
+
+        .delBtn {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            right: 10px;
+            top: 10px;
+            background: url(../resource/img/del.png) center center no-repeat;
+            background-size: 100%;
+            cursor: pointer;
+        }
+
+        .add-btn-icon {
+            margin-bottom: 10px;
+            height: 50px;
+            background: #f3f3f4 url(../resource/img/add.png) 50% 50% no-repeat;
+            background-size: 10%;
+            cursor: pointer;
+        }
+
+        .card-main {
+            border: 1px solid #ccc;
+            display: none;
+            margin-bottom: 10px;
+            width: 80% !important;
+            margin: 0 auto;
+        }
+
+        .distributionData{
+            /*display: flex;*/
+            align-items: center;
+            /*justify-content: center;*/
+            width: 100%;
+
+        }
+        .distributionData > li {
+            width: 23%;
+            margin-right: 1%;
+            height: 30px;
+            text-decoration: none;
+            list-style: none;
+            float: left;
+            margin-bottom: 10px;
+            line-height: 30px;
+            text-align: left;
+            cursor: pointer;
+            position: relative;
+        }
+        .imgDel{
+            display: block;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            width: 20px;
+            height: 20px;
+        }
+        /*.distributionData > li:hover {
+            color: #fff;
+            background: #1c84c6;
+        }*/
+
+        .click-bg {
+            background: transparent;
+            /*color: #fff;*/
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+<!--点击编辑的模态框-->
+<div class="wrapper wrapper-content animated  fadeInDown  content-view  ">
+    <form method="get" class="form-horizontal" id="areaForm">
+        <input type="text" hidden="hidden" id="getId" />
+        <div class="form-group">
+            <label class="col-sm-3 control-label">考勤模板名称</label>
+            <div class="col-sm-8">
+                <input type="hidden" class="form-control hiddenid" id="id">
+                <input type="text" class="form-control" id="name" placeholder="请输入考勤模板名称">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">制度类型</label>
+
+            <div class="col-sm-8">
+                <select id="type" class="form-control" onchange="optionIndex()" title="请选择状态">
+                    <option value="1">固定</option>
+                    <option value="0">轮换</option>
+                </select>
+            </div>
+        </div>
+
+        <!--点击轮换增加的内容  开始-->
+
+        <div class="card-main">
+            <div class="tab_box">
+                <!--默认卡片第一个-->
+                <div class="time-card col-sm-12">
+                    <div class="time-card-box col-sm-12">
+                        <!--删除按钮-->
+                        <div class="delBtn" onclick="delbtn(this)"></div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">开始时间</label>
+                            <!--整点  轮换 开始 时间-->
+                            <div class="col-sm-4">
+                                <select class="form-control col-sm-6 rendering" onchange="optionIndex()"
+                                        title="请选择状态">
+
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="form-control col-sm-6" onchange="optionIndex()"
+                                        title="请选择状态">
+                                    <option value="0">0分</option>
+                                    <option value="30">30分</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">结束时间</label>
+                            <!--整点轮换结束时间-->
+                            <div class="col-sm-4">
+                                <select class="form-control col-sm-6 rendering" onchange="optionIndex()"
+                                        title="请选择状态">
+
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <select class="form-control col-sm-6" onchange="optionIndex()"
+                                        title="请选择状态">
+                                    <option value="0">0分</option>
+                                    <option value="30">30分</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!--点击添加按钮对应的time-card框-->
+
+
+            </div>
+            <div class="form-group turnStart">
+                <label class="col-sm-3 control-label">轮换开始的时间</label>
+                <div class="col-sm-8">
+                    <input type="text" id="turnStartDay" class="form-control" placeholder="请选择开始轮换时间" readonly>
+                </div>
+            </div>
+            <!--点击添加按钮-->
+            <div class="caione add-btn-icon col-sm-12" id="addBtn1" onclick="clickAddTmp()">
+
+            </div>
+        </div>
+        <!--点击轮换增加的内容  结束-->
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">节假日类型</label>
+
+            <div class="col-sm-8">
+                <select id="holidayTyep" class="  form-control" title="请选择状态">
+                    <option value="1">国家法定</option>
+                    <option value="0">自定义</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">上班时间</label>
+
+            <div class="col-sm-8">
+
+
+                <div class="col-sm-10" id="ni1">
+                    <label class="checkbox-inline i-checks">
+                        <input type="checkbox" value="1" checked name="weekArr">
+                        星期一
+                    </label>
+                    <label class="checkbox-inline i-checks">
+                        <input type="checkbox" value="2" name="weekArr">
+                        星期二
+                    </label>
+                    <label class="checkbox-inline i-checks">
+                        <input type="checkbox" value="3" name="weekArr">
+                        星期三
+                    </label>
+                    <label class="checkbox-inline i-checks">
+                        <input type="checkbox" value="4" name="weekArr">
+                        星期四
+                    </label>
+                    <label class="checkbox-inline i-checks">
+                        <input type="checkbox" value="5" name="weekArr">
+                        星期五
+                    </label>
+                    <label class="checkbox-inline i-checks">
+                        <input type="checkbox" value="6" name="weekArr">
+                        星期六
+                    </label>
+                    <label class="checkbox-inline i-checks">
+                        <input type="checkbox" value="7" name="weekArr">
+                        星期日
+                    </label>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="form-group startSlide">
+            <label class="col-sm-3 control-label">开始时间</label>
+
+            <!--固定   整点时间-->
+            <div class="col-sm-4">
+                <select class="form-control rendering ctimeClockStart col-sm-6" title="请选择时钟">
+
+                </select>
+            </div>
+            <div class="col-sm-4">
+                <select class="form-control col-sm-6 ctimeMinStart" title="请选择分钟">
+                    <option value="0">0分</option>
+                    <option value="30">30分</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group endSlide">
+            <label class="col-sm-3 control-label">结束时间</label>
+
+            <!--整点时间-->
+            <div class="col-sm-4">
+                <select class="form-control col-sm-6 rendering timeClockEnd" onchange="optionIndex()" title="请选择时钟">
+                </select>
+            </div>
+
+            <div class="col-sm-4">
+                <select class="form-control col-sm-6 timeMinEnd" onchange="optionIndex()" title="请选择状态">
+                    <option value="0">0分</option>
+                    <option value="30">30分</option>
+                </select>
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<!--点击分配的模态框-->
+<div class="wrapper distribution wrapper-content animated  fadeInDown" style="display:none;">
+
+    <ul class="distributionData">
+
+    </ul>
+
+</div>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>考勤规则管理</h5>
+        </div>
+        <div id="toolbar" class="btn-group">
+            <button class="btn btn-success  btn-outline" id="btn_add">
+                <i class="fa fa-plus"> 添加</i>
+            </button>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/common/common.js?" +Math.random()></script>
+
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<!--多选框 icheck.js-->
+<script src="../resource/js/plugins/iCheck/iCheck.js"></script>
+<script>
+
+    // 轮换点击添加的点击事件
+    function clickAddTmp() {
+        var content = '';
+        content += '<div class="time-card-box col-sm-12">\n' +
+            '                        <!--删除按钮-->\n' +
+            '                        <div class="delBtn" onclick="delbtn(this)">X</div>\n' +
+            '                        <div class="form-group">\n' +
+            '                            <label class="col-sm-3 control-label">开始时间</label>\n' +
+            '                            <!--整点时间-->\n' +
+            '                            <div class="col-sm-4">\n' +
+            '                                <select class="form-control rendering col-sm-6" onchange="optionIndex()"\n' +
+            '                                        title="请选择状态">\n' +
+            '                                </select>\n' +
+            '                            </div>\n' +
+            '                            <div class="col-sm-4">\n' +
+            '                                <select class="form-control col-sm-6" onchange="optionIndex()"\n' +
+            '                                        title="请选择状态">\n' +
+            '                                    <option value="0">0分</option>\n' +
+            '                                    <option value="30">30分</option>\n' +
+            '                                </select>\n' +
+            '                            </div>\n' +
+            '                        </div>\n' +
+            '\n' +
+            '                        <div class="form-group">\n' +
+            '                            <label class="col-sm-3 control-label">结束时间</label>\n' +
+            '                            <!--整点时间-->\n' +
+            '                            <div class="col-sm-4">\n' +
+            '                                <select class="form-control rendering col-sm-6" onchange="optionIndex()"\n' +
+            '                                        title="请选择状态">\n' +
+            '                                </select>\n' +
+            '                            </div>\n' +
+            '                            <div class="col-sm-4">\n' +
+            '                                <select class="form-control col-sm-6" onchange="optionIndex()"\n' +
+            '                                        title="请选择状态">\n' +
+            '                                    <option value="0">0分</option>\n' +
+            '                                    <option value="30">30分</option>\n' +
+            '                                </select>\n' +
+            '                            </div>\n' +
+            '                        </div>\n' +
+            '                    </div>';
+        var el = $(content);
+        TimeInit('.rendering',el)
+        $(".time-card").append(el)
+    }
+    //	渲染时间option
+    function TimeInit(select,context){
+        if(arguments.length==1){
+            var	context = $('body');
+        }
+        var num = '';
+        for(var i=0;i<=23;i++){
+            num += '<option value="'+i+'">'+i+'时</option>'
+        }
+        $(select,context).html(num) //开始时间渲染
+    }
+
+    TimeInit('.rendering')
+    //	渲染时间option  结束
+    //点击删除事件
+    function delbtn(self) {
+        var caiparent = $(self).parent();
+        caiparent.remove()
+        // 如果只有一个去除点击事件
+        if ($(".time-card-box").length == 1) {
+            $('.delBtn').removeAttr('onclick');
+        }
+    }
+
+    var schoolId = getUserInfo().sid;
+
+    // 美化下拉框
+    $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",})
+
+
+    var $table = $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl + '/attendance/getAttendanceTemplates',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                //  sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                showRefresh: true,                   //是否显示刷新按钮
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 30, 50],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+                queryParams: function (params) {
+                    return {
+                        token: getUserInfo().token,
+                        sid: schoolId
+                    };
+                },
+
+            });
+        };
+        $table.on('refresh.bs.table', function (params) {
+
+        });
+        return oTableInit;
+    };
+    var columns = [
+        {
+            field: "id", title: "序号",align:"center",formatter: function (value, row, index) {
+            return index+1;
+        }},
+        {
+            field: "name", title: "考勤模板名称", align: "center", formatter: function (value, row, index) {
+            return value;
+        }
+        },
+        {
+            field: "userName", title: "创建人", align: "center", formatter: function (value, row, index) {
+            return value;
+        }
+        },
+        {
+            field: "type", title: "制度类型", align: "center", formatter: function (value, row, index) {
+            var modelMap = {"1": "固定", "0": "轮换"};
+            return modelMap[value];
+
+
+        }
+        },
+        {
+            field: "holidayTyep", title: "节假日类型", align: "center", formatter: function (value, row, index) {
+            var modelMap = {"1": "国家法定节假日", "0": "自定义"};
+            return modelMap[value];
+        }
+        },
+        {
+            field: "workWeekDay", title: "上班周期", align: "center", formatter: function (value, row, index) {
+            // console.log(arguments)
+            var workWeekHtml = '';
+            rows = JSON.parse(row.workWeekDayJson)
+            for (var i = 0; i < rows.length; i++) {
+                switch (rows[i]) {
+                    case 1:
+                        workWeekHtml += "星期一，";
+                        break;
+                    case 2:
+                        workWeekHtml += "星期二，";
+                        break;
+                    case 3:
+                        workWeekHtml += "星期三，";
+                        break;
+                    case 4:
+                        workWeekHtml += "星期四，";
+                        break;
+                    case 5:
+                        workWeekHtml += "星期五，";
+                        break;
+                    case 6:
+                        workWeekHtml += "星期六，";
+                        break;
+                    case 7:
+                        workWeekHtml += "星期日，";
+                        break;
+                }
+            }
+            return workWeekHtml;
+
+
+        }
+        },
+        /*{field: "turn", title: "轮换详细",align: "center", formatter: function (value, row, index) {
+                return value;
+        }},*/
+        {
+            field: "turnStartDay", title: "轮换开始日期", align: "center", formatter: function (value, row, index) {
+            if(value==0){
+                return "-";
+            }
+            return formatDateTimeYMD(value);
+        }
+        },
+        {
+            field: "start", title: "上班时间", align: "center", formatter: function (value, row, index) {
+            var start = value;
+            var time = [];
+            if(start>0){
+                var hour = parseInt(start/60)+"点";
+                var min  = start % 60 + "分";
+                time.push(hour+min);
+            }else if(row.turn!=null&&row.turn.length>0){
+                for(var i=0;i<row.turn.length;i++){
+                    var start = row.turn[i].start;
+                    var hour = parseInt(start/60)+"点";
+                    var min  = start % 60 + "分";
+                    time.push(hour+min);
+                }
+            }
+            return time;
+        }
+        },
+        {
+            field: "end", title: "下班时间", align: "center", formatter: function (value, row, index) {
+            var end = value;
+            var time = [];
+            if(end>0){
+                var hour = parseInt(end/60)+"点";
+                var min  = end % 60 + "分";
+                time.push(hour+min);
+            }else if(row.turn!=null&&row.turn.length>0){
+                for(var i=0;i<row.turn.length;i++){
+                    var end = row.turn[i].end;
+                    var hour = parseInt(end/60)+"点";
+                    var min  = end % 60 + "分";
+                    time.push(hour+min);
+                }
+            }
+            return time;
+        }
+        },
+        {
+            field: "ctime", title: "创建时间", align: "center", formatter: function (value, row, index) {
+            return formatDateTime(value);
+        }
+        },
+        {
+            field: "utime", title: "修改时间", align: "center", formatter: function (value, row, index) {
+
+            return formatDateTime(value);
+
+        }
+        },
+        {
+            field: "distribution", title: "分配管理", align: "center", formatter: function (value, row, index) {
+            var content = '';
+            content += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="分配给教师" onclick=\'addTeacher(' + JSON.stringify(row) + ')\' >分配给教师</a>'
+            content += '&nbsp';
+            content += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="分配给园所" onclick=\'distributionToSchool(' + JSON.stringify(row) + ')\' >分配给园所</a>'
+            return content;
+        }
+        },
+        {
+            field: "name", title: "编辑", align: "center", formatter: function (value, row, index) {
+            var html = '';
+            html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="编辑" onclick=\'addOrEdit(' + JSON.stringify(row) + ')\' >编辑</a>';
+            html += '&nbsp';
+            html += '<a  class="btn btn-danger btn-sm btn-outline" href="javascript:void(0);" title="删除" onclick=\'removeData(' + row.id + ')\'>删除</a>';
+            return html;
+        }
+        },
+
+    ]
+
+
+
+
+    //删除
+    function removeData(did) {
+        var url = "/attendance/deleteAttendanceTemplates";
+        var param = {id: did};
+        var result = {succ: '删除成功!', fail: '删除失败'};
+        layer.msg("确定要删除该设备？", {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+                myAjax(url, param, handle);
+                function handle(data, param) {
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        layer.msg(result.succ, {icon: 1,time:500, shade: 0.01});
+                        handleTable(did, 4);
+                    } else {
+                        layer.msg(result.fail + msg, {icon: 2,time:500, shade: 0.01});
+                    }
+                }
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+
+
+    //添加修改
+    function addOrEdit(rowData) {
+
+        var subType;
+        if (isNotBlank(rowData)) {
+            subType = 1;
+        } else {
+            subType = 0;
+            formReset();
+        }
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '添加/更新',
+            area: ['500px', '400px'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function (index) {
+                submitData(index, subType,rowData);
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function (layero, index) {
+                if (isNotBlank(rowData)) {
+                    $('#name').val(rowData.name);
+                    $('#type').val(rowData.type);
+                    $('#holidayTyep').val(rowData.holidayTyep);
+                    $('#workWeekDay').val(rowData.workWeekDay);
+                    $('.i-checks').val(rowData.workWeekDayJson);
+                    var ctime = rowData.start;
+                    var utime = rowData.end;
+                    /*console.log(ctime)
+                    console.log(utime)
+                    return*/
+                    // 获取的点数转换成整点型
+                    //开始的时间  
+                    if( ctime/60 !=0){
+                        $('.ctimeClockStart option:selected').html(parseInt(ctime/60)+'时')
+                        $('.ctimeClockEnd option:selected').html(0+'分')
+                    }else{
+                        $('.ctimeClockStart option:selected').html(parseInt(ctime/60)+'时')
+                        $('.ctimeClockEnd option:selected').html(30+'分')
+                    }
+                    // 结束的时间
+                    if( utime /60 !=0){
+                        $('.timeClockEnd option:selected').html(parseInt(utime/60)+'时')
+                        $('.timeMinEnd option:selected').html(0+'分')
+                    }else{
+                        $('.timeClockEnd option:selected').html(parseInt(utime/60)+'时')
+                        $('.timeMinEnd option:selected').html(30+'分')
+                    }
+
+                    //判断轮换与固定显示
+                    if ($('#type').get(0).selectedIndex == 1) {
+                        $(".tab_box").show()
+                        $(".caione").show()
+                        $(".turnStart").show()
+                        $(".card-main").css("display", "block")
+                        $(".startSlide").hide();
+                        $(".endSlide").hide();
+                    } else {
+                        $(".tab_box").hide()
+                        $(".caione").hide()
+                        $(".turnStart").hide()
+                        $(".card-main").css("display", "none")
+                        $(".startSlide").show();
+                        $(".endSlide").show();
+                    }
+
+                }
+            }
+        })
+    }
+
+
+    function submitData(index, subType,rowData) {
+        console.log(rowData)
+        var id=$('#id').val();
+        var name = $.trim($('#name').val());
+        var type = parseInt($.trim($('#type option:selected').val()));
+        var holidayTyep = parseInt($.trim($('#holidayTyep').val()));
+        var ctimeClockStart = $.trim($('.ctimeClockStart').val());//固定模式下开始创建的时钟
+        var ctimeMinStart = $.trim($('.ctimeMinStart').val());//固定模式下开始创建的分钟
+        var timeClockEnd = $.trim($('.timeClockEnd').val());//固定模式下结束的时钟
+        var timeMinEnd = $.trim($('.timeMinEnd').val());//固定模式下结束的分钟
+        // 固定时间转换成整点
+        var ctime =ctimeClockStart*1*60 + ctimeMinStart*1   //固定开始的时间
+        var utime = timeClockEnd*1*60 + timeMinEnd*1   //固定结束的时间
+
+
+        var turnStartDay = $.trim($('#turnStartDay').val())  //轮换开始时间
+
+        // 获取复选框value值存数组
+        var obj = $("input[name='weekArr']");
+        arr = [];
+        for (k in obj) {
+            if (obj[k].checked) {arr.push(obj[k].value * 1);}
+        }
+
+
+        var result;
+        var params = {};
+        var url;
+        if (subType == 0) {
+            url = "/attendance/addAttendanceTemplate";
+            result = {succ: '添加成功！', fail: '添加失败！'};
+        } else {
+            params.id = rowData.id;
+            url = "/attendance/updateAttendanceTemplates";
+            result = {succ: '更新成功！', fail: '更新失败'};
+        }
+        if (isBlank(name)) {
+            showValidate('#name');
+            layer.msg("考勤模板不能为空！",{icon:2})
+            return;
+        }
+        // 点击轮换传的json数组
+        var turnJson = [];
+//        var keyArr = {};
+        $(".time-card-box").each(function(){
+            var obj = {'start':'','end':''};  //定义一个空对象
+            $(this).find('.form-group').each(function(index,item){
+                var setElArr = $(this).find('select');
+                if(index == 0){
+                    obj. start = setElArr.eq(0).val()*1*60 + setElArr.eq(1).val()*1;
+                }else if(index == 1){
+                    obj. end = setElArr.eq(0).val()*1*60 + setElArr.eq(1).val()*1;
+                }
+            });
+            turnJson.push(obj)
+        });
+
+
+        params.name = name;
+        params.sid = schoolId;
+        params.type = type;
+        params.holidayTyep = holidayTyep;
+        params.buid = getUserInfo().id;
+        params.start = ctime;
+        params.end = utime;
+
+
+        if($('#type').get(0).selectedIndex == 1){
+            params.turnStartDay = isNotBlank(turnStartDay) ? new Date(turnStartDay).getTime() : showValidate(turnStartDay);
+            if(turnStartDay == 0){
+                layer.msg('轮换时间不能为空', {icon: 2,time:500, shade: 0.01});
+                return;
+            };
+        }else{
+            params.turnStartDay = 0;
+        }
+        params.workWeekDayJson = JSON.stringify(arr);
+        if($('#type').get(0).selectedIndex == 1){
+            params.turnJson = JSON.stringify(turnJson);  //json数据
+        }else{
+            params.turnJson =[];  //json数据
+        }
+
+        myAjax(url, params, handle);
+
+        function handle(data, params) {
+            var msg = (data.msg == undefined ? '' : ',' + data.msg);
+            if (data.success) {
+                layer.msg(result.succ, {icon: 1,time:500, shade: 0.01});
+                handleTable("", 3, serverUrl + "/attendance/getAttendanceTemplates");
+                reload();
+            } else {
+                layer.msg(result.fail + msg, {icon: 2, shade: 0.01});
+            }
+        }
+        layer.close(index);
+
+    }
+
+    //   添加老师  教师管理
+    function addTeacher(rowsdata){
+        console.log(rowsdata)
+        myAjax("/backend/getAllTeachers",{sid: getUserInfo().sid,checkStatus:1}, handle)
+        function handle(data) {
+            console.log(data)
+            var msg = (data.msg == undefined ? '' : ',' + data.msg);
+            if (data.success) {
+                var str = '';
+                for (var i=0;i<data.data.length;i++){
+                    var ischeck = (rowsdata.workWeekDayJson.indexOf(data.data[i].id)!=-1)?'checked':'';
+                    str += '<li><label  class="i_check"><input type="checkbox" data-value="' + data.data[i].id + '" '+ischeck+'  value="' + data.data[i].id + '">' + data.data[i].name + '</label></li>'
+                }
+                $(".distributionData").html(str)
+
+                $('.i_check').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                    increaseArea: '20%'
+                });
+
+            } else {
+                layer.msg(result.fail + msg, {icon: 2, shade: 0.01});
+            }
+        }
+
+        var result = {succ:'分配教师成功!',fail:'分配教师失败!'};
+
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '分配管理',
+            area: ['600px', '400px'],
+            content: $('.distribution'),
+            btn: ['提交', '关闭'],
+            yes: function (index) {
+                var uidArr = [];
+                $('.distributionData [type="checkbox"]:checked').each(function(){
+                    uidArr.push($(this).val());
+                })
+                console.log(uidArr);
+                console.log(JSON.stringify(uidArr));
+
+                // 点击提交接口
+                myAjax("/attendance/addTemplatesToTearcher",{uids:uidArr,aid:rowsdata.id}, handle)
+                function handle(data,params) {
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        layer.msg(result.succ, {icon:1,time:1000,shade: 0.01},function () {
+                            layer.closeAll()
+                        });
+                        handleTable("",3,serverUrl+"/attendance/getAttendanceTemplates");
+
+                    } else {
+                        layer.msg(result.fail + msg, {icon: 2,time:500, shade: 0.01});
+                    }
+                }
+
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function (layero, index) {
+
+            }
+        })
+    }
+
+
+    //分配园所
+    function distributionToSchool(data) {
+        var aid = data.id;
+        var url = serverUrl + "/attendance/addTemplatesToSchool";
+        layer.msg('确认将此模板分配给本园所吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+                myAjax(url, {aid: aid,sid:schoolId}, handle);
+
+                function handle(data, param) {
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        layer.msg('分配成功！', {icon: 1,time:1000, shade: 0.01});
+                        handleTable(param, 2);
+                    } else {
+                        layer.msg('分配失败！' + msg, {icon: 2,time:1000, shade: 0.01});
+                    }
+                }
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+
+
+    // 根据制度类型状态值判断是否隐藏
+    function optionIndex() {
+        if ($('#type').get(0).selectedIndex == 1) {
+            $(".tab_box").show()
+            $(".caione").show()
+            $(".turnStart").show()
+            $(".card-main").css("display", "block")
+            $(".startSlide").hide();
+            $(".endSlide").hide();
+        } else {
+            $(".tab_box").hide()
+            $(".caione").hide()
+            $(".turnStart").hide()
+            $(".card-main").css("display", "none")
+            $(".startSlide").show();
+            $(".endSlide").show();
+        }
+    }
+    // 根据制度类型状态值判断是否隐藏结束
+
+
+
+    function openPOP() {
+        addOrEdit();
+    }
+
+    function formReset() {
+        $("#areaForm")[0].reset();
+    }
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click(openPOP);
+        };
+
+        return oInit;
+    };
+    //主函数
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        laydate.render({
+            elem: '#turnStartDay'
+            , type: 'datetime'
+        });
+        laydate.render({
+            elem: '#turnStartDay'
+            , type: 'datetime'
+        });
+    });
+
+
+
+</script>
+</html>

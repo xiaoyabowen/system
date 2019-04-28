@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content  animated fadeInDown tree-view"  style="display: none;">
+    <div class="col-sm-10">
+        <div class="ibox float-e-margins" id="ztree">
+            <div class="ibox-title">
+                <h5>个人角色授权</h5>
+
+
+
+
+
+
+            </div>
+            <div class="ibox-content" >
+                <ul id="treeDemo" class="ztree">
+
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<div class="wrapper wrapper-content animated fadeInDown  content-view  ">
+    <!-- Panel Other -->
+    <form method="get" class="form-horizontal" id="userForm">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户名称</label>
+
+            <div class="col-sm-10">
+                <input type="text" class="form-control hiddenid" id="uid">
+                <input type="text" class="form-control" id="name" placeholder="请输入用户名称">
+                <span class="help-block m-b-none validate">请输入用户名称</span>
+            </div>
+
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">手机号</label>
+
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="phone" placeholder="请输入用户手机号">
+                <span class="help-block m-b-none validate">请输入用户手机号</span>
+            </div>
+
+        </div>
+        <div class="hr-line-dashed"></div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">选择状态</label>
+
+            <div class="col-sm-10">
+                <select id="checkStatus"  class="form-control"  title="请选择角色类型" >
+                    <option value="0">未审核</option>
+                    <option value="1">正常</option>
+                    <option value="2">禁用</option>
+                </select>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户密码</label>
+
+            <div class="col-sm-10">
+                <input type="hidden" class="form-control" id="id">
+                <input type="text" class="form-control" id="password" placeholder="请输入用户密码">
+                <span class="help-block m-b-none validate">请输入用户密码</span>
+            </div>
+
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">排序</label>
+
+            <div class="col-sm-10">
+                <input type="text" id="sort" placeholder="请输入排序数字" class="form-control">
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">选择角色</label>
+
+            <div class="col-sm-10">
+                <select id="rtype"  class="  form-control"  title="请选择分享类型" >
+
+                </select>
+            </div>
+        </div>
+        <div id="xing" class="form-group">
+            <div class="hr-line-dashed"></div>
+            <label class="col-sm-2 control-label">性别</label>
+
+            <div class="col-sm-10">
+                <label id="sex" class="control-label"></label>
+            </div>
+
+        </div>
+        <div id="clazz" class="form-group">
+            <div class="hr-line-dashed"></div>
+            <label class="col-sm-2 control-label">负责班级</label>
+
+            <div class="col-sm-10">
+                <label id="clazzName" class="control-label"></label>
+            </div>
+
+        </div>
+        <div id="mail" class="form-group">
+            <div class="hr-line-dashed"></div>
+            <label class="col-sm-2 control-label">邮箱</label>
+
+            <div class="col-sm-10">
+                <label id="mailAdress" class="control-label"></label>
+            </div>
+
+        </div>
+        <div id="school" class="form-group">
+            <div class="hr-line-dashed"></div>
+            <label class="col-sm-2 control-label">毕业院校</label>
+
+            <div class="col-sm-10">
+                <label id="schoolName" class="control-label"></label>
+            </div>
+
+        </div>
+        <div id="jifen" class="form-group">
+            <div class="hr-line-dashed"></div>
+            <label class="col-sm-2 control-label">积分</label>
+
+            <div class="col-sm-10">
+                <label id="score" class="control-label"></label>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </form>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>后台用户</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <div id="toolbar" >
+                        <button class="btn btn-success  btn-outline" id="btn_add">
+                            <i class="fa fa-plus">添加</i>
+                        </button>
+                    </div>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">手机号</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="searchPhone" placeholder="请输入手机号">
+                                <span class="help-block m-b-none validate">请输入手机号</span>
+                            </div>
+                            <label class="col-sm-1 control-label" >部门</label>
+                            <div class="col-sm-2">
+                                <select id="department"  class="  form-control"  title="请选择" >
+
+                                </select>
+                        </div>
+                            <label class="col-sm-1 control-label">姓名</label>
+                            <div class="col-sm-2">
+                                <input type="text" class="form-control" id="searchName" placeholder="请输入姓名">
+                                <span class="help-block m-b-none validate">请输入姓名</span>
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info" id="btn_search" name="like_search">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- ztree -->
+
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.exedit.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../resource/js/template-native.js"></script>
+<script src="../resource/common/common.js?"+Math.random()></script>
+<script>
+    var schoolId=getQueryString("id");
+
+    var RoleList = "";
+    var $table =  $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl+'/backend/searchUser?schoolId='+schoolId,    //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+                },
+                queryParamsType:'limit',
+                queryParams: function (params) {
+                    var phone = $("#searchPhone").val();
+                    var searchName = $("#searchName").val();
+                    var did = $("#department").val();
+                    return {
+                        token:getUserInfo().token,
+                        page:(params.offset / params.limit) + 1,
+                        size: params.limit,
+                        phone:phone,
+                        searchName:searchName,
+                        did:did
+                    };
+                },
+            });
+        };
+
+        return oTableInit;
+    };
+    var columns = [
+        {field: "rowNum",title: "序号",align: "center", formatter: function (value, row, index) {
+            return index+1;
+        }},
+        {field: "name",align: "center",  title: "用户名称"},
+        {field: "phone",align: "center",  title: "手机号"},
+        {field: "departmentName",align: "center",  title: "部门"},
+        {field: "checkStatus",align: "center",  title: "状态", formatter: function (value, row, index) {
+            if(value==0){return '未审核';}
+            if(value==1){return '正常';}
+            if(value==2){return '禁用';}
+        }},
+        {field: "rid",align: "center",  title: "用户角色", formatter: function (value, row, index) {
+            var rid = value;
+            var html = "";
+            for(var i=0;i<RoleList.length;i++){
+                if(RoleList[i].id==rid){
+                    html +=RoleList[i].name;
+                }
+            }
+            return html;
+        }},
+        {field: "ctime",align: "center",  title: "创建时间", formatter: function (value, row, index) {
+            return formatDateTime(value);
+        }},
+        {field: "utime",align: "center",  title: "修改时间", formatter: function (value, row, index) {
+            return formatDateTime(value);
+        }},
+        {field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+            var data = JSON.stringify(row);
+            var html = '';
+            html +="<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'editUser("+data+")\'>编辑信息</a>";
+            html +='&nbsp';
+            html +="<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'userInfo("+data+")\'>用户详情</a>";
+            html +='&nbsp';
+            html +="<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'editUserPermission("+data+")\'>修改角色</a>";
+            html +='&nbsp';
+            html += '<a class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" onclick="deleteUser(' + row.id + ')" >删除</a>';
+
+            return html;
+        }}
+    ]
+
+
+
+
+    function getAllRole(callBack){
+        myAjax("/role/getAllRole",{schoolId:schoolId},handle)
+        function handle(data,param){
+            if(data.length>0){
+                var list = [];
+                for(var i = 0;i< data.length;i++){
+                    var obj = {};
+                    obj.id = data[i].id;
+                    obj.name = data[i].roleName;
+                    list.push(obj);
+                }
+                RoleList  = list;
+                changeSelect('rtype',list);
+                if(callBack){
+                    callBack();
+                }
+            }
+        }
+    }
+
+    function addUser(){
+        $("#clazz").hide();
+        $("#mail").hide();
+        $("#school").hide();
+        $("#xing").hide();
+        $("#jifen").hide();
+        var index = layer.open({
+            type: 1,shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '400px'],
+            title:"角色列表",
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function(){
+                submituserData(index,0);
+            },
+            btn2: function(){},
+            success: function(layero, index){
+                resetForm("#userForm");
+            }
+        });
+    }
+    function submituserData(index,type) {
+        var param = {};
+        var Url = '';
+        var result;
+        var id =  $("#id").val();
+        var name =  $("#name").val();
+        var phone =  $("#phone").val();
+        var password =  $("#password").val();
+        var sort =  $("#sort").val();
+        var rid = $("#rtype option:selected").val();
+        var checkStatus = $("#checkStatus option:selected").val();
+
+//            var areaId = $("#levelTwo option:selected").val();
+        if(isBlank(name)){
+            showValidate('#name');
+            return  ;
+        }
+        if(isBlank(password)){
+            showValidate('#password');
+            return  ;
+        }
+        if(isBlank(phone)){
+            showValidate('#phone');
+            return  ;
+        }
+//            if(isBlank(areaId)){
+//                showValidate('#levelTwo');
+//                return  ;
+//            }
+
+        layer.close(index);
+        param.uid = id;
+        param.name = name;
+        param.phone = phone;
+        param.password = password;
+        param.rid = rid;
+        param.sort = sort;
+        param.id = id;
+        param.schoolId=schoolId;
+        param.checkStatus = checkStatus;
+
+        if(type == 0){
+            Url = '/backend/userRole/saveUserRole';
+            result =  {succ:'添加成功！',fail:'添加失败！'};
+        }else{
+            Url = '/backend/userRole/updateUserRole';
+            result =  {succ:'更新成功！',fail:'更新失败！'};
+
+        }
+
+        myAjax(Url,param,handle);
+        function handle(data,param){
+            if(data && data.success){
+                layer.msg('成功!', {icon: 1,shade: 0.01});
+                handleTable("",3,serverUrl+"/backend/searchUser?schoolId="+schoolId);
+            }else{
+                var msg='失败!';
+                if(data&&data.msg){
+                    msg=''+data.msg;
+                }
+                layer.msg(msg, {icon: 2,shade: 0.01});
+            }
+        }
+    }
+
+    function editUser(data){
+        $("#clazz").hide();
+        $("#mail").hide();
+        $("#school").hide();
+        $("#xing").hide();
+        $("#jifen").hide();
+        var index = layer.open({
+            type: 1,shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '400px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function(){
+                submituserData(index,1);
+            },
+            btn2: function(){},
+            success: function(layero, index){
+                echoUser(data);
+            }
+        });
+    }
+
+    function userInfo(data){
+        $("#clazz").show();
+        $("#mail").show();
+        $("#school").show();
+        $("#xing").show();
+        $("#jifen").show();
+        var index = layer.open({
+            type: 1,shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '400px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['关闭'],
+            yes: function(){
+                layer.close(index);
+            },
+            btn2: function(){
+                layer.close(index);
+            },
+            success: function(layero, index){
+                echoUser(data);
+            }
+        });
+    }
+
+
+    function echoUser(data){
+        $("#id").val(data.id);
+        $("#name").val(data.name);
+        $("#sort").val(data.sort);
+        $("#phone").val(data.phone);
+        if(data.clazzName.length>0){
+            document.getElementById("clazzName").innerHTML =data.clazzName;
+        }else{
+            document.getElementById("clazzName").innerHTML ='';
+        }
+        if(isNotBlank(data.school)){
+            document.getElementById("schoolName").innerHTML =data.school;
+        }else{
+            document.getElementById("schoolName").innerHTML ='';
+        }
+        if(isNotBlank(data.mail)){
+            document.getElementById("mailAdress").innerHTML =data.mail;
+        }else{
+            document.getElementById("mailAdress").innerHTML ='';
+        }
+        if(isNotBlank(data.score)){
+            document.getElementById("score").innerHTML =data.score;
+        }else{
+            document.getElementById("score").innerHTML ='';
+        }
+        if(data.sex==1){
+            document.getElementById("sex").innerHTML ='男';
+        }else if(data.sex ==2){
+            document.getElementById("sex").innerHTML ='女';
+        }else{
+            document.getElementById("sex").innerHTML ='未填写';
+        }
+        if(data.rid){
+            $("#rtype").val(data.rid);
+        }
+        $("#password").val("");
+
+        $("#checkStatus").val(data.checkStatus);
+
+    }
+
+
+    function deleteUser(id){
+        var url = "/backend/deleteUser";
+        var result = {succ:'删除成功！',fail:'删除失败！'};
+        layer.msg('确认删除吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            ,btn: ['确定','取消']
+            ,yes: function(index){
+                layer.close(index);
+
+                myAjax(url,{id:id},handle);
+                function handle(data,param){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        handleTable(param,2);
+                    }else{
+                        layer.msg(result.fail+msg, {icon: 2,shade: 0.01});
+                    }
+                }
+            },btn2: function(index, layero){
+            }
+        });
+    }
+
+
+    $(function () {
+        getAllRole(function(){
+            var Table = new TableInit(columns);
+            Table.Init();
+            var oButtonInit = new ButtonInit();
+            oButtonInit.Init();
+
+            initZtree();
+            $("#ztree").slimScroll({
+                height: '375px'
+            });
+        });
+
+    });
+
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click(addUser);
+            $('#btn_edit').click();
+            $('.close-refresh').click(refreshTree);
+            $('#btn_search').click(searchUserPhone);
+            myAjax("/department/getAllList",{sid:schoolId},handle);
+            function handle(data){
+                    console.info(data)
+                    var result = {list:data};
+                    var html = template("scriptVidSelect",result);
+                    document.getElementById("department").innerHTML = html;
+            }
+
+        };
+
+        return oInit;
+    };
+
+    function searchUserPhone(){
+        handleTable("",5,"");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    function editUserPermission(data){
+        reInitTree(data.id);
+        var index = layer.open({
+            type: 1,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '400px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.tree-view'),
+            btn: ['提交', '关闭'],
+            btnAlign: 'r',
+            yes: function(){
+                var param = {};
+                var treeData =  filterNode();
+                layer.close(index);
+                param.uid = data.id;
+                param.permissionIds = treeData.toString();
+                submitUserPermissionData(param);
+            },
+            btn2: function(){},
+        });
+    }
+
+
+    //转换节点
+    function transferNode(){
+        var attr = [];
+        var nodes = zTree.getCheckedNodes(true);
+        for(var i = 1;l = nodes.length, i< l;i++){
+            attr.push(nodes[i].name);
+        }
+        return attr.toString();
+    }
+
+    function submitUserPermissionData(params) {
+        var url = '';
+        var result;
+        url = serverUrl+'/backend/updateUserPermission';
+        result =  {succ:'更新成功！',fail:'更新失败！'};
+
+        var index = loading();
+        layer.close(index);
+        myAjax(url,params,handle);
+        function handle(data,param){
+            if (data && data.success) {
+                layer.msg(result.succ, {icon: 1});
+            }else{
+                layer.msg(result.fail, {icon: 2});
+            }
+        }
+
+    }
+
+
+
+    //回显节点
+
+    var zNodes =[];
+    var zTree;
+    var setting = {
+        view: {
+            selectedMulti: false
+        },
+//            edit: { //增删改图标
+//                enable: true,
+////                showRemoveBtn: false,
+////                showRenameBtn: false
+//            },
+        check: {
+            enable: true,
+            chkStyle: "checkbox",
+            chkboxType: { "Y" : "s", "N" : "s" }
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        },
+    };
+
+    function zTreeOnClick(event, treeId, treeNode) {
+    };
+    function initZtree(){
+        var url = serverUrl+"/permission/getAllPermission?schoolId="+schoolId;
+        myAjax(url,"",handle);
+        function handle(data,param){
+            if(data&& data.length>0){
+                var treeData = transTreeData(data);
+                zNodes = treeData;
+            }
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        }
+
+    }
+    function refreshTree(){
+        zTree.checkAllNodes(false);
+        zTree.refresh();
+    }
+
+    function transTreeData(data){
+        var temp = [];
+        for(var i = 0;i<data.length;i++){
+            var obj = {};
+            if(data[i].pid == 0){
+                obj.open = true;
+                obj.nocheck = true;
+            }
+            obj.id = data[i].id;
+            obj.sort = data[i].sort;
+            obj.cssName = data[i].cssName;
+            obj.name = data[i].text;
+            obj.pId = data[i].pid;
+            obj.href = data[i].href;
+            temp.push(obj)
+        }
+
+        return temp;
+    }
+
+    function reInitTree(id) {
+        var url =  serverUrl+"/backend/getMyPermission";
+        myAjax(url,{uid:id},handle);
+        function handle(data,param){
+            if (data) {
+                reviewNodes(data);
+            }
+        }
+    }
+    //回显ztree数据
+    function reviewNodes(data) {
+        var Nodes = cloneObj(zNodes);
+        for (var m = 0; m < Nodes.length; m++) {
+            for (var n = 0; n < data.length; n++) {
+                if (Nodes[m].id == data[n].id) {
+                    Nodes[m].checked = true;
+                }
+            }
+        }
+        zTree.destroy();
+        $.fn.zTree.init($("#treeDemo"), setting, Nodes);
+
+    }
+    //获取ztree选中数据
+    function filterNode(){
+        var attr = [];
+        if(zTree){
+            var nodes = zTree.getCheckedNodes(true);
+            for(var i = 0;l = nodes.length, i< l;i++){
+                attr.push(nodes[i].id);
+            }
+        }
+
+        return attr;
+    }
+
+
+</script>
+
+<script type="text/html" id="scriptVidSelect">
+    <option value="0">未选择</option>
+    <%for(var i=0; i
+    <list.length; i++){%>
+    <option value="<%=list[i].id %>"><%=list[i].name %></option>
+    <%}%>
+</script>
+</body>
+
+</html>

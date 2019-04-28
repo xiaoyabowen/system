@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>企业列表</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <div id="toolbar">
+
+                    </div>
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">姓名(手机)</label>
+
+                            <div class="col-sm-2">
+                                <input type="text" id="nameOrphone" placeholder="请输入姓名或手机号" class="form-control">
+                            </div>
+                            <!--<div class="form-group">-->
+                                <label class="col-sm-1 control-label">所属机构</label>
+                            <div class="col-sm-3">
+                                <input  id="school_data" autocomplete="off" data-provide="typeahead" type="text" class="input-sm form-control school_data" placeholder="请输入学校名称关键字" />
+                            </div>
+                            <!--</div>-->
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info" id="user_search" name="like_search" onclick="reInitTable()">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+
+
+
+<div class="wrapper wrapper-content animated fadeInDown  content-view  ">
+    <form method="get" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">机构名称</label>
+
+            <div class="col-sm-6">
+                <input type="text" id="name1" placeholder="请输入机构名称" class="form-control">
+                <label class="help-block m-b-none validate">请输入机构名称</label>
+            </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">负责人</label>
+            <div class="col-sm-6">
+                <input type="text" id="userName" placeholder="请输入负责人" class="form-control">
+                <label class="help-block m-b-none validate">请输入负责人</label>
+            </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系电话</label>
+
+            <div class="col-sm-6">
+                <input type="text" maxlength="11" id="phone" placeholder="请输入联系电话" class="form-control"
+                       maxlength="11"
+                       onkeyup="return ValidateNumber(this,value)"
+                       onpaste="return ValidateNumber(this,value)"
+                >
+                <label class="help-block m-b-none validate">手机号为空或输入有误</label>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">联系地址</label>
+            <div class="col-sm-6">
+                <input type="text" id="address" placeholder="请输入联系地址" class="form-control">
+                <label class="help-block m-b-none validate">请输入联系地址</label>
+            </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">软件名称</label>
+            <div class="col-sm-6">
+                <input type="text" id="appname" placeholder="请输入软件名称" class="form-control">
+                <label class="help-block m-b-none validate">请输入软件名称</label>
+            </div>
+        </div>
+
+        <div class="hr-line-dashed"></div>
+
+
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">审核状态 </label>
+
+            <div class="col-sm-6">
+                <select id="checkstatus" class="  form-control" title="请选择审核状态">
+
+                    <option value="0">未通过</option>
+                    <option value="1">已通过</option>
+
+                </select>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+
+    </form>
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"
+               accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+    </form>
+</div>
+
+
+
+
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/select2/js/select2.full.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- ztree -->
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/js/plugins/bootstrap-3-typeahead/bootstrap3-typeahead.js"></script>
+
+<script src="../resource/common/multiselect.js"></script>
+<script src="../resource/common/common.js?time=" +Math.random()></script>
+<script>
+
+    var from = new fromServer("#school_data","/company/searchCompanyByName?token=" + getUserToken());
+    from.init();
+
+    var $table = $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl + '/company/companyList?token=' + getUserToken(),         //请求后台的URL（*）
+                method: 'post',                      //请求方式（*）
+                contentType : "application/x-www-form-urlencoded",
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType: 'limit',
+                queryParams: function (params) {
+                    var name = $("#nameOrphone").val();
+                    var parentId = 0;
+
+                    var result = from.getResult();
+                    if(isNotBlank(result)){
+                        parentId = result.id;
+                    }
+                    return {
+                        nameOrPhone: name || "",
+                        parentId:parentId || 0,
+                        pageNumber: (params.offset / params.limit) + 1,
+                        pageSize: params.limit
+                    };
+                }
+            });
+        };
+
+        return oTableInit;
+    };
+
+    var columns = [
+        {field: "name", title: "机构名称"},
+        {field: "userName", title: "负责人"},
+        {field: "phone", title: "联系电话"},
+        {field: "address", title: "联系地址"},
+        {field: "appname", title: "软件名称"},
+        {
+            field: "checkstatus", title: "审核状态", formatter: function (value, row, index) {
+            var colume = {0:"未通过",1:"已通过",};
+            return colume[value];
+            return html;
+        }},
+//        {
+//            field: "ctime", title: "创建时间", formatter: function (value, row, index) {
+//            return formatDateTime(value);
+//        }},
+//        {field: "icon", title: "头像", align: "center", formatter: function (value, row, index) {
+//            if(value){
+//                var thumb = ImageThumb(value, 60, 60, false);
+//                return thumb;
+//            }
+//        }},
+        {field: "status", title: "企业状态", align: "center", formatter: function (value, row, index) {
+            return value == 3 ? "停用":"正常";
+        }},
+        {
+            field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+            var data = JSON.stringify(row);
+            var html = '';
+            var stopOrRecover = "停用";
+            if (row.status == 3){
+                stopOrRecover = "恢复";
+            }
+
+            html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'editCompany(" + data + ")\'>编辑</a>";
+            html += '&nbsp';
+            html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'stopCompany(" + data + ")\'>"+ stopOrRecover +"</a>";
+            html += '&nbsp';
+            html += "<a  class='btn btn-danger btn-sm btn-outline' href='javascript:void(0)' onclick=\'deleteCompany(" + data + ")\'>删除</a>";
+            return html;
+        }}
+
+    ];
+
+    function reInitTable() {
+        $table.bootstrapTable('refreshOptions', {pageNumber: 1});
+    }
+
+
+    function editCompany(data) {
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['550px', '500px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function () {
+                submitCompanyData(index, data);
+            },
+            btn2: function () {
+            },
+            success: function (layero, index) {
+                echoCompany(data);
+            }
+        });
+    }
+
+
+
+
+    function submitCompanyData(index, data) {
+        var params = {};
+        var url = "/company/editCompany";
+        var name = $("#name1").val();
+        var userName= $("#userName").val();
+        var phone = $("#phone").val();
+        var address = $("#address").val();
+        var appname = $("#appname").val();
+        var checkstatus = $("#checkstatus option:selected").val();
+
+        //验证
+        if (isBlank(name)) {
+            showValidate($("#name1").parent());
+            return;
+        }
+        if (isBlank(userName)) {
+            showValidate($("#userName").parent());
+            return;
+        }
+        if (isBlank(phone)) {
+            showValidate($("#phone").parent());
+            return;
+        }
+
+        if (isBlank(address)) {
+            showValidate($("#address").parent());
+            return;
+        }
+        if (isBlank(appname)) {
+            showValidate($("#appname").parent());
+            return;
+        }
+        params.id = data.id;
+        params.name = name;
+        params.userName = userName;
+        params.phone = phone;
+        params.address = address;
+        params.appname = appname;
+        params.checkstatus = checkstatus;
+        ajaxSubmit(url, params, function (data) {
+            var msg = (data.msg == undefined ? '' : '' + data.msg);
+            if (data && data.success) {
+                msgSuccess("修改成功");
+                reLoad();
+            } else {
+                msgFail("修改失败");
+            }
+        });
+    }
+
+
+
+
+
+    function echoCompany(data) {
+        var colume = {0:"未通过",1:"已通过"};
+
+        $("#name1").val(data.name);
+        $("#userName").val(data.userName);
+
+        $("#phone").val(data.phone);
+        $("#address").val(data.address);
+        $("#appname").val(data.appname);
+        $("#checkstatus").val(data.checkstatus);
+
+    }
+
+
+
+
+    function deleteCompany(data) {
+        var url = "/company/deleteCompany";
+        var result = {succ: '删除成功！', fail: '删除失败！'};
+        layer.msg('确认删除吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+                ajaxSubmit(url, {uid: data.id}, handle);
+                function handle(data, param) {
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        msgSuccess(result.succ);
+                        handleTable(param, 2);
+                    } else {
+                        msgFail(result.fail + msg);
+                    }
+                }
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+
+    function stopCompany(data) {
+        var url = "/company/stopCompany";
+        var result = {succ: '停用成功！', fail: '停用失败！'};
+        var msg_info = "确认停用吗?";
+        var status = 1;
+        if (data.status == 3){
+            result = {succ: '恢复成功！', fail: '恢复失败！'};
+            msg_info = "确认恢复吗?";
+        }else{
+            status  = 3;
+        }
+        var row = {id:data.id,status:status};
+        layer.msg(msg_info, {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+                ajaxSubmit(url, {uid: data.id}, function(data){
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        msgSuccess(result.succ);
+                        handleTable(row, 1);
+                    } else {
+                        msgFail(result.fail + msg);
+                    }
+                });
+
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+
+    function getAllCompany(callBack) {
+        ajaxSubmit("/company/getAllCompany","",handle)
+        function handle(result, param) {
+            var data = result.data;
+            if (data.length > 0) {
+                var list = [];
+                for (var i = 0; i < data.length; i++) {
+                    var obj = {};
+                    obj.id = data[i].id;
+                    obj.name = data[i].roleName;
+                    list.push(obj);
+                }
+                RoleList = list;
+                appendSelect('name', list,"暂无");
+            }
+        }
+    }
+
+
+    $(function () {
+
+//        getAllCompany(function () {});
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click();
+            $('#btn_edit').click();
+        };
+
+        return oInit;
+    };
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click();
+            $('#btn_edit').click();
+        };
+
+        return oInit;
+    };
+
+
+</script>
+</body>
+
+</html>

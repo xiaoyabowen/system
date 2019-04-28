@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>修改密码</h5>
+        </div>
+        <div class="ibox-content">
+            <form method="get" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">请输入原密码</label>
+                    <div class="col-sm-5">
+                        <input type="text" id="oldpass" placeholder="请输入原密码" class="form-control">
+                        <label class="help-block m-b-none validate">请输入原密码</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">请输入新密码</label>
+                    <div class="col-sm-5">
+                        <input type="text"  id="newpass" placeholder="请输入新密码" class="form-control">
+                        <label class="help-block m-b-none validate">请输入新密码</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">请确认新密码</label>
+                    <div class="col-sm-5">
+                        <input type="text" id="confirmpass" placeholder="请确认新密码" class="form-control">
+                        <label class="help-block m-b-none validate">请确认新密码</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-3">
+                        <button class="btn btn-primary" type="button" id="btn">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<script src="../resource/common/common.js?"+Math.random()></script>
+<script>
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn').click(submitData)
+        };
+
+        return oInit;
+    };
+
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+
+    });
+
+    function submitData() {
+        var params = {};
+        var url = "/backend/resetPassword";
+        var oldpass = $("#oldpass").val();
+        var newpass = $("#newpass").val();
+        var confirmpass = $("#confirmpass").val();
+        //验证
+        if (isBlank(oldpass)) {
+            showValidate($("#oldpass").parent());
+            return;
+        }
+        if (isBlank(newpass)) {
+            showValidate($("#newpass").parent());
+            return;
+        }
+        if (isBlank(confirmpass)) {
+            showValidate($("#confirmpass").parent());
+            return;
+        }
+        if (confirmpass != newpass) {
+            showValidateMsg($("#confirmpass").parent(),"两次新密码不一致");
+            return;
+        }
+
+        params.oldpass = oldpass;
+        params.newpass = newpass;
+        ajaxWithUser(url, params, function(data){
+            console.log(data)
+        });
+
+    }
+
+
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+	<title>后台主题UI框架</title>
+	<meta name="keywords" >
+	<meta name="description" >
+	<link rel="shortcut icon" href="favicon.ico">
+	<link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+	<link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+
+	<link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+	<link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+	<link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+	<link href="../resource/css/animate.css" rel="stylesheet">
+	<link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+	<link href="../resource/css/common.css" rel="stylesheet">
+	<!--树状结构css样式表-->
+	<link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" />
+
+	<!--手机模型外壳-->
+	<link rel="stylesheet" href="../resource/css/phone/iphone-x.css">
+
+	<link href="../resource/js/plugins/bootstrap-wysiwyg-master/external/font-awesome.css" rel="stylesheet">
+	<link href="../resource/js/plugins/bootstrap-wysiwyg-master/index.css" rel="stylesheet">
+
+
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+	<!-- Panel Other -->
+	<form method="get" class="form-horizontal">
+		<div class="ibox float-e-margins">
+			<div class="step1">
+				<div class="ibox-title">
+					<h5>修改文档</h5>
+				</div>
+				<div class="ibox-content">
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">标题</label>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" id="title" placeholder="请输入标题">
+							<span class="help-block m-b-none validate">请输入标题</span>
+						</div>
+					</div>
+
+					<div class="hr-line-dashed "></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">选择类型</label>
+						<div class="col-sm-5">
+							<select id="type"  class="  form-control"   >
+								<option value="1">课程</option>
+								<option value="2">视频</option>
+								<option value="3">照片</option>
+								<option value="4">文档</option>
+							</select>
+						</div>
+					</div>
+					<div class="hr-line-dashed "></div>
+
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">路径</label>
+						<div class="col-sm-5">
+							<input type="text" id="kid" hidden="true" value="" />
+							<input type="text" class="form-control"  id="pathId" placeholder="请选择路径" readonly="true" onclick="selectKind()"/>
+						</div>
+					</div>
+
+
+					<div class="hr-line-dashed"></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">上传文档</label>
+						<div class="col-sm-5 ">
+							<div class="input-group">
+								<input id="coverPdf" type="hidden">
+								<input id="wordCover" type="text" class="form-control" placeholder="请选择文档" readonly="readonly">
+								<span class="input-group-btn">
+			                        <button type="button" class="btn btn-primary" onclick="uploadWord()">选择文档</button>
+			                    </span>
+							</div>
+							
+						</div>
+					</div>
+					<div class="hr-line-dashed "></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">上传视频封面</label>
+						<div class="col-sm-5 ">
+							<div class="input-group">
+								<input id="cover" type="hidden">
+								<input id="photoCover" type="text" class="form-control" placeholder="请选择图片" readonly="readonly">
+								<span class="input-group-btn">
+			                        <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+			                    </span>
+							</div>
+							<img src="" class="img-rounded" id="iconView" width="15%" height="100%"
+								 style="display: none">
+							<span class="help-block m-b-none validate">请上传封面</span>
+						</div>
+					</div>
+
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">上传视频</label>
+						<div class="col-sm-5">
+							<div class="input-group">
+								<button class=" btn btn-primary upload" type="button" id="selectVideo">选择文件</button>
+							</div>
+							<br/>
+							<label class="control-label">播放地址:</label><input id="playUrl" type="text" class="form-control" readonly><br/>
+							<label class="control-label">时长:</label><input id="duration" type="text" class="form-control" readonly><br/>
+						</div>
+						<br/>
+						<div id="showVideo">
+						</div>
+					</div>
+
+					<div class="hr-line-dashed "></div>
+
+					<div class="form-group">
+						<label class="col-sm-3 control-label">内容</label>
+						<div class="col-sm-6 ">
+							<textarea class="form-control" id="textarea"></textarea>
+
+						</div>
+					</div>
+					<div class="hr-line-dashed "></div>
+
+					<div class="form-group">
+						<div class="col-sm-10 col-sm-offset-3">
+							<button class="btn btn-primary" type="button" id="btn_submit" >提交</button>
+							<button class="btn btn-primary" type="button" id="preview" >预览</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<!--图片表单-->
+	<form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+		<input style="height: 0;width: 0;" type="file" name="file" accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+	</form>
+
+	<!--文档表单-->
+	<form style="opacity: 0" action="" id="wordForm" autocomplete="off" enctype="multipart/form-data">
+		<input style="height: 0;width: 0;" type="file" name="file" accept=".xls,.doc,.txt,.pdf,.docx"/>
+	</form>
+</div>
+
+<!--//路径选择展示以及清空-->
+<div class="wrapper wrapper-content animated  fadeInDown  content-view-2 " style="display: none">
+	<div id="toolbar2" class="btn-group">
+		<button class="btn btn-success  btn-outline" id="btn_clear_kind">
+			<i class="fa fa-plus">清空</i>
+		</button>
+	</div>
+	<div class="ibox-content">
+		<ul id="treeDemo" class="ztree">
+			
+		</ul>
+	</div>
+</div>
+
+<!--点击预览的手机模型-->
+<section id="iphone-x" class="silver" style="display:none;">
+	<div class="wrap">
+		<!--<h1 class="new">iPhone X</h1>-->
+		<div class="marvel-device iphone-x">
+			<div class="notch">
+				<div class="camera"></div>
+				<div class="speaker"></div>
+			</div>
+			<div class="top-bar"></div>
+			<div class="sleep"></div>
+			<div class="bottom-bar"></div>
+			<div class="volume"></div>
+			<div class="overflow">
+				<div class="shadow shadow--tr"></div>
+				<div class="shadow shadow--tl"></div>
+				<div class="shadow shadow--br"></div>
+				<div class="shadow shadow--bl"></div>
+			</div>
+			<div class="inner-shadow"></div>
+			<div class="screen">
+				<!--<div class="ziTitle"><p id="title0">从清晨开始</p></div><div class="release_content"><p id="text0">美好的一天，是从清晨开始</p></div><div id="imglist1" class="contentImg" style="border-radius: 5px;"><span style="overflow: hidden"><img src="http://store.quakoo.com/storage/miaomuhuahui/870*561*a2b70c9d1fde52a9e0af7ee67eb3e04f.jpg" id="img0" style="border-radius: 5px;"></span><div style="clear: both;"></div></div>-->
+			</div>
+		</div>
+	</div>
+</section>
+
+<div class="mask" style="display:none;"></div>
+
+
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!----select2----->
+<!--<script src="../resource/js/plugins/select2/js/select2.js"></script>-->
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+
+
+<script src="../resource/common/common.js"></script>
+
+<!--form引用视频插件-->
+<script src="../resource/js/storge_new.js"></script>
+
+<!--树状结构js-->
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
+<script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<script src="../resource/js/plugins/ckeditor/ckeditor.js" type="text/javascript" charset="utf-8"></script>
+<script src="../resource/js/plugins/ckeditor/lang/zh-cn.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+
+    var ckeditor = CKEDITOR.replace('textarea');
+    var myCKeditor = {
+        getData:function(){
+            return CKEDITOR.instances.textarea.getData();
+        },
+        setData:function(){
+            CKEDITOR.instances.textarea.setData(data);       //设置数据
+        }
+    }
+
+    var pathType=getQueryString("pathType");//  获取教学资料或园所文档的type值
+    var sid=getUserInfo().sid;  
+    var uid = getUserInfo().id;
+    var pathId = getQueryString("id")   ///取的是当前行的pathId
+   
+
+//  点击提交接口
+    function submitSchoolData(){
+        var url = "/document/update";   //接口路径
+       
+//      后台需要的参数   获取
+        var title = $("#title").val();  //标题
+        var content=CKEDITOR.instances.textarea.getData();   //主要内容
+        var image = $("#cover").val();  //图片路径
+
+        var kid = $("#kid").val();  //树状路径的id
+        var playUrl = $('#playUrl').val();  //上传视频地址获取
+        var docUrl = $('#coverPdf').val();  //上传文档地址获取
+		//      后台需要的参数   传值
+        var params  ={};
+        params.schoolId=sid;   //所属的学校
+        params.uid=uid;   //所属老师id
+        params.id=pathId;   //所属当前行id
+        params.title=title;   //标题
+        params.pathType=pathType;   //区分的是教学资料
+	    params.pathId=kid;   //路径id
+        params.content=content;   //内容
+        params.type=$("#type").val();   //选择类型
+        params.videoUrl = playUrl;  //視頻地址
+        params.docUrl = docUrl;  //文档地址
+        params.videoDuration = $('#duration').val(); //视频时长
+        params.videoCover = image;	//视频封面
+		
+		//判断的条件   
+		if(isBlank(title)){
+            layer.msg('标题不能为空', {icon: 2,time:1000, shade: 0.01});
+            return;
+    	}
+		
+        if(isBlank(kid)){
+            layer.msg('路径不能为空', {icon: 2,time:1000, shade: 0.01});
+            return;
+        }
+       
+        if($("#type").val() == 2){
+            if(isBlank(image)){
+                layer.msg('视频封面不能为空', {icon: 2,time:1000, shade: 0.01});
+                return;
+            }
+            if (isBlank(playUrl)) {
+                layer.msg('播放地址不能为空', {icon: 2,time:1000, shade: 0.01});
+                return;
+            }
+        }
+
+
+        if($("#type").val() == 4){
+            if(isBlank(docUrl)){
+                layer.msg('文档不能为空', {icon: 2,time:1000, shade: 0.01});
+                return;
+            }
+        }
+      
+        if(isBlank(content)){
+            layer.msg('内容不能为空', {icon: 2,time:1000, shade: 0.01});
+            return;
+        }
+      
+        
+        if(isBlank(image) && isBlank(docUrl) && isBlank(playUrl)){
+            layer.msg('照片-文档-视频至少选择一个', {icon: 2,time:1000, shade: 0.01});
+            return;
+        }
+		
+		
+		
+        myAjax(url,params,handle);
+        function handle(data,params){
+            if(data && data.success){
+            	layer.confirm('修改成功！', {icon: 1, title:'提示'}, function(index){
+               		closeMyselfInIframe()
+               		reLoad();
+				  	if(pathType == 1){   //跳转的是园所文档
+                        addMenuItem("../document/documentList.html","园所文档");
+                        handleTable("",3, serverUrl+'/document/getPager');
+                    }else{
+	                	addMenuItem("../document/documentGardenList.html","教学资料管理");
+                        handleTable("",3, serverUrl+'/document/getPager');
+                    }
+	                 
+				  layer.close(index);
+				});
+            	
+               
+            }else{
+                var msg = isBlank(data.msg)? "":data.msg;
+                layer.msg("修改失败"+msg, {icon: 2});
+            }
+        }
+    }
+
+
+    //  分类路径开始
+
+    function clearKind() {
+        $('#kid').val(0);
+        $('#pathId').val('');
+        if(selectKindIndex > 0) layer.close(selectKindIndex);
+    }
+    var zNodes =[];
+    var zTree;
+    var setting = {
+        view: {
+            selectedMulti: false, // 禁止多点同时选中的功能
+        },
+        check: {
+            enable: false, 		//显示 checkbox
+            chkboxType:  { "Y": "ps", "N": "ps" }
+        },
+        data: {
+            simpleData: {
+                enable: true  //简单数据模式
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick
+        }
+    };
+
+    function initZtree(){
+//     获取树状结构的接口位置
+        var url = serverUrl+"/path/getAllList";
+        myAjax(url,{sid:getUserInfo().sid,type:pathType},handle);
+
+        function handle(data, param){
+            console.log(data)
+            if(data.success) {
+                var treeData = transTreeData(data.data);
+                zNodes = treeData;
+            }
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            zTree = $.fn.zTree.getZTreeObj("treeDemo");
+            zTree.expandAll(true);
+            //父节点不能选择
+            var nodes = zTree.transformToArray(zTree.getNodes());
+            for (var i=0, l=nodes.length; i < l; i++) {
+                if (nodes[i].isParent){
+                    zTree.setChkDisabled(nodes[i], true);
+                }
+            }
+        }
+    }
+    function transTreeData(data){
+        console.log(data)
+        var temp = [];
+        for(var i = 0;i<data.length;i++){
+            var obj = {};
+            obj.id = data[i].id;
+            obj.sort = data[i].sort;
+            obj.name = data[i].name;
+            obj.pId = data[i].pid;
+            obj.open = data[i].open;
+            temp.push(obj)
+        }
+        return temp;
+    }
+
+
+    //  开启弹框
+    var selectKindIndex;    //自定义弹框变量 用于关闭
+    function selectKind() {
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area2', //设定一个id，防止重复弹出
+            title: '分类结构',
+            area: ['40%','40%'],
+            content: $('.content-view-2'),
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                initZtree();
+                $("#treeDemo").slimScroll({
+                    height: '550px'
+                });
+            }
+        })
+        selectKindIndex = index;
+    }
+
+    // 点击预览进行的操作
+    function preview(rowData) {
+        $("#iphone-x").toggleClass('hidden-phone');
+
+        $(".silver").slideDown()
+        $(".mask").show()
+        $(".phone-id").html(rowData.id)
+        //获取富文本框的内容
+        var iphoneText = CKEDITOR.instances.textarea.getData();
+        //预览标题
+        var iphoneTitle = $("#title").val();
+        $(".screen").html("<p style='text-align: center;width: 100%;font-size: 18px;'>"+iphoneTitle+"</p>"+"<br />"+iphoneText);
+    }
+
+    $(".mask").click(function () {
+        $(this).hide()
+        $(".silver").slideUp()
+    })
+    // 点击预览进行的操作结束
+
+    //   返回的点击事件
+    function zTreeOnClick(event, treeId, treeNode) {
+        $('#kid').val(treeNode.id);    //kid获取的id   也是给后台要传的id
+        
+//      kid = treeNode.id
+        $('#pathId').val(treeNode.name);      //页面展示的内容
+        layer.close(selectKindIndex);
+    };
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $("#btn_submit").click(submitSchoolData);
+            $('#btn_clear_kind').click(clearKind);
+            $("#preview").click(preview);   //点击预览
+        };
+
+        return oInit;
+    };
+
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+
+        //视频要引用的函数传参
+        initUploadForm("#selectVideo", "#showVideo", null, "#playUrl","#duration");
+
+        //修改页面编辑返回接口
+        myAjax("/document/load",{id:pathId},handle);
+        function handle(data,params){
+            if(data && data.success){
+                $("#title").val(data.data.title)
+                $("#cover").val(data.data.imgsJson)
+                $("#lab").val(data.data.lab)
+                $("#playUrl").val(data.data.videoUrl)
+                $("#photoCover").val(data.data.videoCover)
+                $("#wordCover").val(data.data.docUrl)
+                $("#coverPdf").val(data.data.docUrl)
+                CKEDITOR.instances.textarea.setData(data.data.content);
+                $("#duration").val(data.data.videoDuration)
+                $("#pathId").val(data.data.path)
+                $("#kid").val(data.data.pathId)
+            }else{
+                var msg = isBlank(data.msg)? "":data.msg;
+            }
+        }
+//
+   <!--文字編輯器js-->
+        function showErrorAlert (reason, detail) {
+            var msg='';
+            if (reason==='unsupported-file-type') {
+                msg = "Unsupported format " +detail;
+            } else {
+                console.log("error uploading file", reason, detail);
+            }
+            $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">×</button>'+
+                '<strong>File upload error</strong> '+msg+' </div>').prependTo('#alerts');
+        };
+
+
+    });
+</script>
+
+
+<!--树结构节点打开-->
+<script type = "text/html" id = "scriptSelectLocation">
+	<option value='0'>请选择</option>
+	<%for(var i = 0; i < list.length; i++){%>
+	<option value='<%=list[i].id%>'><%=list[i].name%></option>
+	<%}%>
+</script>
+
+
+</body>
+
+</html>

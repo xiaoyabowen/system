@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>固定资产分类管理</title>
+
+    <meta name="keywords" content="后台">
+    <meta name="description" content="">
+
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content  animated fadeInRight">
+    <div id="toolbar" class="btn-group">
+        <button class="btn btn-success  btn-outline" id="btn_init" onclick="initKind()">
+            <i class="fa">初始化</i>
+        </button>
+        &nbsp;
+        <button class="btn btn-success  btn-outline" id="btn_clean_init" onclick="cleanInitKind()">
+            <i class="fa">清除初始化</i>
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>仓库分类</h5>
+                    <div class="ibox-tools">
+                        <a class="close-refresh">
+                            <i class="fa fa-refresh"></i>
+                        </a>
+                    </div>
+
+                </div>
+                <div class="ibox-content">
+                    <ul id="treeDemo" class="ztree">
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>配置数据</h5>
+                    <div class="ibox-tools">
+                        <a class="close-refresh refresh1">
+                            <i class="fa fa-refresh"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+                    <form class="form-horizontal" id="myform">
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">分类名称：</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="name" placeholder="请填写分类名称" class="form-control">
+                                <span class="help-block m-b-none validate">请填写分类名称</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">顺序：</label>
+                            <div class="col-sm-8">
+                                <input type="text" id="sort" placeholder="请填写顺序" class="form-control">
+                                <span class="help-block m-b-none validate">请填写顺序</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-8">
+                                <button type="button" id="btnadd" class="btn btn-outline btn-primary">新增</button>&nbsp;&nbsp;
+                                <button type="button" id="btnedit" class="btn btn-outline btn-warning">更新</button>&nbsp;&nbsp;
+                                <button type="button" id="btndelete" class="btn btn-outline btn-danger">删除</button>&nbsp;&nbsp;
+                                <button type="button" id="btnclear" class="btn btn-outline btn-white">清空</button>&nbsp;&nbsp;
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 自定义js -->
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<script src="../resource/js/plugins/bootstrap-menu/bootstrap-contextmenu.js"></script>
+<script src="../resource/js/plugins/bootstrapzTree/jquery.min.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.exedit.js"></script>
+<script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="../resource/common/common.js?"+Math.random()></script>
+
+<script>
+
+    var sid=getUserInfo().sid;
+    var zNodes =[];
+    var zTree;
+    var nowNode;
+    var setting = {
+        view: {
+            selectedMulti: false
+        },
+        check: {
+            enable: false,
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick,
+        },
+    };
+
+    function initZtree(){
+        var url = serverUrl+"/fixedasset/getAllKinds?sid=" + sid;
+        myAjax(url,{},handle);
+        function handle(data, param){
+            if(data.success) {
+                var treeData = transTreeData(data.data);
+                zNodes = treeData;
+            }
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        }
+    }
+
+    function viewPermissionData(data){
+        $("#name").val(data.name);
+        $("#sort").val(data.sort);
+    }
+
+    function transTreeData(data){
+        var temp = [];
+        for(var i = 0;i<data.length;i++){
+            var obj = {};
+            obj.id = data[i].id;
+            obj.sort = data[i].sort;
+            obj.name = data[i].name;
+            obj.pId = data[i].pid;
+            obj.open = data[i].open;
+            temp.push(obj)
+        }
+        return temp;
+    }
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        viewPermissionData(treeNode);
+        nowNode = treeNode;
+    };
+
+    $(document).ready(function(){
+        initZtree();
+    });
+
+    function removeNode() {
+        var trNode = nowNode;
+        if(isBlank(trNode)){
+            layer.msg("请点击选择一个节点");
+            return;
+        }
+
+        layer.msg("确定删除吗?", {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            ,btn: ['确定','取消']
+            ,yes: function(index){
+                layer.close(index);
+                myAjax(serverUrl+"/fixedasset/deleteKind",{id:trNode.id},handle);
+                function handle(data,param){
+                    if(data.success){
+                        layer.msg("删除成功", {icon: 1});
+//                        zTree.removeNode(trNode, false);
+                        initZtree();
+                    }else{
+                        layer.msg("删除失败! ", {icon: 2});
+                    }
+                }
+            },btn2: function(index, layero){
+            }
+        });
+
+
+    }
+
+    function updateNode() {
+        var trNode = nowNode;
+        if(isBlank(trNode)){
+            layer.msg("请点击选择一个节点");
+            return;
+        }
+        var param = {};
+        var name =  $("#name").val();
+        var sort =  $("#sort").val();
+
+        param.id = trNode.id;
+        param.sid=sid;
+        param.pid=trNode.pId;
+        param.name=name;
+        param.sort=sort;
+        myAjax(serverUrl+"/fixedasset/updataKind",param,handle);
+        function handle(data,param){
+            if(data.success){
+                layer.msg("更新成功", {icon: 1});
+                //zTree.updateNode(trNode, false);
+                initZtree();
+            }else{
+                layer.msg("更新失败", {icon: 2});
+            }
+        }
+    }
+    function addNode() {
+        var trNode = nowNode;
+        var param = {};
+        var name =  $("#name").val();
+        var sort =  $("#sort").val();
+        if(isBlank(name)){
+            showValidate('#name');
+            return ;
+        }
+        if(isBlank(sort)){
+            showValidate('#sort');
+            return ;
+        }
+
+        if(isBlank(trNode)){
+            param.pid = 0;
+        }else{
+            param.pid = trNode.id;
+        }
+        param.name = $.trim(name);
+        param.sort = sort;
+        param.sid=sid;
+
+        myAjax(serverUrl+"/fixedasset/addKind",param,handle);
+        function handle(data,param){
+            if(data.success){
+                layer.msg("添加成功", {icon: 1});
+                initZtree();
+//                data=data.data;
+//                zTree.addNodes(trNode, {
+//                    id: data.id,
+//                    pid: data.pid,
+//                    name: data.name,
+//                    sort : data.sort,
+//                });
+            }else{
+                layer.msg("添加失败", {icon: 2});
+            }
+        }
+    }
+
+
+    function clearDom(){
+        nowNode = '';
+        $("#name").val('');
+        $("#sort").val('');
+    }
+    function refreshTree(){
+        nowNode = '';
+        initZtree();
+        $("#myform")[0].reset();
+    }
+    
+    function initKind() {
+        layer.msg("确定要初始化分类吗？", {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            ,btn: ['确定','取消']
+            ,yes: function(index){
+                layer.close(index);
+                var url = serverUrl+"/fixedasset/initKind?sid=" + sid;
+                var result = {succ:'初始化成功!',fail:'初始化失败'};
+                myAjax(url,{},handle);
+                function handle(data, param){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        initZtree();
+                    }else{
+                        layer.msg(result.fail+msg, {icon: 2,shade: 0.01});
+                    }
+                }
+            },btn2: function(index, layero){
+            }
+        });
+    }
+
+    function cleanInitKind() {
+        layer.msg("确定要清除初始化分类吗？", {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            ,btn: ['确定','取消']
+            ,yes: function(index){
+                layer.close(index);
+                var url = serverUrl+"/fixedasset/cleanInitKind?sid=" + sid;
+                var result = {succ:'清除成功!',fail:'清除失败'};
+                myAjax(url,{},handle);
+                function handle(data, param){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        initZtree();
+                    }else{
+                        layer.msg(result.fail+msg, {icon: 2,shade: 0.01});
+                    }
+                }
+            },btn2: function(index, layero){
+            }
+        });
+    }
+    
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btnadd').click(addNode);
+            $('#btndelete').click(removeNode);
+            $('#btnedit').click(updateNode);
+            $('#btnclear').click(clearDom);
+            $('.close-refresh').click(refreshTree);
+        };
+
+        return oInit;
+    };
+
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+
+        $("#treeDemo").slimScroll({
+            height: '400px'
+        });
+    });
+
+</script>
+</body>
+
+</html>

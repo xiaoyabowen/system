@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>班级通知管理</title>
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+
+
+</head>
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content animated  fadeInDown  content-view  ">
+
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>精彩瞬间列表</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+
+                    <form class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">是否私密</label>
+                            <div class="col-sm-2">
+                                <select id="privateStatus" class="form-control">
+                                    <option value="">--请选择状态--</option>
+                                    <option value="0">正常</option>
+                                    <option value="1">私密</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-2 control-label">状态筛选</label>
+                            <div class="col-sm-3">
+                                <select id="checkStatus" class="form-control">
+                                    <option value="">--请选择状态--</option>
+                                    <option value="1">待审核</option>
+                                    <option value="0">审核通过</option>
+                                    <option value="2">未通过</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label"></label>
+                            <div class="col-sm-2">
+                                <button type="button" class="btn  btn-info " id="btn_search" name="like_search">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+
+<script src="../resource/common/common.js?" +Math.random()></script>
+
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+
+
+<script src="../resource/common/newscontent.js"></script>
+
+<script>
+    var cid = getQueryString("id");
+    var sid = getUserInfo().sid;
+
+    var $table = $('#tb_table');
+
+
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl + '/timeline/clazzTimeline',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                showRefresh: true,                   //是否显示刷新按钮
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 30, 50],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+                onClickRow:function(){   //点击某一行的时候触发事件
+                   console.log(arguments)
+                },
+                queryParams: function (params) {
+                    var checkStatus = $('#checkStatus').val();   // 审核状态
+                    var privateStatus = $('#privateStatus').val();    //是否私密状态
+                    var query = {
+                        token: getUserInfo().token,
+                        page: params.offset / params.limit + 1,
+                        size: params.limit,
+                        cid: cid,
+                        sid: sid,
+                        checkStatus: checkStatus,   // 审核状态
+                        privateStatus: privateStatus   //是否私密状态
+                    }
+
+                    return query;
+                },
+            });
+        };
+        $table.on('refresh.bs.table', function (params) {
+
+        });
+        return oTableInit;
+    };
+    var state = {'1': '上线', '0': '下线'};
+    var columns = [
+        {
+            field: "id", title: "序号",align:"center",formatter: function (value, row, index) {
+            return index+1;
+        }},
+        {
+            field: "content", title: "精彩瞬间内容", align: "center", formatter: function (value, rows, index) {
+                return value;
+            },cellStyle:{
+                css:{"display":"-webkit-box","-webkit-box-orient":"vertical","-webkit-line-clamp":"2","overflow":"hidden","text-overflow":"ellipsis","line-height":"2"}
+            }
+        },
+        {
+            field: "tags", title: "标签", align: "center", formatter: function (value, rows, index) {
+            var tag = "";
+            if (rows.tags) {
+                for (var i = 0; i < rows.tags.length; i++) {
+                    tag += rows.tags[i]+" ";
+                }
+            }
+            return tag;
+        }
+        },
+        {
+            field: "supportNum", title: "点赞数", align: "center", formatter: function (value, rows, index) {
+                return value;
+            }
+        },
+        {
+            field: "commentNum", title: "评论数", align: "center", formatter: function (value, rows, index) {
+                return value;
+            }
+        },
+        {
+            field: "favoriteNum", title: "收藏数量", align: "center", formatter: function (value, rows, index) {
+                return value;
+            }
+        },
+        {
+            field: "user", title: "发布人", align: "center", formatter: function (value, rows, index) {
+                return value.name;
+            }
+        },
+        {
+            field: "images", title: "图片", align: "center", formatter: function (value, rows, index) {
+            var thumb="";
+            for(var i = 0;i<rows.images.length;i++){
+                thumb += ImageThumb(rows.images[i], 80, 80, false)+" ";
+            }
+            return thumb;
+            }
+        },
+        {
+            field: "checkStatus", title: "审核状态", align: "center", formatter: function (value, rows, index) {
+                checkStatusIf = rows.checkStatus;
+                var content = '';
+                if (checkStatusIf == 0) {
+                    content += "<button  class='btn btn-xs btn-success'>审核通过</button>";
+                } else if (checkStatusIf == 1) {
+                    content += "<button  class='btn btn-xs btn-default statusid' data-statusId='1' onclick=\'updateStatus(" + JSON.stringify(rows) + ",0)'>审核通过</button>&nbsp;<button  class='btn btn-xs btn-default statusid' data-statusId='2' onclick='updateStatus(" + JSON.stringify(rows) + ",2)'>审核不通过</button>";
+                } else if (checkStatusIf == 2) {
+                    content += "<button  class='btn btn-xs btn-danger'>审核未通过</button>";
+                }
+                return content;
+            }
+        },
+        {
+            field: "privateStatus", title: "是否私密", align: "center", formatter: function (value, rows, index) {
+                if (value == 0) {
+                    return '正常';
+                }
+                if (value == 1) {
+                    return '私密';
+                }
+            }
+        },
+/*        {
+            field: "checkUid", title: "审核人", align: "center", formatter: function (value, rows, index) {
+                return value;
+            }
+        },*/
+        {
+            field: "name", title: "编辑", align: "center", formatter: function (value, rows, index) {
+                var html = '';
+                html += '<a  class="btn btn-danger btn-sm btn-outline" href="javascript:void(0);" title="删除" onclick="removeData(' + rows.id + ')" >删除</a>';
+                return html;
+            }
+        },
+
+    ]
+
+    //删除
+    function removeData(id) {
+        var url = "/timeline/delete";
+        var param = {tid: id};
+        var result = {succ: '删除成功!', fail: '删除失败'};
+        layer.msg("确定要删除该精彩瞬间吗？", {
+            shade: [0.1, '##f5f5f5'], btnAlign: 'c',
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+                myAjax(url, param, handle);
+
+                function handle(data, param) {
+                    var msg = (data.msg == undefined ? '' : data.msg);
+                    if (data.success) {
+                        layer.msg(result.succ, {icon: 1, shade: 0.01,time:500});
+                        handleTable(id, 4);
+                    } else {
+                        layer.msg(msg, {icon: 2, shade: 0.01});
+                    }
+                }
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+    //审核状态
+    function updateStatus(obj,newCheckStatus) {
+
+        // 后台需要的参数
+        var params = {};
+        params.id = obj.id;    //当前id
+        params.checkStatus = newCheckStatus;  //审核当前的状态值
+        params.uid = obj.uid;   //家长id
+        params.sid = obj.sid;   //校园id
+        params.cid = obj.cid;   //班级id
+        params.childId = obj.childId;   //儿童id
+        params.userType = obj.userType;   //用户类型
+        params.title = obj.title;    //标题
+        params.source = obj.source;   //来源
+        params.desc = obj.desc;     //描述
+        params.supportNum = obj.supportNum;   //点赞数
+        params.commentNum = obj.commentNum;   //评论数
+        params.favoriteNum = obj.favoriteNum;   //收藏数量
+        params.content = obj.content;   //通知内容
+        params.privateStatus = obj.privateStatus;   //是否私密
+        params.checkUid = obj.checkUid;   //审核人
+        params.tagIdJson = obj.tagIdJson;   //
+
+        myAjax("/timeline/updatCheckStatus", params, handle);
+
+        function handle(data, params) {
+            if (data && data.success) {
+                layer.msg('更新成功!', {icon: 1, shade: 0.01});
+                handleTable(params,1,'');
+            } else {
+                layer.msg('更新失败!', {icon: 2, shade: 0.01});
+            }
+        }
+    }
+
+
+    // bootstrapTable 隐藏列
+    // $('#tb_table').bootstrapTable('hideColumn', "childId");
+
+
+
+    function openPOP() {
+        search();
+    }
+
+    function searchSchool() {
+        handleTable("", 5, "");    //分页刷新
+    }
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click(openPOP);
+            $('#btn_search').click(searchSchool);   //  点击搜索
+        };
+        return oInit;
+    };
+
+    //主函数
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+</script>
+</html>

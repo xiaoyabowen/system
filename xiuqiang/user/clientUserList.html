@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>家长用户列表</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInDown  content-view  ">
+        <!-- Panel Other -->
+        <form method="get" class="form-horizontal" id="userForm">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">用户名称</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control hiddenid" id="id">
+                    <input type="text" class="form-control" id="name" placeholder="请输入用户名称">
+                    <span class="help-block m-b-none validate">请输入用户名称</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="pwd" placeholder="请输入密码">
+                    <span class="help-block m-b-none validate">请输入密码</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">手机号</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="phone1" placeholder="请输入用户手机号" onkeyup="value=value.replace(/[^\d]/g,'')">
+                    <span class="help-block m-b-none validate">请输入用户手机号</span>
+                </div>
+            </div>
+            <div class="hr-line-dashed"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">所属幼儿园</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="school" placeholder="请输入所属幼儿园">
+                    <span class="help-block m-b-none validate">请输入所属幼儿园</span>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!-- Panel Other -->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>用户管理</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-right">姓名</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="username" class="form-control" placeholder="请输入姓名" />
+                                </div>
+                                <label class="col-sm-1 control-label text-right">手机号</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="phone" class="form-control" placeholder="请输入用户手机号" onkeyup="value=value.replace(/[^\d]/g,'')" />
+                                </div>
+                                <label class="col-sm-1 control-label text-right">幼儿园名称</label>
+                                <div class="col-sm-2">
+                                    <select name="" id="schoolId" class="js-data-example-ajax form-control">
+                                    </select>
+                                    <!-- <input type="text" id="schoolId" class="form-control" placeholder="请输入幼儿园名字"/> -->
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">开始时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="startTime" class="form-control" placeholder="请选择开始时间" readonly>
+                                </div>
+                                <label class="col-sm-1 control-label">结束时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="endTime" class="form-control" placeholder="请选择结束时间" readonly>
+                                </div>
+                                <label class="col-sm-1 control-label">状态筛选</label>
+                                <div class="col-sm-2">
+                                    <select name="" id="uStatus" class="form-control">
+                                        <option value="-1">--请选择状态--</option>
+                                        <option value="0">正常</option>
+                                        <option value="1">失效</option>
+                                    </select>
+                                </div>
+                                <label class="col-sm-1 control-label"></label>
+                                <div class="col-sm-2">
+                                    <button type="button" class="btn  btn-info " id="user_search" name="like_search" onclick="seekTable()">
+                                        <i class="fa fa-search"></i> 点击查询
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <table id="tb_table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Panel Other -->
+    </div>
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+    <!-- Bootstrap table -->
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../resource/js/plugins/laydate/laydate.js"></script>
+    <script src="../resource/js/plugins/select2/js/select2.js"></script>
+    <script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+    <script src="../resource/common/newscontent.js"></script>
+    <script src="../resource/common/common.js?" +Math.random()></script>
+    <script>
+    initSelectSubject("#schoolId", "/school/getAllListByName?token=" + encodeURI(getUserInfo().token), false, true);
+    var $table = $('#tb_table');
+    //初始化
+    function Table(url) {
+        $table.bootstrapTable('destroy');
+        var seekP;
+        if (url == getUserList) {
+            seekP = function(params) {
+                return {
+                    token: getUserInfo().token,
+                    page: (params.offset / params.limit) + 1,
+                    size: params.limit,
+                };
+            }
+        } else if (url == seekUserList) {
+            seekP = function(params) {
+                var name = $("#username").val();
+                var phone = $("#phone").val();
+                var startTime = $("#startTime").val();
+                var endTime = $("#endTime").val();
+                var schoolId = $("#schoolId option:selected").val();
+                if (isBlank(name)) {
+                    name = "";
+                }
+                if (isBlank(schoolId)) {
+                    schoolId = 0;
+                }
+                if (isBlank(phone)) {
+                    phone = "";
+                }
+                return {
+                    token: getUserInfo().token,
+                    page: (params.offset / params.limit) + 1,
+                    size: params.limit,
+                    phone: phone,
+                    name: name,
+                    startTime: isBlank(startTime) ? 0 : new Date(startTime).getTime(),
+                    endTime: isBlank(endTime) ? 0 : new Date(endTime).getTime(),
+                    schoolId: isBlank(schoolId) ? -1 : schoolId,
+                    type:1,
+                    status: $('#uStatus').val(),
+                };
+            }
+        }
+        $table.bootstrapTable({
+            url: url, //请求后台的URL（*）
+            method: 'get', //请求方式（*）
+            toolbar: '#toolbar', //工具按钮用哪个容器
+            //                    striped: true,                      //是否显示行间隔色
+            cache: false, //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true, //是否显示分页（*）
+            sortable: false, //是否启用排序
+            sortOrder: "asc", //排序方式
+            sidePagination: "server", //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1, //初始化加载第一页，默认第一页
+            pageSize: 10, //每页的记录行数（*）
+            pageList: [10, 20, 30], //可供选择的每页的行数（*）
+            //                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+            strictSearch: true,
+            showColumns: true, //是否显示所有的列
+            showRefresh: true, //是否显示刷新按钮
+            minimumCountColumns: 2, //最少允许的列数
+            clickToSelect: true, //是否启用点击选中行
+            //              height: 600,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id", //每一行的唯一标识，一般为主键列
+            //                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+            cardView: false, //是否显示详细视图
+            detailView: false, //是否显示父子表
+            columns: [
+                { field: "id", ttitle: "序号",align:"center",formatter: function (value, row, index) {
+                    return index+1;
+                }},
+                {
+                    field: "icon",
+                    title: "用户头像",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        if (value) {
+                            var imageThumb = ImageThumb(value, 80, 80, false);
+                            return imageThumb;
+                        } else {
+                            return '-';
+                        }
+                    }
+                },
+                {
+                    field: "type",
+                    title: "角色",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        var Type = row.type;
+                        var content = '';
+                        if (Type == 0) {
+                            content = '学生';
+                        } else if (Type == 1) {
+                            content = '父亲';
+                        } else if (Type == 2) {
+                            content = '母亲';
+                        } else if (Type == 3) {
+                            content = '爷爷';
+                        } else if (Type == 4) {
+                            content = '奶奶';
+                        } else if (Type == 5) {
+                            content = '外公';
+                        } else if (Type == 6) {
+                            content = '外婆';
+                        } else if (Type == 7) {
+                            content = '其他';
+                        }
+                        return content;
+                    }
+                },
+                {
+                    field: "name",
+                    title: "姓名",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        return value;
+                    }
+                },
+                {
+                    field: "phone",
+                    title: "手机号",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        return value;
+                    }
+                },
+                {
+                    field: "password",
+                    title: "密码",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        return value;
+                    }
+                },
+                {
+                    field: "plat",
+                    title: "手机型号",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        return value;
+                    }
+                },
+                {
+                    field: "platVersion",
+                    title: "系统版本",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        return value;
+                    }
+                },
+                {
+                    field: "ctime",
+                    title: "创建时间",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        return formatDateTime(value);
+                    }
+                },
+                {
+                    field: "lastDay",
+                    title: "最后登录时间",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        return formatDateTime(value);
+                    }
+                },
+                {
+                    field: "school",
+                    title: "所属幼儿园",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        return value;
+                    }
+                },
+                {
+                    field: "children",
+                    title: "儿童信息",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        var html = '';
+                        for (var i = 0; i < row.children.length; i++) {
+                            html = html + "姓名:" + row.children[i].name + "&nbsp班级:" + row.children[i].clazz;
+                            if (i < (row.children.length - 1)) {
+                                html = html + "<br>";
+                            }
+                        }
+                        return html;
+                    }
+                },
+                {
+                    field: "status",
+                    title: "状态",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        var status = row.status;
+                        var html = '';
+                        if (status == 0) {
+                            html += "<a  class='btn btn-info btn-sm  btn-success' disabled  href='javascript:void(0)' >正常</a>";
+                        } else if (status == 1) {
+                            html += "<a  class='btn btn-info btn-sm btn-warning' disabled href='javascript:void(0)' >失效</a>";
+                        }
+                        return html;
+                    }
+                },
+                {
+                    field: "id",
+                    title: "操作",
+                    align: "center",
+                    formatter: function(value, row, index) {
+                        var data = JSON.stringify(row);
+                        var Status = row.status;
+                        var html;
+                        if (Status == 0) {
+                            html = "<a  class='btn btn-info btn-danger btn-sm btn-outline' href='javascript:void(0)'  onclick=\'removeData(" + data + ")\'>删除</a>";
+                            html += '&nbsp';
+                        } else if (Status == 1) {
+                            html = "<a  class='btn btn-info btn-success btn-sm btn-outline' href='javascript:void(0)'  onclick=\'removeData(" + data + ")\'>恢复</a>";
+                            html += '&nbsp';
+                        }
+                        html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)'  onclick=\'editUser(" + data + ")\'>编辑</a>";
+                        return html;
+                    }
+                }
+
+            ],
+            //          showFooter:true,            //表格底部
+            queryParamsType: 'limit', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+            // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+            queryParams: seekP,
+        });
+    };
+    // 搜索
+    function seekTable() {
+        // $table.bootstrapTable('refresh', {url: seekUserList});
+        Table(seekUserList);
+    };
+    //初始化页面上面的按钮事件
+    var ButtonInit = function() {
+        var oInit = new Object();
+        oInit.Init = function() {};
+        return oInit;
+    };
+    //删除 == 切换状态
+    function removeData(rowData) {
+        var url;
+        var sid = rowData.id;
+        var param = { id: sid };
+
+        var sta = rowData.status;
+        console.log(sta);
+        if (sta == 0) {
+            url = '/user/deleteUser';
+        } else if (sta == 1) {
+            url = '/user/recoverUserStatus';
+        }
+        layer.msg("确定执行该操作吗？", {
+            shade: [0.1, '##f5f5f5'],
+            btnAlign: 'c',
+            time: 0 //不自动关闭
+                ,
+            btn: ['确定', '取消'],
+            yes: function(index) {
+                layer.close(index);
+                myAjax(url, param, handle);
+
+                function handle(data, param) {
+                    if (data.success == true) {
+                        layer.msg('修改成功', { icon: 1, shade: 0.01 });
+                        handleTable('', 3, getUserList);
+                    } else {
+                        layer.msg('操作失败，请重试！', { icon: 2, shade: 0.01 });
+                    }
+                }
+            },
+            btn2: function(index, layero) {}
+        });
+    }
+
+    //编辑
+    function editUser(data) {
+        var index = layer.open({
+            type: 1,
+            shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '400px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function() {
+                layer.close(index);
+                var url = '/user/updateUser';
+                var params = {
+                    id: data.id,
+                    name: $("#name").val(),
+                    password: $("#pwd").val(),
+                    phone: $("#phone1").val(),
+                    school: $("#school").val()
+                };
+                myAjax(url, params, handle);
+
+                function handle(data) {
+                    if (data.success == true) {
+                        layer.msg('修改成功', { icon: 1, shade: 0.01 });
+                        handleTable('', 3, getUserList);
+                    } else {
+                        layer.msg('操作失败，请重试！', { icon: 2, shade: 0.01 });
+                    }
+                };
+            },
+            btn2: function() {},
+            success: function(layero, index) {
+                echoUser(data);
+            }
+        });
+    }
+
+    //数据回显
+    function echoUser(data) {
+        $("#name").val(data.name);
+        $("#pwd").val(data.password);
+        $("#phone1").val(data.phone);
+        $("#school").val(data.school);
+    }
+
+
+    $(function() {
+        Table(getUserList);
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        laydate.render({
+            elem: '#startTime',
+            type: 'datetime'
+        });
+        laydate.render({
+            elem: '#endTime',
+            type: 'datetime'
+        });
+    });
+    </script>
+</body>
+
+</html>

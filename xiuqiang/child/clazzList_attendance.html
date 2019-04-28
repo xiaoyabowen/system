@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>班级</title>
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    
+
+</head>
+
+<body class="gray-bg">
+    
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!-- Panel Other -->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>班级考勤</h5>
+            </div>
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+
+                        <form class="form-horizontal" role="form">
+                          
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">开始时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="startTime" class="form-control" placeholder="请选择开始时间" readonly>
+                                </div>
+                                <label class="col-sm-1 control-label">结束时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="endTime" class="form-control" placeholder="请选择结束时间" readonly>
+                                </div>
+                                
+                                <label class="col-sm-1 control-label"></label>
+                                <div class="col-sm-2" >
+                                    <button type="button" class="btn  btn-info " id="search" name="like_search">
+                                        <i class="fa fa-search"></i> 点击查询
+                                    </button>
+                                </div>
+                            </div>
+
+                        </form>
+                        
+       					
+       					 <div class="hr-line-dashed"></div>
+                         <div class="form-group">
+                         		<label class="col-sm-2 control-label" >学校整体考勤：</label>
+                         </div>
+                         <div class="form-group" id="schoolContent">
+                         		<label class="col-sm-1 control-label" id="totalNum">总人数</label>
+                         		<label class="col-sm-1 control-label" id="lateNum">迟到人数</label>
+                         		<label class="col-sm-1 control-label" id="leaveEarlyNum">早退人数</label>
+                         		<label class="col-sm-1 control-label" id="attendanceNum">出勤人数</label>
+                         		<label class="col-sm-1 control-label" id="noCardNum">缺卡人数</label>
+                         		<label class="col-sm-1 control-label" id="leaveNum">请假次数</label>
+                         		<label class="col-sm-1 control-label" id="attendanceRate">出勤率</label>
+                         </div>
+                         <div class="form-group"></div>
+                        <table id="tb_table" ></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Panel Other -->
+    </div>
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+    <script src="../resource/js/content.js?v=1.0.0"></script>
+
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+
+    <!-- Bootstrap table -->
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+
+    <script src="../resource/common/common.js?"+Math.random()></script>
+
+    <script src="../resource/common/area/City_data.js"></script>
+    <script src="../resource/common/area/areadata.js"></script>
+    
+    <script src="../resource/js/plugins/laydate/laydate.js"></script>
+    
+    <script src="../resource/common/newscontent.js"></script>
+
+    <script>
+        var schoolId=getUserInfo().sid;
+    		
+    	
+        var $table =  $('#tb_table');
+        var TableInit = function (columns) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $table.bootstrapTable({
+                    url: serverUrl+'/clazz/getAllWithChildrenAttendance',         //请求后台的URL（*）
+                    method: 'get',                      //请求方式（*）
+                    toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: false,                     //是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                   sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    showRefresh: true,                   //是否显示刷新按钮
+                    pageNumber:1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [10,30,50],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: true,
+                    showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                    minimumCountColumns: 2,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                   //是否显示父子表
+                    columns: columns,
+                    queryParams: function (params) {
+                        var startTime = $("#startTime").val();
+                        var endTime = $("#endTime").val();
+	                    var query = {
+                            token:getUserInfo().token,
+	                        page: params.offset+1,
+	                        size: params.limit,
+	                        sid:schoolId,
+	                        startTime:isBlank(startTime)?0:new Date(startTime).getTime(),
+	                        endTime :isBlank(endTime)?0:new Date(endTime).getTime()
+	                            
+	                    }
+	                    
+
+                    return query;
+                },
+                });
+            };
+            $table.on('refresh.bs.table', function (params) {
+
+                    });
+            return oTableInit;
+        };
+        var state = {'1':'上线', '0':'下线'};
+        var columns = [
+           
+            {field: "name", title: "班级名称",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+          
+            {field: "clientAttendanceInfo", title: "总人数",align: "center", formatter: function (value, row, index) {
+                return value.totalNum;
+            }},
+             {field: "clientAttendanceInfo", title: "迟到人数",align: "center", formatter: function (value, row, index) {
+                return value.lateNum;
+            }},
+             {field: "clientAttendanceInfo", title: "早退人数",align: "center", formatter: function (value, row, index) {
+                return value.leaveEarlyNum;
+            }},
+             {field: "clientAttendanceInfo", title: "出勤人数",align: "center", formatter: function (value, row, index) {
+                return value.attendanceNum;
+            }},
+             {field: "clientAttendanceInfo", title: "缺卡人数",align: "center", formatter: function (value, row, index) {
+                return value.noCardNum;
+            }},
+             {field: "clientAttendanceInfo", title: "请假次数",align: "center", formatter: function (value, row, index) {
+                return value.leaveNum;
+            }},
+             {field: "clientAttendanceInfo", title: "出勤率",align: "center", formatter: function (value, row, index) {
+                return value.attendanceRate;
+            }},
+            
+            
+            {field: "name", title: "操作", align: "center", formatter: function (value, row, index) {
+
+                var html = '';
+                html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="查看所有" onclick=\'clazzDetail('+JSON.stringify(row)+')\'>查看班级考勤详情</a>';
+                html +='&nbsp';
+                return html;
+            }},
+
+        ]
+
+     
+       
+        
+		function clazzDetail(data){
+			 addMenuItem("../child/childrenList_attendance.html?id="+data.id,"班级考勤详情");
+		} 
+		
+		
+		function getSchoolInfo(callBack){
+			var startTime = $("#startTime").val();
+            var endTime = $("#endTime").val();
+            startTime=isBlank(startTime)?0:new Date(startTime).getTime(),
+	        endTime=isBlank(endTime)?0:new Date(endTime).getTime()
+            var param={};
+            param.startTime=startTime;
+            param.endTime=endTime;
+            param.schoolId=schoolId;
+            param.type=1;
+            myAjax("/attendance/getStatisticsBySchool",param,handle)
+            function handle(data,param){
+				if(data){
+                     $('#totalNum').html("总人数"+data.totalNum);
+                     $('#lateNum').html("迟到人数"+data.lateNum);
+                     $('#leaveEarlyNum').html("早退人数"+data.leaveEarlyNum);
+                     $('#attendanceNum').html("出勤人数"+data.attendanceNum);
+                     $('#noCardNum').html("缺卡人数"+data.noCardNum);
+                     $('#leaveNum').html("请假次数"+data.leaveNum);
+                     $('#attendanceRate').html("出勤率"+data.attendanceRate);
+                   
+                    if(callBack){
+                    		callBack();
+                    }
+                }
+            }
+        }
+		
+		
+		
+		
+		
+
+
+         //初始化页面上面的按钮事件
+        var ButtonInit = function () {
+            var oInit = new Object();
+            oInit.Init = function () {
+                $('#search').click(reInitTable);
+                getSchoolInfo();
+            };
+
+            return oInit;
+        };
+
+        function reInitTable(){
+            $table.bootstrapTable('refreshOptions',{page:1});
+            getSchoolInfo();
+        }
+        
+        //主函数
+        $(function () {
+            var Table = new TableInit(columns);
+            Table.Init();
+            var oButtonInit = new ButtonInit();
+            oButtonInit.Init();
+             laydate.render({
+                elem: '#startTime'
+                ,type: 'datetime'
+            });
+            laydate.render({
+                elem: '#endTime'
+                ,type: 'datetime'
+            });
+        });
+
+    </script>
+</html>

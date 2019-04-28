@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>添加客户</h5>
+        </div>
+        <div class="ibox-content">
+            <form method="get" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">名称</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="name" placeholder="请输入名称" class="form-control">
+                        <label class="help-block m-b-none validate">请输入名称</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label  class="col-sm-3 control-label">性别</label>
+                    <div class="col-sm-6">
+                        <div class="radio radio-info radio-inline ">
+                            <input type="radio" name="sex" id="sex1" value="0" checked>
+                            <label for="sex1">男</label>
+                        </div>
+                        &nbsp; &nbsp; &nbsp; &nbsp;
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" name="sex" id="sex2" value="1" >
+                            <label for="sex2">女</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">手机号</label>
+                    <div class="col-sm-6">
+                        <input type="text" maxlength="11" id="phone"  placeholder="请输入手机号" class="form-control"
+                               maxlength="11"
+                               onkeyup = "return ValidateNumber(this,value)"
+                               onpaste = "return ValidateNumber(this,value)"
+                                >
+                        <label class="help-block m-b-none validate">手机号为空或输入有误</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">头像</label>
+                    <div class="col-sm-6 ">
+                        <div class="input-group">
+                            <input id="cover" type="hidden">
+                            <input id="photoCover" type="text" class="form-control" placeholder="请选择图片" readonly>
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                                </span>
+
+                        </div>
+                        <img src="/resource/img/upload.png" class="img-rounded" id="iconView" width="15%"
+                             height="100%" style="display: none">
+                        <span class="help-block m-b-none validate">请上传图片</span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">年龄</label>
+
+                    <div class="col-sm-6">
+                        <input type="text" id="age" placeholder="请输入年龄"
+                               onkeyup = "return ValidateNumber(this,value)"
+                               onpaste = "return ValidateNumber(this,value)"
+                               class="form-control">
+                        <label class="help-block m-b-none validate">请输入年龄</label>
+                    </div>
+                </div>
+                <!--<div class="hr-line-dashed"></div>-->
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label">*微信号</label>-->
+                    <!--<div class="col-sm-6">-->
+                        <!--<input type="text" id="wxid" placeholder="请输入微信号" class="form-control">-->
+                        <!--<label class="help-block m-b-none validate">请输入微信号</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="hr-line-dashed"></div>-->
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label">邮箱</label>-->
+                    <!--<div class="col-sm-6">-->
+                        <!--<input type="text" id="email" placeholder="请输入邮箱" class="form-control">-->
+                        <!--<label class="help-block m-b-none validate">请输入邮箱</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="hr-line-dashed"></div>-->
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label">地址</label>-->
+                    <!--<div class="col-sm-6">-->
+                        <!--<input type="text" id="address" placeholder="请输入地址" class="form-control">-->
+                        <!--<label class="help-block m-b-none validate">请输入地址</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">备注</label>
+                    <div class="col-sm-6">
+                        <textarea id="remark" name="comment"  rows='8' class="form-control" required="" aria-required="true"    placeholder="请填写备注"></textarea>
+                        <span class="help-block m-b-none validate">请填写备注</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-3">
+                        <button class="btn btn-primary" type="button" id="btn">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"
+               accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+    </form>
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script>
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn').click(submitData)
+        };
+
+        return oInit;
+    };
+
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        laydate.render({
+            elem: '#birthday'
+        });
+    });
+
+    function submitData() {
+        var params = {};
+        var url = "/customer/addUser";
+        var name = $("#name").val();
+        var sex =  getRadioChecked("sex");
+        var phone = $("#phone").val();
+        var age = $("#age").val();
+//        var birthday = $("#birthday").val();
+//        var wxid = $("#wxid").val();
+//        var email = $("#email").val();
+//        var address = $("#address").val();
+        var remark = $("#remark").val();
+        var icon = $('#cover').val();
+        //验证
+        if (isBlank(name)) {
+            showValidate($("#name").parent());
+            return;
+        }
+        if (isBlank(phone)) {
+            showValidate($("#phone").parent());
+            return;
+        }
+
+        if (isBlank(age)) {
+            showValidate($("#age").parent());
+            return;
+        }
+
+        params.name = name;
+        params.sex = sex[0];
+        params.phone = phone;
+        params.age = age;
+        params.icon = icon;
+        ajaxSubmit(url, params, function(data){
+            var msg = (data.msg == undefined ? '' : '' + data.msg);
+            if (data && data.success) {
+                msgSuccess("添加成功");
+                reLoad();
+            } else {
+                msgFail("添加失败");
+            }
+        });
+    }
+
+
+
+</script>
+</body>
+
+</html>

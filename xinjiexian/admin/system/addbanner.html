@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>添加图片</h5>
+        </div>
+        <div class="ibox-content">
+            <form method="get" class="form-horizontal">
+               <div class="form-group">
+                    <label class="col-sm-3 control-label">图片类型</label>
+                    <div class="col-sm-5">
+                        <div class="radio radio-info radio-inline">
+                            <input type="radio" id="inlineRadio1" value="1" name="addtype" checked="true">
+                            <label for="inlineRadio1">轮播图片  </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+
+                <div class="form-group bannerTerminal">
+                    <label class="col-sm-3 control-label">轮播显示终端</label>
+                    <div class="col-sm-5">
+                        <select name="" id="bannerTerminal" class="form-control">
+                            <option value="0">--请选择显示终端--</option>
+                            <option value="1">家长端</option>
+                            <option value="2">教师端</option>
+                            <option value="3">园务端</option>
+                            <option value="4">考勤机</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="hr-line-dashed banner"></div>
+
+                <div class="form-group banner">
+                    <label class="col-sm-3 control-label">图片位置</label>
+                    <div class="col-sm-5">
+                        <select name="" id="bannerType" class="form-control">
+                            <option value="0">--请选择轮播类型--</option>
+                            <option value="1">首页</option>
+                            <option value="2">我们班</option>
+                            <option value="3">通知</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="hr-line-dashed banner"></div>
+
+                <!--<div class="form-group banner">-->
+                    <!--<label class="col-sm-3 control-label">开始时间</label>-->
+                    <!--<div class="col-sm-5">-->
+                        <!--<input type="text" class="form-control" id="ctime" placeholder="请选择开始时间">-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="hr-line-dashed banner"></div>-->
+
+
+                <div class="form-group banner">
+                    <label class="col-sm-3 control-label">失效时间</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="utime" placeholder="请选择失效时间">
+                    </div>
+                </div>
+                <div class="hr-line-dashed banner"></div>
+
+
+                <div class="form-group outer">
+                    <label class="col-sm-3 control-label">图片链接</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" id="url">
+                        <span class="help-block m-b-none validate">请输入图片链接</span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed outer"></div>
+
+                <!--<div class="form-group">-->
+                    <!--<label class="col-sm-3 control-label">地区关联</label>-->
+                    <!--<div class="col-sm-5">-->
+                        <!--<div class="radio radio-info radio-inline">-->
+                            <!--<input type="radio" id="areaRadio1" value="1" name="areatype" checked="">-->
+                            <!--<label for="areaRadio1">全国</label>-->
+                        <!--</div>-->
+                        <!--<div class="radio radio-info radio-inline">-->
+                            <!--<input type="radio" id="areaRadio2" value="2" name="areatype">-->
+                            <!--<label for="areaRadio2">部分地区</label>-->
+                        <!--</div>-->
+                        <!--<div class="hr-line-dashed totalarea"></div>-->
+                        <!--<input readonly type="text" class="form-control totalarea"  id="mutiarea" value="请点击选择" data-value=""  onclick="appendCity(this,'duoxuan')" >-->
+                        <!--<label class="help-block m-b-none selectArea validate" >请选择参考区域</label>-->
+                    <!--</div>-->
+
+                <!--</div>-->
+                <!--<div class="hr-line-dashed "></div>-->
+
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">上传图片</label>
+                    <div class="col-sm-5 ">
+                        <div class="input-group">
+                            <input  id="cover" type="hidden">
+                            <input id="photoCover" type="text" disabled="disabled" class="form-control" placeholder="请选择图片">
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                            </span>
+
+                        </div>
+                        <img src="" class="img-rounded" id="iconView" width="15%" height="100%" style="display: none" >
+                        <span class="help-block m-b-none validate">请上传图片</span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="col-sm-3 ">
+                        <button class="btn btn-primary" type="button" id="btn_submit">添加</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"   accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe" />
+    </form>
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<script src="../resource/common/common.js"></script>
+<script src="../resource/common/area/City_data.js"></script>
+<script src="../resource/common/area/areadata.js"></script>
+<script>
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_submit').click(submitData);
+            $("input[name='areatype']").change(areaChange);
+        };
+
+        return oInit;
+    };
+
+
+
+//     添加轮播
+//     banner/addBanner
+//     需要的参数：
+//     areajson: 区域json 目前悟空 arr
+//     url: 图片链接 string
+//     image: 轮播图片地址 string
+//     bannerType: 图片位置 string
+//     terminalType: 显示终端 string
+
+    //提交数据
+    function submitData(){
+        var ajaxurl="/banner/addBanner";
+        var param = {};
+        var areaIdList;
+        var url = $("#url").val();
+        var image = $("#cover").val();
+        var status = $('#status option:selected').val();
+        // var areaType = $('input[name=areatype]:checked').val();
+        // //获取地区ids
+        // var areaType = $('input[name=areatype]:checked').val();
+        // if(areaType == 1){
+        //     param.areajson='["0"]';
+        // }else{
+        //     areaIdList = getSelectArea();
+        //     if(areaIdList.length < 1){
+        //         showValidate($('#mutiarea').parent());
+        //         return;
+        //     }
+        //     param.areajson=JSON.stringify(areaIdList);
+        // }
+
+       
+        if(isBlank(url)){
+            showValidate($("#url"));
+            return;
+        }
+           
+         param.url = url;
+              
+        
+        if(isBlank(image)){
+            showValidate($("#cover").parent().parent());
+            return;
+        }
+        param.status = status;
+        param.image = image;
+
+        param.bannerType = $('#bannerType option:selected').val();
+        param.terminalType = $('#bannerTerminal option:selected').val();
+
+        param.failureTime = (new Date($('#utime').val())).getTime();
+        console.log(param);
+        myAjax(ajaxurl,param,handle);
+
+        function handle(data,param){
+            if(data && data.success){
+                layer.msg("添加成功", {icon: 1});
+                reLoad();
+            }else{
+                layer.msg("添加失败", {icon: 2});
+            }
+        }
+    }
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        $('.Inner').hide();
+
+        //时间插件初始化
+        laydate.render({
+            elem:'#utime',
+            type: 'datetime'
+        });
+        $("#inlineRadio1").click(function(){
+            $(".banner").show();
+        });
+        $("#inlineRadio2").click(function(){
+            $(".banner").hide();
+        });
+    });
+</script>
+</body>
+
+</html>

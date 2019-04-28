@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>咨询师列表</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <div id="toolbar">
+
+                    </div>
+
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+
+                            <label class="col-sm-1 control-label">姓名(手机)</label>
+
+                            <div class="col-sm-3">
+                                <input type="text" id="nameOrphone" placeholder="请输入姓名或手机号" class="form-control">
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">所属机构</label>
+                            <div class="col-sm-3">
+                                <input  id="school_data" autocomplete="off" data-provide="typeahead" type="text" class="input-sm form-control school_data" placeholder="请输入学校名称关键字" />
+                            </div>
+
+                            <label class="col-sm-1 control-label">审核状态</label>
+
+                            <div class="col-sm-2">
+                                <select id="checkStatus1" class="  form-control" title="请选择状态">
+                                    <option value=3>全部</option>
+                                    <option value=0>申请中</option>
+                                    <option value=1>已通过</option>
+                                    <option value=2>被驳回</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info" id="user_search" name="like_search" onclick="reInitTable()">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+
+<div class="wrapper wrapper-content animated fadeInDown  content-view  ">
+    <form method="get" class="form-horizontal">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">姓名</label>
+
+            <div class="col-sm-6">
+                <input type="text" id="realName" placeholder="请输入名称" class="form-control">
+                <label class="help-block m-b-none validate">请输入名称</label>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">性别</label>
+
+            <div class="col-sm-6">
+                <div class="radio radio-info radio-inline ">
+                    <input type="radio" name="sex" id="sex1" value="0" checked>
+                    <label for="sex1">男</label>
+                </div>
+                &nbsp; &nbsp; &nbsp; &nbsp;
+                <div class="radio radio-info radio-inline">
+                    <input type="radio" name="sex" id="sex2" value="1">
+                    <label for="sex2">女</label>
+                </div>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">手机号</label>
+
+            <div class="col-sm-6">
+                <input type="text" maxlength="11" id="phone" placeholder="请输入手机号" class="form-control"
+                       maxlength="11"
+                       onkeyup="return ValidateNumber(this,value)"
+                       onpaste="return ValidateNumber(this,value)"
+                >
+                <label class="help-block m-b-none validate">手机号为空或输入有误</label>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">等级</label>
+
+            <div class="col-sm-6">
+                <select id="type" class="  form-control" title="请选择等级">
+                    <option value="0">暂无级别</option>
+                    <option value="1">初级咨询师</option>
+                    <option value="2">中级咨询师</option>
+                    <option value="3">高级咨询师</option>
+                    <option value="4">教授级咨询师</option>
+                    <option value="5">专家级咨询师</option>
+                </select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label   hidden="hidden" class="col-sm-3 control-label">所属机构</label>
+
+            <div hidden="hidden" class="col-sm-6">
+                <input type="text" id="companyId" placeholder="请输入所属机构" class="form-control">
+                <label class="help-block m-b-none validate">请输入所属机构</label>
+            </div>
+        </div>
+
+
+        <div class="form-group" hidden="hidden" >
+            <label  hidden="hidden" class="col-sm-3 control-label">审核状态 </label>
+
+            <div class="col-sm-6">
+                <select id="checkStatus" class="  form-control" title="请选择审核状态">
+
+                    <option value="0">申请中</option>
+                    <option value="1">已通过</option>
+                    <option value="2">被驳回</option>
+                </select>
+            </div>
+        </div>
+
+
+    </form>
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"
+               accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+    </form>
+</div>
+
+
+
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/select2/js/select2.full.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- ztree -->
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/js/plugins/bootstrap-3-typeahead/bootstrap3-typeahead.js"></script>
+
+<script src="../resource/common/multiselect.js"></script>
+<script src="../resource/common/common.js?time=" +Math.random()></script>
+<script>
+    var from = new fromServer("#school_data","/company/searchCompanyByName?token=" + getUserToken());
+    from.init();
+
+
+
+    var RoleList = "";
+    var flag = 0;
+    var $table = $('#tb_table');
+    var super1= 0;
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl + '/teacher/teacherListBackend?token=' + getUserToken(),         //请求后台的URL（*）
+                method: 'post',                      //请求方式（*）
+                contentType: "application/x-www-form-urlencoded",
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType: 'limit',
+                queryParams: function (params) {
+
+                    var name = $("#nameOrphone").val();
+                    var companyId = 0;
+                    var checkStatus = $("#checkStatus1").val();
+                    var result = from.getResult();
+                    if(isNotBlank(result)){
+                        companyId = result.id;
+                    }
+                    return {
+                        name: name||"",
+                        companyId: companyId||0,
+                        checkStatus:checkStatus||3,
+                        pageNumber: (params.offset / params.limit) + 1,
+                        pageSize: params.limit
+                    };
+                }
+            });
+        };
+
+        return oTableInit;
+    };
+
+    var columns = [
+        {field: "realName", title: "姓名"},
+        {
+            field: "sex", title: "性别", align: "center", formatter: function (value, row, index) {
+            return value == 0 ? "男" : "女";
+        }
+        },
+        {field: "phone", title: "手机号",},
+
+
+        {
+            field: "type", title: "等级", formatter: function (value, row, index) {
+//            var rid = value;
+//            var html = "";
+//            RoleList = [{0:"暂无级别"},{1:"初级咨询师"},{2:"中级咨询师"},{3:"高级咨询师"},{4:"教授级咨询师"},{5:"专家级咨询师"}]
+//            for (var i = 0; i < RoleList.length; i++) {
+//                if (RoleList[i].id == rid) {
+//                    html += RoleList[i].name;
+//                }
+//            }
+            var colume = {0:"暂无级别",1:"初级咨询师",2:"中级咨询师",3:"高级咨询师",4:"教授级咨询师",5:"专家级咨询师"};
+            return colume[value];
+//            return html;
+        }
+
+//        {
+//            field: "type", title: "等级", align: "center", formatter: function (value, row, index) {
+//            switch (value) {
+//                case 0:
+//                    return "暂无级别";
+//                case 1:
+//                    return "初级咨询师";
+//                case 2:
+//                    return "中级咨询师";
+//                case 3:
+//                    return "高级咨询师";
+//                case 4:
+//                    return "教授级咨询师";
+//                case 5:
+//                    return "专家级咨询师";
+//                default :
+//                    return "";
+//            }
+//        }
+        },
+        {field: "companyName", title: "所属机构"},
+       
+        {
+            field: "checkStatus", title: "审核状态", formatter: function (value, row, index) {
+
+            var colume = {0:"申请中",1:"已通过",2:"被驳回"};
+            return colume[value];
+
+        }},
+
+
+//        {
+//            field: "status",title: "邀请状态", formatter: function (value, row, index) {
+//                var colume = {0:"未邀请",1:"已邀请",2:"已接受",3:"已拒绝"};
+//                var company = getUserInfo();
+//                if(company.id==10368){
+//                    return null;
+//                }else{
+//                    return colume[value];
+//                }
+//
+//
+//        }},
+//        {
+//            field: "ctime", title: "创建时间", formatter: function (value, row, index) {
+//            return formatDateTime(value);
+//        }},
+//        {field: "icon", title: "头像", align: "center", formatter: function (value, row, index) {
+//            if(value){
+//                var thumb = ImageThumb(value, 60, 60, false);
+//                return thumb;
+//            }
+//        }},
+
+        {
+            field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+            var data = JSON.stringify(row);
+            var html = '';
+            if (flag == 1){
+                html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'editTeacher(" + data + ")\'>编辑信息</a>";
+
+                html += '&nbsp';
+                html += '<a    class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" onclick="deleteTeacher(' + data.id + ')" >删除用户</a>';
+                html += '&nbsp';
+            }
+            html += '&nbsp';
+            html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'userInfo(" + data + ")\'>详情</a>";
+            return html;
+        }}
+
+    ];
+    
+    function userInfo(data) {
+        var data = JSON.stringify(data);
+        addMenuItem("../teacher/teacherinfo.html?"+"data=" + encodeURI(data),"咨询师详情");
+    }
+
+    function reInitTable() {
+        $table.bootstrapTable('refreshOptions', {pageNumber: 1});
+    }
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#user_search').click(reInitTable());
+        };
+        return oInit;
+    };
+    function editTeacher(data) {
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['550px', '500px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function () {
+                submitTeacherData(index, data);
+            },
+            btn2: function () {
+            },
+            success: function (layero, index) {
+                echoTeacher(data);
+            }
+        });
+    }
+
+    function echoTeacher(data) {
+        var colume = {0:"申请中",1:"已通过",2:"被驳回"};
+        $("#realName").val(data.realName);
+        $("#phone").val(data.phone);
+        if (data.sex == 0) {
+            setRadioChecked("sex", 0);
+        } else {
+            setRadioChecked("sex", 1);
+        }
+        $("#type").val(data.type);
+        $("#companyId").val(data.companyId);
+        $("#checkStatus").val(data.checkStatus);
+
+
+    }
+    function submitTeacherData(index, data) {
+        var params = {};
+        var url = "/teacher/editTeacher";
+        var name = $("#realName").val();
+        var sex = getRadioChecked("sex");
+        var phone = $("#phone").val();
+        var type = $("#type option:selected").val();
+        var companyId = $('#companyId').val();
+        var checkStatus = $("#checkStatus option:selected").val();
+
+        //验证
+        if (isBlank(name)) {
+            showValidate($("#name").parent());
+            return;
+        }
+        if (isBlank(phone)) {
+            showValidate($("#phone").parent());
+            return;
+        }
+
+        if (isBlank(companyId)) {
+            showValidate($("#companyId").parent());
+            return;
+        }
+        params.uid = data.uid;
+        params.realName = name;
+        params.sex = sex[0];
+        params.phone = phone;
+        params.type = type;
+        params.companyId = companyId;
+        params.
+        params.checkStatus = checkStatus;
+        ajaxSubmit(url, params, function (data) {
+            var msg = (data.msg == undefined ? '' : '' + data.msg);
+            if (data && data.success) {
+                msgSuccess("修改成功");
+                reLoad();
+            } else {
+                msgFail("修改失败");
+            }
+        });
+    }
+
+    function deleteTeacher(uid) {
+        var url = "/teacher/deleteTeacher";
+        var result = {succ: '删除成功！', fail: '删除失败！'};
+        layer.msg('确认删除吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+
+                ajaxSubmit(url, {uid: uid}, handle);
+
+                function handle(data, param) {
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        msgSuccess("删除成功", msg);
+                        handleTable("", 3, serverUrl + '/teacher/teacherList?token=' + getUserToken());
+                    } else {
+                        msgFail("删除失败" + msg);
+                    }
+                }
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+    function liumou() {
+        var user= getUserInfo();
+//        user = JSON.parse(user.toString())
+//        var users =   json.stringify(user);
+
+        if (user.id == 10368){
+           flag = 1;
+        }
+
+    }
+
+
+
+
+    $(function () {
+//        checkSuper();
+        liumou();
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click();
+            $('#btn_edit').click();
+        };
+
+        return oInit;
+    };
+</script>
+</body>
+
+</html>

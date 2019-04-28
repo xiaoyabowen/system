@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+<!--订单详情-->
+<div class="wrapper wrapper-content animated  fadeInDown  orderInfo" style="display:none;">
+
+    <form method="get" class="form-horizontal" id="areaForm">
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">订单号</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">订单时间</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">发起用户</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">发起机构</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">预约方式</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">预约时间</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">咨询师</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">成交金额</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">支付方式</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">所在城市</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">咨询类型</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <!--<div class="form-group">-->
+            <!--<label class="col-sm-4 control-label">订单状态</label>-->
+            <!--<div class="col-sm-4">-->
+                <!--<p>11111111111111111111111</p>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="row">
+            <div class="col-sm-5">
+                <table class="dl-horizontal">
+
+                    <tr>
+                        <td>项目经理</td>
+                        <td>Beaut-zihan</td>
+                    </tr>
+                    <tr>
+                        <td>消息：</td>
+                        <td>162</td>
+                    </tr>
+                    <tr>
+                        <td>客户：</td>
+                        <td><a href="project_detail.html#" class="text-navy"> 百度</a></td>
+                    </tr>
+                    <tr>
+                        <td>版本：</td>
+                        <td>v1.4.2</td>
+                    </tr>
+
+                </table>
+            </div>
+            <div class="col-sm-7" id="cluster_info">
+                <dl class="dl-horizontal">
+
+                    <dt>最后更新：</dt>
+                    <dd>2014年 11月7日 22:03</dd>
+                    <dt>创建于：</dt>
+                    <dd>2014年 2月16日 03:01</dd>
+                    <dt>团队成员：</dt>
+                    <dd class="project-people">
+                        <a href="project_detail.html">
+                            <img alt="image" class="img-circle" src="http://ozwpnu2pa.bkt.clouddn.com/a3.jpg">
+                        </a>
+                        <a href="project_detail.html">
+                            <img alt="image" class="img-circle" src="http://ozwpnu2pa.bkt.clouddn.com/a1.jpg">
+                        </a>
+                        <a href="project_detail.html">
+                            <img alt="image" class="img-circle" src="http://ozwpnu2pa.bkt.clouddn.com/a2.jpg">
+                        </a>
+                        <a href="project_detail.html">
+                            <img alt="image" class="img-circle" src="http://ozwpnu2pa.bkt.clouddn.com/a4.jpg">
+                        </a>
+                        <a href="project_detail.html">
+                            <img alt="image" class="img-circle" src="http://ozwpnu2pa.bkt.clouddn.com/a5.jpg">
+                        </a>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>订单列表</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <div id="toolbar">
+
+                    </div>
+
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+
+                            <label class="col-sm-1 control-label">姓名(手机)</label>
+
+                            <div class="col-sm-3">
+                                <input type="text" id="nameOrphone" placeholder="请输入姓名或手机号" class="form-control">
+                            </div>
+
+                        </div>
+
+                        <label class="col-sm-1 control-label">所属机构</label>
+                        <div class="col-sm-3">
+                            <input  id="school_data" autocomplete="off" data-provide="typeahead" type="text" class="input-sm form-control school_data" placeholder="请输入学校名称关键字" />
+                        </div>
+
+
+                            <label class="col-sm-1 control-label">订单状态</label>
+
+                            <div class="col-sm-2">
+                                <select id="status" class="  form-control" title="请选择性别">
+                                    <option value=3>全部</option>
+                                    <option value=0>已完成</option>
+                                    <option value=1>已退款</option>
+                                    <option value=2>已失效</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info" id="user_search" name="like_search" onclick="reInitTable()">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+
+
+                    </form>
+
+                    <!-- ==================================测试 详情跳转 用======================================-->
+                    <!--<div class="btn-group">-->
+                        <!--<button class="btn btn-success btn-sm btn-outline" id="btn_add" >-->
+                            <!--<i class="fa fa-plus">详情</i>-->
+                        <!--</button>-->
+                    <!--</div>-->
+
+                    <!-- ==================================测试 详情跳转 用======================================-->
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/select2/js/select2.full.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- ztree -->
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/js/plugins/bootstrap-3-typeahead/bootstrap3-typeahead.js"></script>
+
+<script src="../resource/common/multiselect.js"></script>
+<script src="../resource/common/common.js?time=" +Math.random()></script>
+<script>
+    var from = new fromServer("#school_data","/company/searchCompanyByName?token=" + getUserToken());
+    from.init();
+
+
+
+    var RoleList = "";
+    var $table = $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl + '/order/getOrderList?token=' + getUserToken(),         //请求后台的URL（*）
+                method: 'post',                      //请求方式（*）
+                contentType : "application/x-www-form-urlencoded",
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType: 'limit',
+                queryParams: function (params) {
+                    var user = getUserInfo();
+                    var name = $("#nameOrphone").val();
+                    var uid = user.id;
+                    var status = $("#status").val();
+                    var companyId = 0;
+
+                    var result = from.getResult();
+                    if(isNotBlank(result)){
+                        companyId = result.id;
+                    }
+
+                    return {
+                        name:name||"",
+                        uid:uid,
+                        status:status,
+                        companyId:companyId,
+                        pageNumber: (params.offset / params.limit) + 1,
+                        pageSize: params.limit,
+
+
+
+
+                    };
+                }
+            });
+        };
+
+        return oTableInit;
+    };
+
+    var columns = [
+        {
+            // vasible:false 这个属性 是隐藏当前列    显示的话就删除掉
+            // 如果想要给当前行添加样式的话  可以这样写
+
+            /*{field: "orderId", title: "订单号",align: "center",width:500, formatter: function (value, row, index) {
+             return value;
+             },cellStyle:{
+             css:{"display":"-webkit-box","-webkit-box-orient":"vertical","-webkit-line-clamp":"2","overflow":"hidden","text-overflow":"ellipsis","line-height":"2"}
+             }},*/
+
+
+
+
+            field: "orderId", title: "订单号",vasible:false, formatter: function (value, row, index) {
+            return value;
+        }
+        },
+        {
+            field: "ctime", title: "订单时间", formatter: function (value, row, index) {
+            return formatDateTime(value);
+        }
+        },
+
+        {
+            field: "name", title: "用户名称",vasible:false, formatter: function (value, row, index) {
+            return value;
+        }
+        },
+        {
+            field: "uid", title: "所属机构",vasible:false, formatter: function (value, row, index) {
+            return value;
+        }
+        },
+        {
+            field: "takeUid", title: "咨询师",vasible:false, formatter: function (value, row, index) {
+            return value;
+        }
+        },
+
+        {
+            field: "status", title: "订单状态",vasible:false, formatter: function (value, row, index) {
+            return value;
+        }
+        },
+
+        {
+            field: "time", title: "预约时间", formatter: function (value, row, index) {
+            return formatDateTime(value);
+        }},
+
+        {
+            field: "orderType", title: "预约方式",vasible:false, formatter: function (value, row, index) {
+            return value;
+        }
+        },
+        {
+            field: "totalFee", title: "成交金额",vasible:false, formatter: function (value, row, index) {
+            return value;
+        }
+        },
+
+//        {field: "icon", title: "头像", align: "center", formatter: function (value, row, index) {
+//            if(value){
+//                var thumb = ImageThumb(value, 60, 60, false);
+//                return thumb;
+//            }
+//        }},
+        {
+            field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+            var data = JSON.stringify(row);
+            var html = '';
+            html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'refund(" + data + ")\'>退款</a>";
+            html += '&nbsp';
+
+
+            // ------------接口写好之后把它打开
+            /* html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'addOrEdit(" + data + ")\'>详情</a>";
+             html += '&nbsp';*/
+
+            return html;
+        }}
+    ];
+
+    // 点击详情模态框
+
+    //   rowData 接入数据进行传参
+    function addOrEdit(rowData){
+        var index= layer.open({
+            type: 1 ,
+            shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '添加/更新',
+            area: ['600px','400px'],
+            content: $('.orderInfo'),
+            btn: ['确定', '关闭'],
+            yes:function(index){
+
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                // 打开模态框之后 请求数据接口    后台写接口时
+                myAjax("", {id:rowData.id}, handle);
+
+                function handle(data, params) {
+                    if (data && data.success) {
+                        // -----后台参数根据这个写
+                        if(isNotBlank(rowData)){
+                            $('#orderNum').val(data.orderNum);   //订单号
+                            $('#orderTime').val(data.orderTime);   //订单时间
+                            $('#orderUser').val(data.orderUser);   //发起用户
+                            $('#orderMechanism').val(data.orderMechanism);   //发起机构
+                            $('#makeMode').val(data.makeMode);   //预约方式
+                            $('#makeTime').val(data.makeTime);   //预约时间
+                            $('#Consultant').val(data.Consultant);   //咨询师
+                            $('#orderPrice').val(data.orderPrice);   //成交金额
+                            $('#payMode').val(data.payMode);   //支付方式
+                            $('#city').val(data.city);   //所在城市
+                            $('#consultationType').val(data.consultationType);   //咨询类型
+                            $('#orderType').val(data.orderType);   //订单状态
+
+                        }
+
+                    } else {
+                        layer.msg('更新失败!', {icon: 2,time:500, shade: 0.01});
+                    }
+                }
+            }
+
+        })
+    }
+
+
+
+
+
+
+
+
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+
+    function reInitTable() {
+        $table.bootstrapTable('refreshOptions', {pageNumber: 1});
+    }
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click(addOrEdit);
+            $('#btn_edit').click();
+        };
+
+        return oInit;
+    };
+</script>
+</body>
+
+</html>

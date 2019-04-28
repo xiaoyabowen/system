@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/js/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>添加企业</h5>
+        </div>
+        <div class="ibox-content">
+            <form method="get" class="form-horizontal">
+                <div class="hr-line-dashed  hideSchool"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">上级机构</label>
+                    <div class="col-sm-6">
+                        <select id="higherAuthority" name="higherAuthority" class="  form-control" title="请选择上级机构">
+                            <option value=0>心界限</option>
+                            <option value=1>其他分公司</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="hr-line-dashed higherAuthority"></div>
+                <div class="form-group  higherAuthority">
+                    <label class="col-sm-3 control-label">分公司名称</label>
+
+                    <div class="col-sm-6">
+                        <select id="branchName" class=" form-control js-data-example-ajax form-control"
+                                style="width: 100%">
+                        </select>
+                    </div>
+                    <span class="help-block m-b-none validate">请选择所属分公司</span>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">机构名称</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="name" placeholder="请输入机构名称" class="form-control">
+                        <label class="help-block m-b-none validate">请输入机构名称</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">负责人</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="userName" placeholder="请输入负责人" class="form-control">
+                        <label class="help-block m-b-none validate">请输入负责人</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">联系电话</label>
+                    <div class="col-sm-6">
+                        <input type="text" maxlength="11" id="phone"  placeholder="联系电话" class="form-control"
+                               maxlength="11"
+                               onkeyup = "return ValidateNumber(this,value)"
+                               onpaste = "return ValidateNumber(this,value)"
+                                >
+                        <label class="help-block m-b-none validate">手机号为空或输入有误</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">联系地址</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="address" placeholder="请输入联系地址" class="form-control">
+                        <label class="help-block m-b-none validate">请输入联系地址</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">企业资质上传</label>
+
+                    <div class="col-sm-6">
+                        <div id="dropz" class="dropzone"></div>
+                        <span class="help-block m-b-none validate">请上传企业资质</span>
+                    </div>
+
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">软件logo</label>
+                    <div class="col-sm-6 ">
+                        <div class="input-group">
+                            <input id="cover" type="hidden">
+                            <input id="photoCover" type="text" class="form-control" placeholder="请选择图片" readonly>
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                                </span>
+                        </div>
+                        <img src="../resource/img/upload.png" class="img-rounded" id="iconView" width="15%"
+                             height="100%" style="display: none">
+                        <span class="help-block m-b-none validate">请上传软件logo</span>
+                    </div>
+                </div>
+
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">软件简称</label>
+                    <div class="col-sm-6">
+                        <textarea id="appname" name="comment"  rows='2' class="form-control" required="" aria-required="true"    placeholder="请填写软件简称"></textarea>
+                        <span class="help-block m-b-none validate">请填写软件简称</span>
+                    </div>
+                </div>
+
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">企业简介</label>
+                    <div class="col-sm-6">
+                        <textarea id="appinfo" name="comment"  rows='8' class="form-control" required="" aria-required="true"    placeholder="请填写企业简介"></textarea>
+                        <span class="help-block m-b-none validate">请填写企业简介</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-3">
+                        <button class="btn btn-primary" type="button" id="btn">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"
+               accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+    </form>
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!----select2----->
+
+<script src="../resource/js/plugins/select2/js/select2.full.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+
+<script src="../resource/js/plugins/dropzone/dropzone.js"></script>
+<script src="../resource/js/plugins/dropzone/mydropzone.js"></script>
+
+<script src="../resource/common/multiselect.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script>
+
+    initSelectSubject("#branchName", "/company/searchCompanyByName?token=" + getUserToken(), false);
+    function formatSubject(item) {
+        if (item.loading) return item;
+        var markup = '<div> <p class="text-primary">企业名称：' + item.name|| item.text + '</p>';
+        //markup += '这里可以添加其他选项...';
+        markup += ' </div>';
+        return markup;
+    }
+
+    var dropZone = myDropzone();
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $("#higherAuthority").change(higherAuthorityChange);
+            $(".higherAuthority").hide();
+            $('#btn').click(submitData)
+        };
+
+        return oInit;
+    };
+
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        laydate.render({
+            elem: '#birthday'
+        });
+    });
+
+    function higherAuthorityChange(){
+        var value = $(this).val();
+        if(value == 0){
+            $(".higherAuthority").hide();
+        }else{
+            $(".higherAuthority").show();
+        }
+    }
+
+    function submitData() {
+        var params = {};
+        var url = "/company/addCompanybackend";
+        var higherAuthority = $("#higherAuthority").val();
+        var name = $("#name").val();
+        var userName = $("#userName").val();
+        var phone = $("#phone").val();
+        var address = $("#address").val();
+        var appname = $("#appname").val();
+        var company = $("#appinfo").val();
+        var license = dropZone.filelist();
+        var icon = $('#cover').val();
+        var parentId = 0;
+
+        if (higherAuthority == 1){
+            parentId = $("#branchName").val();
+        }
+
+        //验证
+        if(higherAuthority == 1){
+            if(isBlank(parentId)){
+                showValidate($("#branchName").parent());
+                return;
+            }
+        }
+        if (isBlank(name)) {
+            showValidate($("#name").parent());
+            return;
+        }
+        if (isBlank(userName)) {
+            showValidate($("#userName").parent());
+            return;
+        }
+        if (isBlank(phone)) {
+            showValidate($("#phone").parent());
+            return;
+        }
+        if (isBlank(address)) {
+            showValidate($("#address").parent());
+            return;
+        }
+        if (license.length < 1) {
+            showValidate($("#dropz").parent());
+            return;
+        }
+        if (isBlank(appname)) {
+            showValidate($("#appname").parent());
+            return;
+        }
+        if (isBlank(company)) {
+            showValidate($("#appinfo").parent());
+            return;
+        }
+        if (isBlank(icon)) {
+            showValidate($("#cover").parent());
+            return;
+        }
+
+        params.parentId = parentId;
+        params.name = name;
+        params.userName = userName;
+        params.phone = phone;
+        params.address = address;
+        params.appname = appname;
+        params.appinfo = company;
+        params.license = license.toString();
+        params.icon = icon;
+
+        ajaxSubmit(url, params, function(data){
+            var msg = (data.msg == undefined ? '' : '' + data.msg);
+            if (data && data.success) {
+                msgSuccess("添加成功");
+                reLoad();
+            } else {
+                msgFail("添加失败");
+            }
+        });
+    }
+
+</script>
+</body>
+
+</html>

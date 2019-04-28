@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+
+<body class="gray-bg">
+
+
+    <div class="wrapper wrapper-content animated  fadeInDown  content-view  ">
+        <form method="get" class="form-horizontal" id="areaForm">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">学生姓名</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control hiddenid" id="id">
+                    <input type="text" class="form-control" id="name" placeholder="请输入班级名称">
+                    <span class="help-block m-b-none validate">请输入学生名称</span>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">选择班级</label>
+
+                <div class="col-sm-8">
+                    <select id="classId"  class="form-control"  title="选择班级" >
+                    </select>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!-- Panel Other -->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>学童管理</h5>
+            </div>
+
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                        <div id="toolbar" class="btn-group">
+                            <button class="btn btn-success btn-sm btn-outline" id="btn_add" >
+                                <i class="fa fa-plus">添加</i>
+                            </button>
+                        </div>
+                        <form class="form-horizontal" role="form">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label text-right">姓名</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="username"  class="form-control" placeholder="请输入姓名"/>
+                                </div>
+                               
+                                
+                                 <label class="col-sm-1 control-label text-right">班级</label>
+
+                                <div class="col-sm-2">
+                                    <input type="text" id="clazzId"  class="form-control" placeholder="请输入幼儿园名字"/>
+                                </div>
+                                
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">开始时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="startTime" class="form-control" placeholder="请选择开始时间" readonly>
+                                </div>
+                                <label class="col-sm-1 control-label">结束时间</label>
+                                <div class="col-sm-2">
+                                    <input type="text" id="endTime" class="form-control" placeholder="请选择结束时间" readonly>
+                                </div>
+                                
+                                <label class="col-sm-1 control-label"></label>
+                                <div class="col-sm-2" >
+                                    <button type="button" class="btn  btn-info " id="user_search" name="like_search">
+                                        <i class="fa fa-search"></i> 点击查询
+                                    </button>
+                                </div>
+                            </div>
+
+                        </form>
+                        <table id="tb_table" ></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Panel Other -->
+    </div>
+
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+
+    <!-- Bootstrap table -->
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+    <script src="../resource/js/plugins/laydate/laydate.js"></script>
+
+    <script src="../resource/common/common.js?"+Math.random()></script>
+    <script>
+        var schoolId=getUserInfo().sid;
+    		
+        var $table =  $('#tb_table');
+        var TableInit = function (columns) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $table.bootstrapTable({
+                    url: serverUrl+'/user/searchUser',         //请求后台的URL（*）
+                    method: 'get',                      //请求方式（*）
+                    toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: false,                     //是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                    sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                    pageNumber:1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: true,
+                    showColumns: true,                  //是否显示所有的列
+				showRefresh: true,                  //是否显示刷新按钮
+                    minimumCountColumns: 2,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+//				height: 600,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                   //是否显示父子表
+                    columns: columns,
+//                    showFooter:true,            //表格底部
+                    onClickRow: function (row) {
+//                        console.log(row)
+                    },
+                    queryParamsType:'limit', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+                    // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+                    queryParams: function (params) {
+                        var name = $("#username").val();
+                        var startTime = $("#startTime").val();
+                        var endTime = $("#endTime").val();
+                        var clazzId=$("#clazzId").val();
+                        if(isBlank(name)){
+                            name = "";
+                        }
+                        if(isBlank(clazzId)){
+                            clazzId = 0;
+                        }
+
+                        return {
+                            token:getUserInfo().token,
+                            page:(params.offset / params.limit) + 1,
+                            size: params.limit,
+                            name:name,
+                            startTime:isBlank(startTime)?0:new Date(startTime).getTime(),
+                            endTime :isBlank(endTime)?0:new Date(endTime).getTime(),
+                            schoolId: schoolId,
+                            clazzId:clazzId,
+                            type:0
+                        };
+                    },
+                });
+            };
+
+            return oTableInit;
+        };
+        var vType = { 0:"普通会员", 1:"线下会员"};
+        var columns = [
+            {field: "id",title: "序号",align:"center",formatter: function (value, row, index) {
+                return index+1;
+            }},
+
+            {field: "name", title: "姓名", align:"center", formatter: function (value, row, index) {
+                return value;
+            }},
+           
+            {field: "clazz", title: "班级",align:"center", formatter: function (value, row, index) {
+                return value;
+            }},
+            {field: "parents", title: "家长信息",align:"center", formatter: function (value, row, index) {
+ 
+               var typeMap={"1":"父亲","2":"母亲","3":"爷爷","4":"奶奶","5":"外公","6":"外婆","7":"其他"};
+                var html='';
+                for(var i=0;i< row.parents.length;i++){
+                		html=html+"姓名:"+row.parents[i].name+"&nbsp关系:"+typeMap[row.parents[i].type]+"&nbsp手机号:"+row.parents[i].phone;
+                		if(i< (row.parents.length-1)){
+                			html=html+"<br>";
+                		}
+                }
+                return html;
+            }},
+            {field: "ctime", title: "创建时间",align:"center", formatter: function (value, row, index) {
+                return formatDateTime(value);
+            }},
+            
+            {field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+                var data = JSON.stringify(row);
+                var html = '';
+                html +="<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'addOrEdit("+data+")\'>修改</a>";
+                html +='&nbsp';
+                html += '<a class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" onclick="parentsDetail(' + row.id + ')" >维护家长信息</a>';
+                html +='&nbsp';
+                html += '<a class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" onclick="getOneChildCommentByUid(' + row.id + ')" >评语信息</a>';
+                return html;
+            }}
+           
+        ]
+        //列样式
+        function formatTableUnit(value, row, index) {
+            return {
+                css: {
+                    "color": "#23c6c8"
+                }
+            }
+        }
+        
+
+
+
+
+        //添加修改
+        function addOrEdit(rowData){
+            var subType ;
+            if(isNotBlank(rowData)){
+                subType  = 1;
+            }else{
+                subType  = 0;
+                formReset();
+            }
+            var index= layer.open({
+                type: 1 , shade: 0.01,
+                id: 'area', //设定一个id，防止重复弹出
+                title: '添加/更新',
+                area: ['40%','40%'],
+                content: $('.content-view'),
+                btn: ['提交', '关闭'],
+                yes:function(index){
+                    submitData(index,subType);
+                },
+                shadeClose: true, //开启遮罩关闭
+                success: function(layero, index){
+                    if(isNotBlank(rowData)){
+                        $('#id').val(rowData.id);
+                        $('#name').val(rowData.name);
+                        $('#classId').val(rowData.cid);
+                    }
+                }
+
+            })
+        }
+
+
+        function submitData(index,type){
+            var id=$('#id').val();
+            var cid= $.trim($('#classId').val());
+            var name=$.trim($('#name').val());
+            var sid=schoolId;
+            var result ;
+            var params = {};
+            var url;
+            if(type == 0){
+                url = "/user/addUser";
+                result = {succ:'添加成功！',fail:'添加失败！'};
+            }else{
+                url = "/user/updateUser";
+                result = {succ:'更新成功！',fail:'更新失败'};
+            }
+            if(isBlank(name)){
+                showValidate('#name');
+                return  ;
+            }
+
+            if(isNotBlank(id)){
+                params.id = id;
+            }else{
+                 params.id = 0;
+            }
+
+            layer.close(index);
+            params.name = name;
+            params.cid = cid;
+            params.sid=sid;
+            myAjax(url,params,handle);
+            function handle(data,params){
+                var msg = (data.msg == undefined ? '':','+data.msg);
+                if(data.success) {
+                    layer.msg(result.succ, {icon: 1,shade: 0.01});
+                    handleTable("",3,serverUrl+"/user/searchUser");
+                }else{
+                    layer.msg(result.fail+msg, {icon: 1,shade: 0.01});
+                }
+            }
+
+        }
+
+        function openPOP(){
+            addOrEdit();
+        }
+        function formReset(){
+            $("#areaForm")[0].reset();
+        }
+
+
+
+		function parentsDetail(id){
+			 addMenuItem("../child/parentUserList.html?childId="+id,"家长列表");
+		}
+		function getOneChildCommentByUid(id){
+			 addMenuItem("../child/weekComment.html?uid="+id,"宝宝评语");
+		}
+
+
+
+        function getAllClazz(callBack){
+            myAjax("/clazz/getAll?sid="+schoolId,"",handle)
+            function handle(ret,param){
+                var data=ret.data;
+                if(data&&data.length>0){
+                    for(var i=0;i<data.length;i++){
+                        $("#classId").append('<option value="'+data[i].id+'">'+data[i].name+'</option>');
+                    }
+
+                }
+                if(callBack){
+                    callBack();
+                }
+            }
+        }
+
+
+        
+        //初始化页面上面的按钮事件
+        var ButtonInit = function () {
+            var oInit = new Object();
+            oInit.Init = function () {
+                $('#user_search').click(reInitTable);
+                $('#btn_add').click(openPOP);
+            };
+
+            return oInit;
+        };
+
+        function reInitTable(){
+            $table.bootstrapTable('refreshOptions',{page:1});
+        }
+
+
+
+
+
+        $(function () {
+            getAllClazz(function(){
+                var Table = new TableInit(columns);
+                Table.Init();
+                var oButtonInit = new ButtonInit();
+                oButtonInit.Init();
+                laydate.render({
+                    elem: '#startTime'
+                    ,type: 'datetime'
+                });
+                laydate.render({
+                    elem: '#endTime'
+                    ,type: 'datetime'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

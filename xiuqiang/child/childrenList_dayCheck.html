@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>学童体检</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+
+                    <form class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">时间</label>
+                            <div class="col-sm-2">
+                                <input type="text" id="dayTime" class="form-control" placeholder="请选择开始时间" readonly>
+                            </div>
+
+
+                            <label class="col-sm-1 control-label"></label>
+                            <div class="col-sm-2" >
+                                <button type="button" class="btn  btn-info " id="search" name="like_search">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+
+
+                            <!--<label class="col-sm-3 control-label"></label>-->
+                            <!--<div class="col-sm-2" >-->
+                            <!--<button type="button" class="btn  btn-info " id="daochubaobiao" name="like_search">-->
+                            <!--<i class="fa fa-search"></i> 导出报表-->
+                            <!--</button>-->
+                            <!--</div>-->
+                        </div>
+
+                    </form>
+
+                    <table id="tb_table" ></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+
+<script src="../resource/common/common.js?"+Math.random()></script>
+<script>
+
+    var clazzId=getQueryString("id")||1;
+
+    var $table =  $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl+'/dayCheck/getUserDayCheckBycid',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 30,                       //每页的记录行数（*）
+                pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 600,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType:'limit', //默认值为 'limit' ,在默认情况下 传给服务端的参数为：offset,limit,sort
+                // 设置为 ''  在这种情况下传给服务器的参数为：pageSize,pageNumber
+                queryParams: function (params) {
+                    var dayTime = $("#dayTime").val();
+                    return {
+                        token:getUserInfo().token,
+                        dayTime:isBlank(dayTime)?0:new Date(dayTime).getTime(),
+                        cid:clazzId,
+                        type:0
+                    };
+                },
+            });
+        };
+
+        return oTableInit;
+    };
+    var vType = { 0:"普通会员", 1:"线下会员"};
+    var columns = [
+
+        {field: "userName", title: "姓名", align:"center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "sex", title: "性别", align:"center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "age", title: "年龄", align:"center", formatter: function (value, row, index) {
+            return value;
+        }},
+
+        {field: "fingernailStatus", title: "手指状态", align:"center", formatter: function (value, row, index) {
+            if(value ==0){
+                value = "正常";
+            }else{
+                value = "异常";
+            }
+            return value;
+        }},
+
+        {field: "fingernailAnomalies", title: "手指异常信息", align:"center", formatter: function (value, row, index) {
+            if(value==""){
+                return "-";
+            }
+            return value;
+        }},
+
+        {field: "oralStatus", title: "口腔状态", align:"center", formatter: function (value, row, index) {
+            if(value ==0){
+                value = "正常";
+            }else{
+                value = "异常";
+            }
+            return value;
+        }},
+
+        {field: "oralAnomalies", title: "口腔异常信息", align:"center", formatter: function (value, row, index) {
+            if(value==""){
+                return "-";
+            }
+            return value;
+        }},
+
+        {field: "temperatureStatus", title: "体温状态", align:"center", formatter: function (value, row, index) {
+            if(value ==0){
+                value = "正常";
+            }else{
+                value = "异常";
+            }
+            return value;
+        }},
+
+        {field: "temperatureAnomalies", title: "体温异常信息", align:"center", formatter: function (value, row, index) {
+            if(value==""){
+                return "-";
+            }
+            return value;
+        }},
+        {field: "teacherName", title: "检查人", align:"center", formatter: function (value, row, index) {
+            if(value==""){
+                return "-";
+            }
+            return value;
+        }},
+        {field: "summarize", title: "总体评价", align:"center", formatter: function (value, row, index) {
+            if(value==""){
+                return "-";
+            }
+            return value;
+        }},
+
+
+        {field: "name", title: "操作", align: "center", formatter: function (value, row, index) {
+
+            var html = '';
+
+            html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="查看所有" onclick=\'chlidDetail('+JSON.stringify(row)+')\'>查看详情</a>';
+            html +='&nbsp';
+            html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="查看所有" onclick=\'chlidDetail('+JSON.stringify(row)+')\'>修改信息</a>';
+            html +='&nbsp';
+            return html;
+        }},
+
+    ]
+    //列样式
+    function formatTableUnit(value, row, index) {
+        return {
+            css: {
+                "color": "#23c6c8"
+            }
+        }
+    }
+    function chlidDetail(data){
+
+    }
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#user_search').click(reInitTable);
+        };
+
+        return oInit;
+    };
+
+    function reInitTable(){
+        $table.bootstrapTable('refreshOptions',{page:1});
+    }
+
+    $(function () {
+        $("#dayTime").val(formatDateTime(Date.parse(new Date())));
+
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        $('#search').click(reInitTable);
+        oButtonInit.Init();
+        laydate.render({
+            elem: '#dayTime'
+            ,type: 'datetime'
+        });
+
+
+    });
+</script>
+</body>
+
+</html>

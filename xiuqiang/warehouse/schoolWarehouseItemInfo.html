@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>仓库物品信息管理</title>
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+
+
+</head>
+
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated  fadeInDown  content-view  ">
+    <form method="get" class="form-horizontal" id="areaForm">
+        <div class="form-group">
+            <label class="col-sm-3 control-label">分类</label>
+            <div class="col-sm-8">
+                <input type="text" id="kid" hidden="true" />
+                <input type="text" class="form-control"  id="kindName" placeholder="请选择分类" readonly="true" onclick="selectKind()"/>
+                <span class="help-block m-b-none validate">请选择分类</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">仓库</label>
+            <div class="col-sm-8">
+                <select id="selectWarehouse"  class=" form-control"  title="选择仓库">
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">名称</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="name" placeholder="请输入名称"/>
+                <span class="help-block m-b-none validate">请输入名称</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">品牌</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="brand" placeholder="请输入品牌"/>
+                <span class="help-block m-b-none validate">请输入品牌</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">型号</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="version" placeholder="请输入型号"/>
+                <span class="help-block m-b-none validate">请输入型号</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">编号</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="code" placeholder="请输入编号"/>
+                <span class="help-block m-b-none validate">请输入编号</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">单价</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="price" placeholder="请输入单价"/>
+                <span class="help-block m-b-none validate">请输入单价</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">单位</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="unit" placeholder="请输入单位"/>
+                <span class="help-block m-b-none validate">请输入单位</span>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-3 control-label">描述</label>
+            <div class="col-sm-8">
+                <textarea id="desc" placeholder="请输入描述" class="col-sm-5" style="width: 100%;height: 150px; resize: none;"></textarea>
+
+            </div>
+        </div>
+
+    </form>
+</div>
+
+<div class="wrapper wrapper-content animated  fadeInDown  content-view-2 " style="display: none">
+    <div class="ibox-content">
+        <ul id="treeDemo" class="ztree">
+        </ul>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated  fadeInDown  content-view-3 " style="display: none">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">选择仓库</label>
+        <div class="col-sm-8">
+            <select id="switchSelectWarehouse"  class=" form-control"  title="选择仓库">
+            </select>
+        </div>
+    </div>
+</div>
+
+<div class="wrapper wrapper-content animated  fadeInDown  content-view-4 " style="display: none">
+    <form method="get" class="form-horizontal" id="area4Form">
+        <input type="text" id="putType" hidden="true"  value="1"/>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">库管人</label>
+            <div class="col-sm-8">
+                <input type="text" id="keepUid" hidden="true" />
+                <input type="text" class="form-control"  id="keepUserName" placeholder="请选择库管人" readonly="true" onclick="selectBackUser(1)"/>
+                <span class="help-block m-b-none validate">请选择库管人</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">数量</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="putNum" placeholder="请输入数量" />
+                <span class="help-block m-b-none validate">请输入数量</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">描述</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="putLogDesc" placeholder="请输入描述" />
+                <span class="help-block m-b-none validate">请输入描述</span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="wrapper wrapper-content animated  fadeInDown  content-view-5" style="display: none">
+    <table id="sub_tb_table"></table>
+</div>
+
+<div class="wrapper wrapper-content animated  fadeInDown  content-view-6" style="display: none">
+    <form method="get" class="form-horizontal" id="area6Form">
+        <input type="text" id="backType" hidden="true"  value="3"/>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">归还人</label>
+            <div class="col-sm-8">
+                <input type="text" id="backUid" hidden="true" />
+                <input type="text" class="form-control"  id="backUserName" placeholder="请选择归还人" readonly="true" onclick="selectBackUser(2)"/>
+                <span class="help-block m-b-none validate">请选择归还人</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">数量</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="backNum" placeholder="请输入数量" />
+                <span class="help-block m-b-none validate">请输入数量</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">描述</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control"  id="backLogDesc" placeholder="请输入描述" />
+                <span class="help-block m-b-none validate">请输入描述</span>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="wrapper wrapper-content animated  fadeInDown  content-view-7" style="display: none">
+    <table id="sub_2_tb_table"></table>
+</div>
+
+<form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+    <input style="height: 0;width: 0;" type="file" name="file"   accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe" />
+</form>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>功能列表</h5>
+        </div>
+        <div id="toolbar" class="btn-group">
+            <div class="col-sm-5 control-label">
+                <button class="btn btn-success  btn-outline" id="btn_add">
+                    <i class="fa fa-plus">添加</i>
+                </button>
+            </div>
+
+            <div class="col-sm-5 control-label">
+                <button class="btn btn-info btn-outline" id="btn_switch_warehouse">
+                    <i class="fa">切换仓库</i>
+                </button>
+            </div>
+        </div>
+
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/common/common.js?"+Math.random()></script>
+
+<script src="../resource/js/plugins/bootstrap-menu/bootstrap-contextmenu.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.exedit.js"></script>
+<script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<script src="../resource/js/template-native.js"></script>
+
+
+<script>
+    var backendUid = getUserInfo().id;
+    var schoolId = getUserInfo().sid;
+
+    var warehouseId = 0;
+    var $table =  $('#tb_table');
+    var $subTable =  $('#sub_tb_table');
+    var $sub2Table =  $('#sub_2_tb_table');
+    var sign = 0;
+    var Sub2TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $sub2Table.bootstrapTable({
+
+                method: 'get',                      //请求方式（*）
+//                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType:'limit',
+                queryParams: function (params) {
+                    return {
+                        token:getUserInfo().token,
+                        page:(params.offset / params.limit) + 1,
+                        size: params.limit,
+                    };
+                },
+            });
+        };
+        return oTableInit;
+    };
+    var SubTableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $subTable.bootstrapTable({
+                method: 'get',                      //请求方式（*）
+//                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 5,                       //每页的记录行数（*）
+                pageList: [5,10,15],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType:'limit',
+                queryParams: function (params) {
+                    return {
+                        token:getUserInfo().token,
+                        page:(params.offset / params.limit) + 1,
+                        size: params.limit,
+                    };
+                },
+            });
+        };
+        return oTableInit;
+    };
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl+'/warehouse/getSchoolWarehouseItemInfoPager?sid=' + schoolId + '&wid=' + warehouseId,         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType:'limit',
+                queryParams: function (params) {
+                    return {
+                        token:getUserInfo().token,
+                        page:(params.offset / params.limit) + 1,
+                        size: params.limit,
+                    };
+                },
+            });
+        };
+        return oTableInit;
+    };
+
+    var sub2Columns = [
+//        {field: "id", title: "ID",align: "center", display:"none", formatter: function (value, row, index) {
+//            return value;
+//        }},
+        {field: "name", title: "姓名",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "other", title: "编辑", align: "center", formatter: function (value, row, index) {
+            var html = '';
+            html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="选择" onclick=\'confirmBackUser('+JSON.stringify(row) + ',' + sign + ')\' >选择</a>';
+            return html;
+        }},
+    ]
+    var subColumns = [
+//        {field: "id", title: "ID",align: "center", formatter: function (value, row, index) {
+//            return value;
+//        }},
+        {field: "type", title: "类型",align: "center", formatter: function (value, row, index) {
+            var content = '';
+            if(value == 1) content = '入库';
+            else if(value == 2) content = '申请';
+            else if(value == 3) content = '归还';
+            return content;
+        }},
+        {field: "backUserName", title: "保管人",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "reqUserName", title: "申请人",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "keepUserName", title: "归还人",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "num", title: "数量",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "reqDepartment", title: "申请部门",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "reqStatus", title: "申请状态",align: "center", formatter: function (value, row, index) {
+            var content = '';
+            if(value == 1) content = '通过';
+            if(value == 2) content = '未通过';
+            return content;
+        }},
+        {field: "desc", title: "描述",width:500,align: "center", formatter: function (value, row, index) {
+            return value;
+        },cellStyle:{
+                css:{"display":"-webkit-box","-webkit-box-orient":"vertical","-webkit-line-clamp":"2","overflow":"hidden","text-overflow":"ellipsis","line-height":"2"}
+            }},
+        {field: "optTime", title: "操作时间",align: "center", formatter: function (value, row, index) {
+            if(value == 0){
+                return "-";
+            }
+            return formatDateTime(value);
+        }},
+        {field: "reqTime", title: "申请时间",align: "center", formatter: function (value, row, index) {
+            if(value == 0){
+                return "-";
+            }
+            return formatDateTime(value);
+        }},
+        {field: "backTime", title: "归还时间",align: "center", formatter: function (value, row, index) {
+            if(value == 0){
+                return "-";
+            }
+            return formatDateTime(value);
+        }},
+    ]
+    var columns = [
+//        {field: "id", title: "ID",align: "center",visibility:"hidden", formatter: function (value, row, index) {
+//            return value;
+//        }},
+//        {field: "schoolName", title: "幼儿园",align: "center", formatter: function (value, row, index) {
+//            return value;
+//        }},
+        {field: "warehouseName", title: "仓库",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "kindName", title: "分类",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "name", title: "名称",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "brand", title: "品牌",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "version", title: "型号",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "code", title: "编号",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "unit", title: "单位",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "price", title: "单价",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "desc", title: "描述",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "totalNum", title: "总数",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "outNum", title: "出库数",align: "center", formatter: function (value, row, index) {
+            return row.reqNum - row.backNum;
+        }},
+        {field: "checkNum", title: "审核数",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "remainNum", title: "剩余数",align: "center", formatter: function (value, row, index) {
+            return row.totalNum - row.reqNum - row.checkNum + row.backNum;
+        }},
+        {field: "other", title: "编辑", align: "center", formatter: function (value, row, index) {
+            var html = '';
+            html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="修改" onclick=\'update('+JSON.stringify(row)+')\' >修改</a>';
+            html +='&nbsp';
+            html += '<a  class="btn btn-danger btn-sm btn-outline" href="javascript:void(0);" title="删除" onclick=\'remove('+JSON.stringify(row)+')\'>删除</a>';
+            html +='&nbsp';
+            if(row.totalNum == 0) {
+                html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="入库" onclick=\'addPut('+JSON.stringify(row)+')\' >入库</a>';
+                html +='&nbsp';
+            }
+            if(row.reqNum - row.backNum > 0) {
+                html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="归还" onclick=\'addBack('+JSON.stringify(row)+')\' >归还</a>';
+                html +='&nbsp';
+            }
+            html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="记录" onclick=\'log('+JSON.stringify(row)+')\' >记录</a>';
+            return html;
+        }},
+    ]
+    
+    function switch_warehouse() {
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area3', //设定一个id，防止重复弹出
+            title: '切换仓库',
+            area: ['40%','40%'],
+            content: $('.content-view-3'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                warehouseId = $('#switchSelectWarehouse option:selected').val();
+                $table.bootstrapTable('refresh', {url:serverUrl+'/warehouse/getSchoolWarehouseItemInfoPager?sid=' + schoolId + '&wid=' + warehouseId});
+                layer.close(index);
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                var url = '/warehouse/getAllWarehouses?sid=' + schoolId;
+                myAjax(url,{},handle);
+                function handle(data, params) {
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        var data = {list: data.data};
+                        var html = template("scriptSelectWarehouse", data);
+                        document.getElementById("switchSelectWarehouse").innerHTML = html;
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            }
+        })
+    }
+    
+    function confirmBackUser(rowData, sign) {
+        if(sign == 1) {
+            $('#keepUid').val(rowData.id);
+            $('#keepUserName').val(rowData.name);
+        } else {
+            $('#backUid').val(rowData.id);
+            $('#backUserName').val(rowData.name);
+        }
+        if(selectBackUserIndex > 0) layer.close(selectBackUserIndex);
+
+    }
+    var selectBackUserIndex = 0;
+    function selectBackUser(selectType) {
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'sub7Area', //设定一个id，防止重复弹出
+            title: '列表',
+            area: ['40%','40%'],
+            content: $('.content-view-7'),
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                $sub2Table.bootstrapTable('refresh', {url : serverUrl + '/backend/getAllBySchool?schoolId=' + schoolId});
+                sign = selectType;
+            }
+        });
+        selectBackUserIndex = index;
+    }
+
+    function log(rowData) {
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'sub5Area', //设定一个id，防止重复弹出
+            title: '缴费情况',
+            area: ['40%','40%'],
+            content: $('.content-view-5'),
+            shadeClose: true, //开启遮罩关闭
+        });
+        $subTable.bootstrapTable('refresh', {url : serverUrl + '/warehouse/getSchoolWarehouseItemLogPager?itemInfoId=' + rowData.id});
+    }
+
+    function remove(rowData) {
+        var result = {succ:'删除成功！',fail:'删除失败！'};
+        var url = '/warehouse/deleteItemInfo?id=' + rowData.id;
+        myAjax(url,{},handle);
+        function handle(data, params){
+            var msg = (data.msg == undefined ? '':','+data.msg);
+            if(data.success) {
+                layer.msg(result.succ, {icon: 1,shade: 0.01});
+                handleTable("", 3, serverUrl + '/warehouse/getSchoolWarehouseItemInfoPager?sid=' + schoolId + '&wid=' + warehouseId);
+            }else{
+                layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+            }
+        }
+    }
+
+    function addBack(rowData) {
+        $("#area6Form")[0].reset();
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area6', //设定一个id，防止重复弹出
+            title: '添加',
+            area: ['40%','40%'],
+            content: $('.content-view-6'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                var sid = schoolId;
+                var kid = rowData.kid;
+                var wid = rowData.wid;
+                var itemInfoId = rowData.id;
+                var type= $.trim($('#backType').val());
+                var backUid = $.trim($('#backUid').val());
+                var num= $.trim($('#backNum').val());
+                var desc= $.trim($('#backLogDesc').val());
+
+                var result = {succ:'归还成功！',fail:'归还失败！'};
+                var params = {};
+                var url = '/warehouse/addBackItemLog';
+                params.sid = sid;
+                params.kid = kid;
+                params.wid = wid;
+                params.itemInfoId = itemInfoId;
+                params.type = type;
+                params.backUid = backUid;
+                params.optUid = backendUid;
+                params.num = num;
+                params.desc = desc;
+                if(isNotBlank())
+                layer.close(index);
+                myAjax(url,params,handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        handleTable("", 3, serverUrl + '/warehouse/getSchoolWarehouseItemInfoPager?sid=' + schoolId + '&wid=' + warehouseId);
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+            }
+        })
+    }
+
+    function addPut(rowData) {
+        $("#area4Form")[0].reset();
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area4', //设定一个id，防止重复弹出
+            title: '添加',
+            area: ['40%','40%'],
+            content: $('.content-view-4'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                var sid = schoolId;
+                var kid = rowData.kid;
+                var wid = rowData.wid;
+                var itemInfoId = rowData.id;
+                var type= $.trim($('#putType').val());
+                var keepUid = $.trim($('#keepUid').val());
+                var num= $.trim($('#putNum').val());
+                var desc= $.trim($('#putLogDesc').val());
+
+                var result = {succ:'入库成功！',fail:'入库失败！'};
+                var params = {};
+                var url = '/warehouse/addPutItemLog';
+                params.sid = sid;
+                params.kid = kid;
+                params.wid = wid;
+                params.itemInfoId = itemInfoId;
+                params.type = type;
+                params.keepUid = keepUid;
+                params.optUid = backendUid;
+                params.num = num;
+                params.desc = desc;
+                layer.close(index);
+                myAjax(url,params,handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        handleTable("", 3, serverUrl + '/warehouse/getSchoolWarehouseItemInfoPager?sid=' + schoolId + '&wid=' + warehouseId);
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+            }
+        })
+    }
+
+    function update(rowData) {
+        formReset();
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '添加',
+            area: ['40%','40%'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                var id = rowData.id;
+                var name= $.trim($('#name').val());
+                var brand= $.trim($('#brand').val());
+                var version= $.trim($('#version').val());
+                var desc= $.trim($('#desc').val());
+                var unit=$.trim($('#unit').val());
+
+                var result = {succ:'修改成功！',fail:'修改失败！'};
+                var params = {};
+                var url = '/warehouse/updateItemInfo';
+                params.id = id;
+                params.name = name;
+                params.brand = brand;
+                params.version = version;
+                params.desc = desc;
+                params.unit = unit;
+                layer.close(index);
+                myAjax(url,params,handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        handleTable("", 3, serverUrl + '/warehouse/getSchoolWarehouseItemInfoPager?sid=' + schoolId + '&wid=' + warehouseId);
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                $('#kid').val(rowData.kid);
+                $('#kindName').val(rowData.kindName);
+                $('#name').val(rowData.name);
+                $('#brand').val(rowData.brand);
+                $('#version').val(rowData.version);
+                $('#code').val(rowData.code);
+                $('#price').val(rowData.price);
+                $('#desc').val(rowData.desc);
+                $('#unit').val(rowData.unit);
+
+                $('#code').attr('readonly', true);
+                $('#selectWarehouse').attr('disabled', true);
+                $('#price').attr('readonly', true);
+                $('#kindName').attr('onclick', '');
+
+                var url = '/warehouse/getAllWarehouses?sid=' + schoolId;
+                myAjax(url,{},handle);
+                function handle(data, params) {
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        var data = {list: data.data};
+                        var html = template("scriptSelectWarehouse", data);
+                        document.getElementById("selectWarehouse").innerHTML = html;
+                        $('#selectWarehouse').val(rowData.wid);
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            }
+        })
+    }
+
+    function add() {
+        formReset();
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '添加',
+            area: ['40%','40%'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                var kid= $.trim($('#kid').val());
+                var wid = $('#selectWarehouse option:selected').val();
+                var sid = schoolId;
+                var name= $.trim($('#name').val());
+                var brand= $.trim($('#brand').val());
+                var version= $.trim($('#version').val());
+                var code= $.trim($('#code').val());
+                var price= $.trim($('#price').val());
+                var desc= $.trim($('#desc').val());
+                var unit= $.trim($('#unit').val());
+
+                var result = {succ:'添加成功！',fail:'添加失败！'};
+                var params = {};
+                var url = '/warehouse/addItemInfo';
+                params.kid = kid;
+                params.wid = wid;
+                params.sid = sid;
+                params.name = name;
+                params.brand = brand;
+                params.version = version;
+                params.code = code;
+                params.price = price;
+                params.desc = desc;
+                params.unit = unit;
+                layer.close(index);
+                myAjax(url,params,handle);
+                function handle(data, params){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        handleTable("", 3, serverUrl + '/warehouse/getSchoolWarehouseItemInfoPager?sid=' + schoolId + '&wid=' + warehouseId);
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                if(warehouseId > 0) {
+                    $('#selectWarehouse').attr('disabled', true);
+                } else {
+                    $('#selectWarehouse').attr('disabled', false);
+                }
+                $('#code').attr('readonly', false);
+                $('#price').attr('readonly', false);
+                $('#kindName').attr('onclick', 'selectKind()');
+
+                var url = '/warehouse/getAllWarehouses?sid=' + schoolId;
+                myAjax(url,{},handle);
+                function handle(data, params) {
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        var data = {list: data.data};
+                        var html = template("scriptSelectWarehouse", data);
+                        document.getElementById("selectWarehouse").innerHTML = html;
+                        if(warehouseId > 0) {
+                            $('#selectWarehouse').val(warehouseId);
+                        }
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            }
+        })
+    }
+
+    var selectKindIndex;
+    function selectKind() {
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area2', //设定一个id，防止重复弹出
+            title: '分类结构',
+            area: ['40%','40%'],
+            content: $('.content-view-2'),
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                initZtree();
+                $("#treeDemo").slimScroll({
+                    height: '550px'
+                });
+            }
+        })
+        selectKindIndex = index;
+    }
+
+    function formReset(){
+        $("#areaForm")[0].reset();
+    }
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click(add);
+            $('#btn_switch_warehouse').click(switch_warehouse);
+        };
+        return oInit;
+    };
+    //主函数
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var SubTable = new SubTableInit(subColumns);
+        SubTable.Init();
+        var Sub2Table = new Sub2TableInit(sub2Columns);
+        Sub2Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+
+    var zNodes =[];
+    var zTree;
+    var setting = {
+        view: {
+            selectedMulti: false
+        },
+        check: {
+            enable: false,
+        },
+        data: {
+            simpleData: {
+                enable: true
+            }
+        },
+        callback: {
+            onClick: zTreeOnClick,
+        },
+    };
+
+    function initZtree(){
+        var url = serverUrl+"/warehouse/getAllKinds?sid=" + schoolId;
+        myAjax(url,{},handle);
+        function handle(data, param){
+            if(data.success) {
+                var treeData = transTreeData(data.data);
+                zNodes = treeData;
+            }
+            $.fn.zTree.init($("#treeDemo"), setting, zNodes);
+            zTree = $.fn.zTree.getZTreeObj("treeDemo");
+        }
+    }
+
+    function transTreeData(data){
+        var temp = [];
+        for(var i = 0;i<data.length;i++){
+            var obj = {};
+            obj.id = data[i].id;
+            obj.sort = data[i].sort;
+            obj.name = data[i].name;
+            obj.pId = data[i].pid;
+            obj.open = data[i].open;
+            temp.push(obj)
+        }
+        return temp;
+    }
+
+    function zTreeOnClick(event, treeId, treeNode) {
+        $('.content-view #kid').val(treeNode.id);
+        $('.content-view #kindName').val(treeNode.name);
+        layer.close(selectKindIndex);
+    };
+</script>
+
+<script type = "text/html" id = "scriptSelectWarehouse">
+    <option value='0'>请选择</option>
+    <%for(var i = 0; i < list.length; i++){%>
+    <option value='<%=list[i].id%>'><%=list[i].name%></option>
+    <%}%>
+</script>
+
+</html>

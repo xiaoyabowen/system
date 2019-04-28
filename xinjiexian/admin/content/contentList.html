@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>资讯列表</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <div id="toolbar">
+
+                    </div>
+                    <form class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">类型</label>
+
+                            <div class="col-sm-2">
+                                <select id="type1" class="  form-control" title="请选择类别">
+                                    <option value=3>全部</option>
+                                    <option value=1>原创</option>
+                                    <option value=2>转载</option>
+                                </select>
+                            </div>
+                            <label class="col-sm-1 control-label">标题</label>
+
+                            <div class="col-sm-3">
+                                <input type="text" id="title1" placeholder="请输入标题" class="form-control">
+                            </div>
+                            <div class="col-sm-1">
+                                <button type="button" class="btn btn-info" id="user_search" name="like_search" onclick="reInitTable()">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+
+
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Panel Other -->
+<div class="wrapper wrapper-content animated fadeInDown  content-view  ">
+    <form method="get" class="form-horizontal">
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">标题</label>
+
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="title">
+                <span class="help-block m-b-none validate">请输入标题</span>
+            </div>
+
+        </div>
+        <div class="hr-line-dashed "></div>
+        <div class="form-group ">
+            <label class="col-sm-3 control-label">来源</label>
+
+            <div class="col-sm-6">
+                <div class="radio radio-info radio-inline">
+                    <input type="radio" id="newsource1" value="1" name="newsource" checked="">
+                    <label for="newsource1">原创</label>
+                </div>
+                <div class="radio radio-info radio-inline">
+                    <input type="radio" id="newsource2" value="2" name="newsource">
+                    <label for="newsource2">转载 </label>
+                </div>
+            </div>
+        </div>
+        <div class="hr-line-dashed newsource"></div>
+        <div class="form-group newsource">
+            <label class="col-sm-3 control-label">转载地址</label>
+
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="org" placeholder="请输入转载地址">
+                <span class="help-block m-b-none validate">请输入转载地址</span>
+            </div>
+        </div>
+        <div class="hr-line-dashed newsource"></div>
+        <div class="form-group newsource">
+            <label class="col-sm-3 control-label">转载名称</label>
+
+            <div class="col-sm-6">
+                <input type="text" class="form-control" id="orgName" placeholder="请输入转载名称">
+                <span class="help-block m-b-none validate">请输入转载名称</span>
+            </div>
+        </div>
+
+        <!--<div class="hr-line-dashed "></div>-->
+        <!--<div class="form-group ">-->
+            <!--<label class="col-sm-3 control-label">资讯</label>-->
+
+            <!--<div class="col-sm-6">-->
+                <!--<div class="radio radio-info radio-inline">-->
+                    <!--<input type="radio" id="newtype1" value="1" name="newType">-->
+                    <!--<label for="newtype1">考试资讯</label>-->
+                <!--</div>-->
+                <!--<div class="radio radio-info radio-inline">-->
+                    <!--<input type="radio" id="newtype2" value="3" name="newType">-->
+                    <!--<label for="newtype2">品质文章 </label>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+
+        <div class="hr-line-dashed "></div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">封面</label>
+
+            <div class="col-sm-6 ">
+                <div class="input-group">
+                    <input id="cover" type="hidden">
+                    <input id="photoCover" type="text" class="form-control" placeholder="请选择图片">
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                                </span>
+                </div>
+                <img src="../resource/img/upload.png" class="img-rounded" id="iconView" width="15%" height="100%"
+                     style="display: none">
+                <span class="help-block m-b-none validate">请上传图片</span>
+            </div>
+        </div>
+    </form>
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"   accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe" />
+    </form>
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- ztree -->
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+<script src="../resource/common/common.js?time=" +Math.random()></script>
+
+<script>
+    var $table = $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl + '/news/newsList?token=' + getUserToken(),         //请求后台的URL（*）
+                method: 'post',                      //请求方式（*）
+                contentType: "application/x-www-form-urlencoded",
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10, 20, 30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType: 'limit',
+                queryParams: function (params) {
+
+
+                    var type = $("#type1").val();
+                    var title = $("#title1").val();
+
+                    return {
+                        type :type,
+                        title :title ||"",
+                        pageNumber: (params.offset / params.limit) + 1,
+                        pageSize: params.limit
+                    };
+                }
+            });
+        };
+
+        return oTableInit;
+    };
+
+    var columns = [
+        {field: "title", title: "标题"},
+        {
+            field: "type", title: "类型", align: "center", formatter: function (value, row, index) {
+            return value == 1 ? "原创" : "转载";
+        }
+        },
+        {field: "org", title: "转载地址", formatter: function (value, row, index) {
+            return "<p style=' word-break:break-all; width:180px;'>"+value+"</p>";
+        }},
+        {field: "orgName", title: "转载名称"},
+        {
+            field: "cover", title: "封面", align: "center", formatter: function (value, row, index) {
+            if (value) {
+                var thumb = ImageThumb(value, 60, 60, false);
+                return thumb;
+            }
+        }
+        },
+
+        {
+            field: "ctime", title: "发布时间", formatter: function (value, row, index) {
+            return formatDateTime(value);
+        }
+        },
+//        {field: "icon", title: "头像", align: "center", formatter: function (value, row, index) {
+//            if(value){
+//                var thumb = ImageThumb(value, 60, 60, false);
+//                return thumb;
+//            }
+//        }},
+//        {field: "sex", title: "性别", align: "center", formatter: function (value, row, index) {
+//            return value == 0 ? "男":"女";
+//        }},
+        {
+            field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+            var data = JSON.stringify(row);
+            var html = '';
+            html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'editContent(" + data + ")\'>编辑资讯</a>";
+//            html += '&nbsp';
+//            html += "<a  class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'editUserPermission(" + data + ")\'>修改权限</a>";
+            html += '&nbsp';
+            html += '<a class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" onclick="deleteContent(' + row.id + ')" >删除资讯</a>';
+
+            return html;
+        }
+        }
+
+    ];
+
+
+
+
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+//        laydate.render({
+//            elem: '#startTime'
+//        });
+//        laydate.render({
+//            elem: '#endTime'
+//        });
+    });
+    function editContent(data) {
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['550px', '500px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function () {
+                submitContentData(index,data);
+            },
+            btn2: function () {
+            },
+            success: function (layero, index) {
+                echoContent(data);
+            }
+        });
+    }
+
+
+
+    function reInitTable() {
+        $table.bootstrapTable('refreshOptions', {pageNumber: 1});
+    }
+
+
+    function echoContent(data) {
+        $("#title").val(data.title);
+        if(data.type == 1){
+            setRadioChecked("newsource",1);
+            $(".newsource").hide();
+        }else{
+            setRadioChecked("newsource",2);
+            $(".newsource").show();
+        }
+        $("#org").val(data.org);
+        $("#orgName").val(data.orgName);
+        $("#cover").val(data.cover);
+        $("#photoCover").val(data.cover);
+        $("#iconView").attr("src",data.cover);
+        $("#iconView").show();
+    }
+
+
+    function deleteContent(id) {
+        var url = "/news/deleteNews";
+        var result = {succ: '删除成功！', fail: '删除失败！'};
+        layer.msg('确认删除吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            , btn: ['确定', '取消']
+            , yes: function (index) {
+                layer.close(index);
+
+                ajaxSubmit(url, {id: id}, handle);
+
+                function handle(data, param) {
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        msgSuccess("删除成功", msg);
+                        handleTable("", 3, serverUrl + '/news/newsList?token=' + getUserToken());
+                    } else {
+                        msgFail("删除失败" + msg);
+                    }
+                }
+            }, btn2: function (index, layero) {
+            }
+        });
+    }
+
+    function submitContentData(index, data) {
+        var param = {};
+        var Url = '';
+        var result;
+        var id = data.id;
+        var title = $("#title").val();
+        var newsource = $("input[name='newsource']:checked").val();
+        var org = $("#org").val();
+        var orgName = $("#orgName").val();
+        var cover = $("#cover").val();
+
+        if (isBlank(title)) {
+            showValidate('#title');
+            return;
+        }
+        if (isBlank(newsource)) {
+            showValidate('#newsource');
+            return;
+        }
+        if(newsource == 2){
+            if(isBlank(org)){
+                showValidate($("#org"));
+                return;
+            }
+            if(isBlank(orgName)){
+                showValidate($("#orgName"));
+                return;
+            }
+        }
+        if (isBlank(cover)) {
+            showValidate('#cover');
+            return;
+        }
+
+        layer.close(index);
+        param.id = id;
+        param.title = title;
+        param.type = newsource;
+        param.org = "";
+        param.orgName = "";
+        if(newsource == 2){
+            param.org = org;
+            param.orgName = orgName;
+        }
+        param.cover = cover;
+
+        Url = '/news/updateNews';
+        result = {succ: '更新成功！', fail: '更新失败！'};
+
+
+        ajaxSubmit(Url, param, handle);
+
+        function handle(data, param) {
+            if (data && data.success) {
+                msgSuccess('更新成功');
+                handleTable("", 3, serverUrl + '/news/newsList?token=' + getUserToken());
+            } else {
+                var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                msgFail('更新失败' + msg);
+            }
+        }
+    }
+
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $("input[name='newsource']").change(newSourceChange);
+            $('#btn_add').click();
+            $('#btn_edit').click();
+        };
+
+        return oInit;
+    };
+
+    function newSourceChange(){
+        var value = $(this).val();
+        if(value == 2){
+            $(".newsource").show();
+        }else{
+            $(".newsource").hide();
+        }
+    }
+
+</script>
+</body>
+
+</html>

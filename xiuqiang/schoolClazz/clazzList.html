@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>班级管理</title>
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+
+    <link href="../resource/common/area/zyzn_1.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+    
+    
+    <!--iCheck样式-->
+    <link rel="stylesheet" type="text/css" href="../resource/css/plugins/iCheck/custom.css"/>
+
+    <style>
+        .distributionData > li {
+            width: 23%;
+            margin-right: 1%;
+            height: 30px;
+            text-decoration: none;
+            list-style: none;
+            float: left;
+            margin-bottom: 10px;
+            line-height: 30px;
+            text-align: left;
+            cursor: pointer;
+            position: relative;
+        }
+        .imgDel{
+            display: block;
+            position: absolute;
+            right: 0px;
+            top: 0px;
+            width: 20px;
+            height: 20px;
+        }
+        /*.distributionData > li:hover {
+            color: #fff;
+            background: #1c84c6;
+        }*/
+
+        .click-bg {
+            background: transparent;
+            /*color: #fff;*/
+        }
+    </style>
+</head>
+
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated  fadeInDown  content-view  ">
+        <form method="get" class="form-horizontal" id="areaForm">
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">班级名称</label>
+                <div class="col-sm-8">
+                    <input type="hidden" class="form-control hiddenid" id="id">
+                    <input type="text" class="form-control" id="name" placeholder="请输入班级名称">
+                    <!--<span class="help-block m-b-none validate">请输入班级名称</span>-->
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="col-sm-3 control-label">年级</label>
+ 				<div class="col-sm-8">
+                    <select id="grade"  class=" form-control"  title="请选择模式类型" >
+                        <option  value="0" >托管</option>
+                        <option  value="1" >小班</option>
+                        <option  value="2" >中班</option>
+                        <option  value="3" >大班</option>
+                        <option  value="4" >其他</option>
+                    </select>
+               </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">班级介绍</label>
+                <div class="col-sm-8">
+                    <textarea class="form-control" id="info" placeholder="请输入班级介绍" style="height:100px;resize:none"></textarea>
+                    <span class="help-block m-b-none validate">请输入班级介绍</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">计划学生人数</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" id="planUserNum" placeholder="请输入计划学生人数">
+                    <span class="help-block m-b-none validate">请输入计划学生人数</span>
+                </div>
+            </div>
+
+
+        </form>
+    </div>
+
+    <!--点击分配的模态框-->
+    <div class="wrapper distribution wrapper-content animated  fadeInDown" style="display:none;">
+
+        <ul class="distributionData">
+
+        </ul>
+
+    </div>
+
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <!-- Panel Other -->
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>班级列表</h5>
+            </div>
+            <div id="toolbar" class="btn-group">
+                <button class="btn btn-success btn-sm btn-outline" id="btn_add" >
+                    <i class="fa fa-plus">添加</i>
+                </button>
+            </div>
+            
+            <div class="ibox-content">
+                <div class="row row-lg">
+                    <div class="col-sm-12">
+                       
+                        <table id="tb_table"></table>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- End Panel Other -->
+    </div>
+
+    <!-- 全局js -->
+    <script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+    <script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+    <!-- 自定义js -->
+    <script src="../resource/js/content.js?v=1.0.0"></script>
+
+    <script src="../resource/js/plugins/layer/layer.js"></script>
+
+    <!-- Bootstrap table -->
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+    <script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+
+
+    <script src="../resource/common/common.js?"+Math.random()></script>
+
+    <script src="../resource/common/area/City_data.js"></script>
+    <script src="../resource/common/area/areadata.js"></script>
+    
+    
+    <script src="../resource/common/newscontent.js"></script>
+    
+    
+    
+   	<!--多选框 icheck.js-->
+	<script src="../resource/js/plugins/iCheck/iCheck.js"></script>   	
+
+    <script>
+        var schoolId=getUserInfo().sid;
+	
+    	
+        var $table =  $('#tb_table');
+        var TableInit = function (columns) {
+            var oTableInit = new Object();
+            //初始化Table
+            oTableInit.Init = function () {
+                $table.bootstrapTable({
+                    url: serverUrl+'/clazz/getAll',         //请求后台的URL（*）
+                    method: 'get',                      //请求方式（*）
+                    toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                    cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                    pagination: true,                   //是否显示分页（*）
+                    sortable: false,                     //是否启用排序
+                    sortOrder: "asc",                   //排序方式
+                   sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                    showRefresh: true,                   //是否显示刷新按钮
+                    pageNumber:1,                       //初始化加载第一页，默认第一页
+                    pageSize: 10,                       //每页的记录行数（*）
+                    pageList: [10,30,50],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                    strictSearch: true,
+                    showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                    minimumCountColumns: 2,             //最少允许的列数
+                    clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                    uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                    cardView: false,                    //是否显示详细视图
+                    detailView: false,                   //是否显示父子表
+                    columns: columns,
+                    onClickRow: function (row) {
+                          console.log(row)
+                },
+                    queryParams: function (params) {
+                    var query = {
+                            token:getUserInfo().token,
+                        page: params.offset+1,
+                        size: params.limit,
+                        sid:schoolId
+                    }
+                    
+
+                    return query;
+                },
+                });
+            };
+            $table.on('refresh.bs.table', function (params) {
+
+                    });
+            return oTableInit;
+        };
+        var state = {'1':'上线', '0':'下线'};
+        var columns = [
+            {field: "id", title: "序号",align:"center",formatter: function (value, row, index) {
+                return index+1;
+            }},
+            {field: "name", title: "班级名称",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+           {field: "grade", title: "年级",align: "center", formatter: function (value, row, index) {
+                var gradeMap={"0":"托管","1":"小班","2":"中班","3":"大班","4":"其他"};
+                return gradeMap[value];
+            }},
+            {field: "teachers", title: "老师",width:300,align: "center", formatter: function (value, row, index) {
+                var teacherHtml='';
+                for(var i=0;i<value.length;i++){
+                	teacherHtml=teacherHtml+value[i]+"&nbsp";
+                }
+                return teacherHtml;
+            }},
+            {field: "userNum", title: "学生数量",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+            {field: "planUserNum", title: "计划学生人数",align: "center", formatter: function (value, row, index) {
+                return value;
+            }},
+            {field: "ctime", title: "创建时间",align: "center", formatter: function (value, row, index) {
+                return formatDateTime(value);
+            }},
+            {field: "status", title: "班级状态",align: "center", formatter: function (value, row, index) {
+                if(value==0){return '正常';}
+                if(value==2){return '毕业';}
+            }},
+            {field: "name", title: "编辑", align: "center", formatter: function (value, row, index) {
+
+                var html = '';
+                html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="教师管理" onclick=\'addTeacher('+JSON.stringify(row)+')\'>教师管理</a>';
+                html +='&nbsp';
+                html += '<a class="btn btn-info btn-sm  btn-outline" href="javascript:void(0);" onclick="getClazzChildrents(' + row.id + ')" >本班学生</a>';
+                html +='&nbsp';
+                html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="升级" onclick=\'addGrade(' + row.id + ')\'>升级</a>';
+                html +='&nbsp';
+                html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="毕业" onclick=\'graduate(' + row.id + ')\'>毕业</a>';
+                html +='&nbsp';
+                html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="编辑" onclick=\'addOrEdit(' + JSON.stringify(row) + ')\'>编辑</a>';
+                html +='&nbsp';
+                html += '<a  class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" title="删除" onclick="removeData(' + row.id + ')" >删除</a>';
+                return html;
+            }},
+
+        ]
+
+      //删除
+        function removeData(id){
+            var url = "/clazz/delete";
+            var param = {id:id};
+            var result = {succ:'删除成功!',fail:'删除失败'};
+            layer.msg("确定要删除该班级吗？", {
+                shade: [0.1, '##f5f5f5'],btnAlign: 'c',
+                time: 0 //不自动关闭
+                ,btn: ['确定','取消']
+                ,yes: function(index){
+                    layer.close(index);
+                    myAjax(url,param,handle);
+                    function handle(data,param){
+                        var msg = (data.msg == undefined ? '':data.msg);
+                        if(data.success) {
+                            layer.msg(result.succ, {icon: 1,shade: 0.01});
+                            handleTable(id,4);
+                        }else{
+                            layer.msg(msg, {icon: 2,shade: 0.01});
+                        }
+                    }
+                },btn2: function(index, layero){
+                }
+            });
+        }
+        
+         function graduate(id){
+            var url = "/clazz/graduate";
+            var param = {id:id};
+            var result = {succ:'操作成功!',fail:'操作失败'};
+            layer.msg("确定要让该班级毕业吗？", {
+                shade: [0.1, '##f5f5f5'],btnAlign: 'c',
+                time: 0 //不自动关闭
+                ,btn: ['确定','取消']
+                ,yes: function(index){
+                    layer.close(index);
+                    myAjax(url,param,handle);
+                    function handle(data,param){
+                        var msg = (data.msg == undefined ? '':data.msg);
+                        if(data.success) {
+                            layer.msg(result.succ, {icon: 1,shade: 0.01});
+                            handleTable(id,4);
+                        }else{
+                            layer.msg(msg, {icon: 2,shade: 0.01});
+                        }
+                    }
+                },btn2: function(index, layero){
+                }
+            });
+        }
+         
+         function addGrade(id){
+            var url = "/clazz/addGrade";
+            var param = {id:id};
+            var result = {succ:'操作成功!',fail:'操作失败'};
+            layer.msg("确定要让该班级升级吗？", {
+                shade: [0.1, '##f5f5f5'],btnAlign: 'c',
+                time: 0 //不自动关闭
+                ,btn: ['确定','取消']
+                ,yes: function(index){
+                    layer.close(index);
+                    myAjax(url,param,handle);
+                    function handle(data,param){
+                        var msg = (data.msg == undefined ? '':data.msg);
+                        if(data.success) {
+                            layer.msg(result.succ, {icon: 1,shade: 0.01});
+                   			handleTable("",3,serverUrl+"/clazz/getAll");
+                        }else{
+                            layer.msg(msg, {icon: 2,shade: 0.01});
+                        }
+                    }
+                },btn2: function(index, layero){
+                }
+            });
+        }
+        
+        
+        //添加
+        function addOrEdit(rowData){
+            console.log(rowData);
+            var subType ;
+            if(isNotBlank(rowData)){
+                subType  = 1;
+            }else{
+                subType  = 0;
+             formReset();
+            }
+            var index= layer.open({
+                type: 1 , shade: 0.01,
+                id: 'area', //设定一个id，防止重复弹出
+                title: '添加/更新',
+                area: ['40%','40%'],
+                content: $('.content-view'),
+                btn: ['提交', '关闭'],
+                yes:function(index){
+                    submitData(index,subType,rowData);
+                },
+                shadeClose: true, //开启遮罩关闭
+                success: function(){
+                    // console.log(rowData)
+                    if (isNotBlank(rowData)){
+                        $('#id').val(rowData.id);
+                        $("#name").val(rowData.name)   //班级名称
+                        $("#grade").val(rowData.grade)   //年级
+                        $("#planUserNum").val(rowData.userNum)   //计划学生人数
+                    }
+
+                }
+
+            })
+        }
+
+        function submitData(index,subType,rowData){
+            var id=$('#id').val();
+            var name= $.trim($('#name').val());
+            var grade=$.trim($('#grade').val());
+            var planUserNum=$.trim($('#planUserNum').val());
+            var clazzId= id;
+            var result ;
+            var params = {};
+            var url;
+            if(subType == 0){
+                url = "/clazz/add";
+                result = {succ:'添加成功！',fail:'添加失败！'};
+            }else{
+                url = "/clazz/update";
+                result = {succ:'更新成功！',fail:'更新失败'};
+            }
+            if(isBlank(name)){
+                showValidate('#name');
+                return  ;
+            }
+            if(isNotBlank(id)){
+                params.id = id;
+            }
+            layer.close(index);
+            params.name = name;
+            params.grade = grade;
+            params.sid=schoolId;
+            params.planUserNum = planUserNum;
+            myAjax(url,params,handle);
+            function handle(data,params){
+                var msg = (data.msg == undefined ? '':','+data.msg);
+                if(data.success) {
+                    layer.msg(result.succ, {icon: 1,time:500});
+                    handleTable("",3,serverUrl+"/clazz/getAll");
+                }else{
+                    layer.msg(result.fail+msg, {icon: 2,time:650});
+                }
+            }
+
+        }
+			//   添加老师  教师管理
+		function addTeacher(rowsdata){
+               console.log(rowsdata)
+            myAjax("/backend/getAllTeachers",{sid: getUserInfo().sid,checkStatus:1}, handle)
+            function handle(data) {
+            	console.log(data)
+                var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                if (data.success) {
+                    var str = '';
+                    for (var i=0;i<data.data.length;i++){
+                        if (rowsdata.tidsJson != undefined){
+                            var ischeck = (rowsdata.tidsJson.indexOf(data.data[i].id)!=-1)?'checked':'';
+                            str += '<li><label  class="i_check"><input type="checkbox" data-value="' + data.data[i].id + '" '+ischeck+'  value="' + data.data[i].id + '">' + data.data[i].name + '</label></li>'
+                        }else{
+                            str += '<li><label  class="i_check"><input type="checkbox" data-value="' + data.data[i].id + '" value="' + data.data[i].id + '">' + data.data[i].name + '</label></li>'
+                        }
+                    }
+
+                    $(".distributionData").html(str)
+                    
+					 $('.i_check').iCheck({
+		                checkboxClass: 'icheckbox_square-green',
+		                radioClass: 'iradio_square-green',
+		                increaseArea: '20%'
+		              });
+
+//                  uidsArr = [];     //自定义id数组 這塊 2
+//                  $(".distributionData>li").on("click",function () {
+////                      $(this).toggleClass("click-bg")
+//					
+//                      var branchId = parseInt($(this).attr("data-branchId"))
+//                      if(!$(this).children("icheckbox_square-green").is(".icheckbox_square-green.checked")) {
+//                          uidsArr.push(branchId)
+//                      } else {
+//                          uidsArr.splice($.inArray(branchId, uidsArr), 1);
+//                      }
+//                 		console.log(uidsArr)
+//                  })
+
+                    /*//点击删除删除当前
+                    $(".imgDel").on("click", function () {
+                        $(this).parent().hide()
+                    })*/
+                } else {
+                    layer.msg(result.fail + msg, {icon: 2, shade: 0.01});
+                }
+            }
+
+
+            var result = {succ:'分配教师成功!',fail:'分配教师失败!'};
+
+            var index = layer.open({
+                type: 1, shade: 0.01,
+                id: 'area', //设定一个id，防止重复弹出
+                title: '分配管理',
+                area: ['600px', '400px'],
+                content: $('.distribution'),
+                btn: ['提交', '关闭'],
+                yes: function (index) {
+                    var uidArr = [];
+					$('.distributionData [type="checkbox"]:checked').each(function(){
+					    var checkedVal = $(this).val()
+                        console.log(checkedVal)
+						uidArr.push(checkedVal);
+					})
+                    console.log(uidArr);
+
+                    // 点击提交接口
+                    myAjax("/clazz/updateTeachers",{tids:uidArr,id:rowsdata.id}, handle)
+                    function handle(data,params) {
+                        var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                        if (data.success) {
+                            layer.msg(result.succ, {icon:1,time:500,shade: 0.01},function () {
+                                layer.closeAll()
+                            });
+                            handleTable("",3,serverUrl+"/clazz/getAll");
+
+                        } else {
+                            layer.msg(result.fail + msg, {icon: 2,time:500, shade: 0.01});
+                        }
+                    }
+
+                },
+                shadeClose: true, //开启遮罩关闭
+                success: function (layero, index) {
+
+                }
+            })
+		}
+
+		
+        function openPOP(){
+            addOrEdit();
+        }
+
+        function formReset(){
+            $("#areaForm")[0].reset();
+        }
+
+        function getClazzChildrents(clazzId){
+            addMenuItem("../child/clazzchildrenList.html?cid="+clazzId,"班级学童列表");
+        }
+
+
+        //初始化页面上面的按钮事件
+        var ButtonInit = function () {
+            var oInit = new Object();
+            oInit.Init = function () {
+                $('#btn_add').click(openPOP);
+
+            };
+
+            return oInit;
+        };
+        
+        
+        
+        
+        //主函数
+        $(function () {
+            var Table = new TableInit(columns);
+            Table.Init();
+            var oButtonInit = new ButtonInit();
+            oButtonInit.Init();
+            
+            /*$('.inputCheck').iCheck({
+			 checkboxClass: 'icheckbox_minimal-red',
+			 radioClass: 'iradio_minimal-red',
+			 increaseArea: '20%', // optional
+			  labelHover: true,
+			});*/
+            
+        });
+
+    </script>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>固定资产物品申请审核通过</title>
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+
+
+</head>
+
+<body class="gray-bg">
+
+<div class="wrapper wrapper-content animated  fadeInDown  content-view" style="display: none">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">选择位置</label>
+        <div class="col-sm-8">
+            <select id="switchSelectLocation"  class=" form-control"  title="选择位置">
+            </select>
+        </div>
+    </div>
+</div>
+
+<form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+    <input style="height: 0;width: 0;" type="file" name="file"   accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe" />
+</form>
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>功能列表</h5>
+        </div>
+        <div id="toolbar" class="btn-group">
+            <div class="col-sm-5 control-label">
+                <button class="btn btn-info btn-outline" id="btn_switch_location">
+                    <i class="fa">切换位置</i>
+                </button>
+            </div>
+        </div>
+
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+                    <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/common/common.js?"+Math.random()></script>
+
+<script src="../resource/js/plugins/bootstrap-menu/bootstrap-contextmenu.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.exedit.js"></script>
+<script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<script src="../resource/js/template-native.js"></script>
+
+
+<script>
+    var schoolId = getUserInfo().sid;
+    var locationId = 0;
+    var $table =  $('#tb_table');
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl+'/fixedasset/getPassSchoolFixedAssetReqItemLogPager?sid=' + schoolId + '&lid=' + locationId,         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType:'limit',
+                queryParams: function (params) {
+                    return {
+                        token:getUserInfo().token,
+                        page:(params.offset / params.limit) + 1,
+                        size: params.limit,
+                    };
+                },
+            });
+        };
+        return oTableInit;
+    };
+
+    var columns = [
+//        {field: "id", title: "ID",align: "center", formatter: function (value, row, index) {
+//            return value;
+//        }},
+//        {field: "schoolName", title: "幼儿园",align: "center", formatter: function (value, row, index) {
+//            return value;
+//        }},
+        {field: "locationName", title: "位置",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "kindName", title: "分类",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "reqDepartment", title: "部门",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "reqUserName", title: "申请人",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "itemInfoName", title: "名称",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "itemInfoBrand", title: "品牌",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "itemInfoVersion", title: "型号",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "itemInfoCode", title: "编号",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "itemInfoPrice", title: "单价",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "desc", title: "描述",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "num", title: "申请数",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+    ]
+
+    function switch_location() {
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area3', //设定一个id，防止重复弹出
+            title: '切换位置',
+            area: ['40%','40%'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                locationId = $('#switchSelectLocation option:selected').val();
+                $table.bootstrapTable('refresh', {url:serverUrl+'/fixedasset/getPassSchoolFixedAssetReqItemLogPager?sid=' + schoolId + '&lid=' + locationId});
+                layer.close(index);
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                var url = '/fixedasset/getAllLocations?sid=' + schoolId;
+                myAjax(url,{},handle);
+                function handle(data, params) {
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        var data = {list: data.data};
+                        var html = template("scriptSelectLocation", data);
+                        document.getElementById("switchSelectLocation").innerHTML = html;
+                    }else{
+                        layer.msg(result.fail + msg, {icon: 1,shade: 0.01});
+                    }
+                }
+            }
+        })
+    }
+
+
+    function formReset(){
+        $("#areaForm")[0].reset();
+    }
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_switch_location').click(switch_location);
+        };
+        return oInit;
+    };
+    //主函数
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+    });
+
+
+</script>
+
+<script type = "text/html" id = "scriptSelectLocation">
+    <option value='0'>请选择</option>
+    <%for(var i = 0; i < list.length; i++){%>
+    <option value='<%=list[i].id%>'><%=list[i].name%></option>
+    <%}%>
+</script>
+
+</html>

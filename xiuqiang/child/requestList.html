@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords" >
+    <meta name="description" >
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/js/plugins/bootstarp-table/css/bootstrap-table.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrapzTree/bootstrapStyle.css" type="text/css">
+    <link rel="stylesheet" href="../resource/js/plugins/bootstrap-select/css/bootstrap-select.min.css" type="text/css">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+
+    <!--iCheck样式-->
+    <link rel="stylesheet" type="text/css" href="../resource/css/plugins/iCheck/custom.css"/>
+
+</head>
+
+
+<body class="gray-bg">
+
+
+<div class="wrapper wrapper-content animated fadeInDown  content-view  ">
+    <form method="get" class="form-horizontal" id="areaForm">
+        <div class="form-group" >
+            <label class="col-sm-3 control-label">名称</label>
+            <div class="col-sm-8">
+                <input type="hidden" class="form-control hiddenid" id="dId">
+                <input type="text" class="form-control"  id="pname" placeholder="请输入名称" disabled>
+                <span class="help-block m-b-none validate">请输入名称</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label">费用</label>
+
+            <div class="col-sm-8">
+                <!--<input type="text" class="form-control"  id="pvalue" placeholder="请输入值">-->
+                <input type="text" class="form-control"  id="pvalue" placeholder="请输入费用">
+
+                <span class="help-block m-b-none validate">请输入费用</span>
+            </div>
+        </div>
+
+        <div class="form-group" hidden>
+            <label class="col-sm-3 control-label">设置状态</label>
+
+            <div class="col-sm-8">
+                <select id="status"  class="  form-control"  title="请选择状态" >
+                    <option  value="2" >下线</option>
+                    <option  value="1" >上线</option>
+                </select>
+            </div>
+        </div>
+
+    </form>
+
+
+    <!-- Panel Other -->
+    <form method="get" class="form-horizontal" id="userForm">
+
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">宝宝姓名</label>
+            <div class="col-sm-10">
+                <input type="hidden" class="form-control hiddenid" id="id">
+                <input type="text" class="form-control" id="name" placeholder="请输入宝宝姓名">
+                <span class="help-block m-b-none validate">请输入宝宝姓名</span>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">手机号</label>
+            <div class="col-sm-10">
+                <input type="number" class="form-control" id="phone" placeholder="请输入用户手机号">
+                <span class="help-block m-b-none validate">请输入用户手机号</span>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">QQ</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="qq" placeholder="请输入用户QQ">
+                <span class="help-block m-b-none validate">请输入用户QQ</span>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">邮箱</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="mail" placeholder="请输入用户邮箱">
+                <span class="help-block m-b-none validate">请输入用户邮箱</span>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">身份证</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="idCard" placeholder="请输入用户身份证">
+                <span class="help-block m-b-none validate">请输入用户身份证</span>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+
+
+
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">选择状态</label>
+
+            <div class="col-sm-10">
+                <select id="checkStatus"  class="form-control"  title="请选择角色类型" >
+                    <option value="0">预约未缴费</option>
+                    <option value="1">缴费未分班</option>
+                    <option value="2">已分班</option>
+                </select>
+            </div>
+        </div>
+        <div class="hr-line-dashed"></div>
+
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">选择班级</label>
+
+            <div class="col-sm-10">
+                <select id="classId"  class="form-control"  title="选择班级" >
+                    <option value="0" selected>未分班</option>
+                </select>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+<div class="wrapper wrapper-content animated  fadeInDown  content-view-7" style="display: none">
+    <div id="toolbar7" class="btn-group">
+        <button class="btn btn-success  btn-outline" id="btn_clear_backUser">
+            <i class="fa fa-plus">清空</i>
+        </button>
+    </div>
+    <table id="sub_2_tb_table"></table>
+</div>
+
+<!--点击分配的模态框-->
+<div class="wrapper distribution wrapper-content animated  fadeInDown" style="display:none;">
+
+    <ul class="distributionData">
+        <!--<li>
+            <label  class="i_check">
+                <input type="checkbox" data-value="' + data.data[i].id + '" '+ischeck+'  value="' + data.data[i].id + '">' + data.data[i].name + '
+            </label>
+        </li>-->
+
+
+    </ul>
+
+</div>
+
+
+
+<div class="wrapper wrapper-content animated fadeInRight">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>后台用户</h5>
+        </div>
+        <div class="ibox-content">
+            <div class="row row-lg">
+                <div class="col-sm-12">
+
+                    <!--点击查询dom结构-->
+                    <form class="form-horizontal" role="form">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label text-right">姓名</label>
+
+                            <div class="col-sm-2">
+                                <input type="text" id="assignName"  class="form-control" placeholder="请输入姓名"/>
+                            </div>
+                            <label class="col-sm-1 control-label">选择类型</label>
+                            <div class="col-sm-2">
+                                <select id="assignType" class="  form-control">
+                                    <option value="1">已指派</option>
+                                    <option value="2">未指派</option>
+
+                                </select>
+                            </div>
+
+                            <div class="col-sm-2" >
+                                <button type="button" class="btn  btn-info " id="user_search" name="like_search">
+                                    <i class="fa fa-search"></i> 点击查询
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-sm-2" >
+                            <button type="button" class="btn  btn-info " id="btn_edit" >
+                                设置预约占位费
+                            </button>
+                        </div>
+                        <table id="tb_table"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Panel Other -->
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+
+<!-- 自定义js -->
+<script src="../resource/js/content.js?v=1.0.0"></script>
+
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!-- ztree -->
+
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.core.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.excheck.js"></script>
+<script type="text/javascript" src="../resource/js/plugins/bootstrapzTree/jquery.ztree.exedit.js"></script>
+
+<!-- Bootstrap table -->
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table.js"></script>
+<script src="../resource/js/plugins/bootstarp-table/js/bootstrap-table-zh-CN.min.js"></script>
+<script src="../resource/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!--多选框 icheck.js-->
+<script src="../resource/js/plugins/iCheck/iCheck.js"></script>
+
+<script src="../resource/common/common.js?"+Math.random()></script>
+<script>
+    var schoolId=getUserInfo().sid;
+
+
+    var RoleList = "";
+    var $table =  $('#tb_table');
+    var $sub2Table =  $('#sub_2_tb_table');
+    var Sub2TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $sub2Table.bootstrapTable({
+
+                method: 'get',                      //请求方式（*）
+//                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType:'limit',
+                queryParams: function (params) {
+                    return {
+                        token:getUserInfo().token,
+                        page:(params.offset / params.limit) + 1,
+                        size: params.limit,
+                    };
+                },
+            });
+        };
+        return oTableInit;
+    };
+    //添加修改
+    function edit(rowData){
+        $("#userForm").hide();
+        $("#areaForm").show();
+        var subType ;
+        if(isNotBlank(rowData)){
+            subType  = 1;
+        }else{
+            subType  = 0;
+            formReset();
+        }
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '添加/更新',
+            area: ['40%','40%'],
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes:function(index){
+                submitData(index,subType);
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                myAjax("/dictionary/getAllList",null,handle)
+                function handle(data) {
+                    if(data!=null) {
+                        for(var i=0;i<data.length;i++){
+                          if(data[i].name=="预约占位费"){
+                              $("#dId").val(data[i].id);
+                              $("#pname").val(data[i].name);
+                              $("#pvalue").val(data[i].value);
+                              $("#status").val(1);
+                          }
+                        }
+                    }
+                }
+            }
+
+        })
+    }
+
+
+    function submitData(index,type){
+        var dId=$('#dId').val();
+        var pname= $.trim($('#pname').val());
+        var pvalue=$.trim($('#pvalue').val());
+        var status = 1;
+        var result ;
+        var params = {};
+        var url;
+        if(type == 0){
+            url = "/dictionary/addDictionary";
+            result = {succ:'添加成功！',fail:'添加失败！'};
+        }else{
+            url = "/dictionary/updataDictionary";
+            result = {succ:'更新成功！',fail:'更新失败'};
+        }
+        if(isBlank(pname)){
+            showValidate('#pname');
+            return  ;
+        }
+
+        if(isNotBlank(dId)){
+            params.id = dId;
+        }
+
+        layer.close(index);
+        params.name = pname;
+        params.status = status;
+        params.value = pvalue;
+        myAjax(url,params,handle);
+        function handle(data,params){
+            var msg = (data.msg == undefined ? '':','+data.msg);
+            if(data.success) {
+                layer.msg(result.succ, {icon: 1,shade: 0.01});
+            }else{
+                layer.msg(result.fail+msg, {icon: 1,shade: 0.01});
+            }
+        }
+
+    }
+    var TableInit = function (columns) {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            $table.bootstrapTable({
+                url: serverUrl+'/userRequest/getUserPager',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+//                    striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                sortable: false,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber:1,                       //初始化加载第一页，默认第一页
+                pageSize: 10,                       //每页的记录行数（*）
+                pageList: [10,20,30],        //可供选择的每页的行数（*）
+//                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+//				showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+//				height: 500,                        //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+//                showToggle:true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                detailView: false,                   //是否显示父子表
+                columns: columns,
+//                    showFooter:true,            //表格底部
+                onClickRow: function (row) {
+//                        console.log(row)
+                },
+                queryParamsType:'limit',
+                queryParams: function (params) {
+                    return {
+                        token:getUserInfo().token,
+                        page:(params.offset / params.limit) + 1,
+                        size: params.limit,
+                        sid:schoolId,
+                        assignedType:$('#assignType').val(),  //指派的状态
+                        name:$('#assignName').val()  //姓名
+                    };
+                },
+            });
+        };
+
+        return oTableInit;
+    };
+
+
+    var sub2Columns = [
+        {field: "id", title: "序号",align:"center",formatter: function (value, row, index) {
+            return index+1;
+        }},
+        {field: "name", title: "姓名",align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "other", title: "编辑", align: "center", formatter: function (value, row, index) {
+            var html = '';
+            html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="选择" onclick=\'confirmBackUser('+JSON.stringify(row) + ')\' >选择</a>';
+            return html;
+        }},
+    ]
+
+    var columns = [
+        {field: "id",title: "序号",align:"center",formatter: function (value, row, index) {
+            return index+1;
+        }},
+        {field: "parentName", title: "家长姓名",align:"center"},
+        {field: "phone", title: "电话",align:"center"},
+        {field: "name", title: "宝宝姓名",align:"center"},
+        {field: "sex", title: "宝宝性别",align:"center", formatter: function (value, row, index) {
+            if(value==0){return '未知';}
+            if(value==1){return '男';}
+            if(value==2){return '女';}
+        }},
+        {field: "birthDate", title: "出生日期",align:"center", formatter: function (value, row, index) {
+            return formatDateTime(value);
+        }},
+        {field: "checkStatus", title: "缴费状态",align:"center", formatter: function (value, row, index) {
+            if(value==0){return '预约未缴费';}
+            if(value==1){return '缴费未分班';}
+            if(value==2){return '已分班';}
+        }},
+        {field: "price", title: "缴费金额(元)",align:"center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "assignedType", title: "是否指派",align:"center", formatter: function (value, row, index) {
+            if(value==1){return '已指派';}
+            if(value==2){return '未指派';}
+        }},
+        {field: "teacherName", title: "被指派教师", align: "center", formatter: function (value, row, index) {
+            var html;
+            if(row.tid == 0){
+                html = '—'
+            }else{
+                html = row.teacherName;
+            }
+            return html;
+        }},
+        {field: "provinceSchool", title: "省份", align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "citySchool", title: "城市", align: "center", formatter: function (value, row, index) {
+            return value;
+        }},
+        {field: "ctime", title: "申请时间",align:"center", formatter: function (value, row, index) {
+            return formatDateTime(value);
+        }},
+        {field: "id", title: "操作", align: "center", formatter: function (value, row, index) {
+            var data = JSON.stringify(row);
+            var html = '';
+            if($("#assignType").val() == 2) {
+                html += '<a class="btn btn-info btn-sm btn-outline" href="javascript:void(0);" title="指派教师" onclick=\'assignedTeacher(' + JSON.stringify(row) + ')\'>指派教师</a>';
+            }else {
+                html += "";
+            }
+            html +='&nbsp';
+            html +="<a class='btn btn-info btn-sm btn-outline' href='javascript:void(0)' onclick=\'editUser("+data+")\'>编辑</a>";
+            html +='&nbsp';
+            html += '<a class="btn btn-danger btn-sm  btn-outline" href="javascript:void(0);" onclick="deleteUser(' + row.id + ')" >删除</a>';
+            return html;
+        }}
+    ]
+
+    var selectBackUserIndex = 0;
+    var itemId;
+    function assignedTeacher(data) {
+        var index= layer.open({
+            type: 1 , shade: 0.01,
+            id: 'sub7Area', //设定一个id，防止重复弹出
+            title: '列表',
+            area: ['40%','40%'],
+            content: $('.content-view-7'),
+            shadeClose: true, //开启遮罩关闭
+            success: function(layero, index){
+                $sub2Table.bootstrapTable('refresh', {url : serverUrl + '/backend/getAllBySchool?schoolId=' + schoolId});
+
+            }
+        });
+        selectBackUserIndex = index;
+        itemId = data.id;
+    }
+
+
+    function confirmBackUser(rowData) {
+//        alert(itemId);
+//        alert(this.assignedTeacher(id));
+//        $('#keepUid').val(rowData.id);
+        var result;
+        result = {succ:'指派教师成功！',fail:'指派教师失败！'};
+        myAjax(serverUrl+"/userRequest/updateAssignedTeacher",{teacherId:rowData.id,id:itemId},handle);
+        function handle(data,params){
+            var msg = (data.msg == undefined ? '':','+data.msg);
+            if(data.success) {
+                layer.msg(result.succ, {icon: 1,shade: 0.01});
+                handleTable("",3,serverUrl+"/userRequest/getUserPager?sid="+schoolId);
+
+            }else{
+                layer.msg(result.fail+msg, {icon: 1,shade: 0.01});
+            }
+        }
+    }
+
+    function clearBackUser() {
+        $('#keepUid').val(0);
+        $('#keepUserName').val('');
+        if(selectBackUserIndex > 0) layer.close(selectBackUserIndex);
+    }
+
+    function addUser(){
+        var index = layer.open({
+            type: 1,shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '400px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function(){
+                submituserData(index,0);
+            },
+            btn2: function(){},
+            success: function(layero, index){
+                resetForm("#userForm");
+            }
+        });
+    }
+
+    function submituserData(index,type) {
+        var param = {};
+        var Url = '';
+        var result;
+        var id = $("#id").val();
+        var name =  $("#name").val();
+        var phone =  $("#phone").val();
+        var qq =  $("#qq").val();
+        var mail =  $("#mail").val();
+        var idCard =  $("#idCard").val();
+        var checkStatus = $("#checkStatus option:selected").val();
+        var classId= $("#classId option:selected").val();
+
+        if(isBlank(name)){
+            showValidate('#name');
+            return  ;
+        }
+        if(isBlank(phone)){
+            showValidate('#phone');
+            return  ;
+        }
+        if(isNotBlank(id)){
+            param.id = id;
+        }
+
+        layer.close(index);
+        param.name = name;
+        param.phone = phone;
+        param.qq = qq;
+        param.mail = mail;
+        param.idCard = idCard;
+        param.sid = schoolId;
+        param.classId = classId;
+        param.checkStatus = checkStatus;
+//            param.id = id;
+        if(type == 0){
+            Url = '/userRequest/add';
+            result =  {succ:'添加成功！',fail:'添加失败！'};
+        }else{
+            Url = '/userRequest/update';
+            result =  {succ:'更新成功！',fail:'更新失败！'};
+
+        }
+
+        myAjax(Url,param,handle);
+        function handle(data,param){
+            if(data && data.success){
+                layer.msg('成功!', {icon: 1,shade: 0.01});
+                handleTable("",3,serverUrl+"/userRequest/getUserPager");
+            }else{
+                var msg='失败!';
+                if(data&&data.msg){
+                    msg=''+data.msg;
+                }
+                layer.msg(msg, {icon: 2,shade: 0.01});
+            }
+        }
+    }
+
+    function editUser(data){
+        $("#userForm").show();
+        $("#areaForm").hide();
+        var index = layer.open({
+            type: 1,shade: 0.01,
+            skin: 'layui-layer-demo', //样式类名
+            area: ['500px', '400px'],
+            anim: 0,
+            shadeClose: true, //开启遮罩关闭
+            content: $('.content-view'),
+            btn: ['提交', '关闭'],
+            yes: function(){
+                submituserData(index,1);
+            },
+            btn2: function(){},
+            success: function(layero, index){
+                echoUser(data);
+            }
+        });
+    }
+
+
+    //	教师管理      编辑
+    function addTeacher(rowsdata){
+        console.log(rowsdata)
+        myAjax("/backend/getAllTeachers",{sid: getUserInfo().sid,checkStatus:1}, handle)
+        function handle(data) {
+            console.log(data)
+            var msg = (data.msg == undefined ? '' : ',' + data.msg);
+            if (data.success) {
+                var str = '';
+                for (var i=0;i<data.data.length;i++){
+                    var ischeck = (rowsdata.tidsJson.indexOf(data.data[i].id)!=-1)?'checked':'';
+                    str += '<li><label  class="i_check"><input type="checkbox" data-value="' + data.data[i].id + '" '+ischeck+'  value="' + data.data[i].id + '">' + data.data[i].name + '</label></li>'
+                }
+                //'+ischeck+'
+                $(".distributionData").html(str)
+
+                $('.i_check').iCheck({
+                    checkboxClass: 'icheckbox_square-green',
+                    radioClass: 'iradio_square-green',
+                    increaseArea: '20%'
+                });
+            } else {
+                layer.msg(result.fail + msg, {icon: 2, shade: 0.01});
+            }
+        }
+
+
+        var result = {succ:'分配成功!',fail:'分配失败'};
+        var index = layer.open({
+            type: 1, shade: 0.01,
+            id: 'area', //设定一个id，防止重复弹出
+            title: '分配管理',
+            area: ['500px', '400px'],
+            content: $('.distribution'),
+            btn: ['提交', '关闭'],
+            yes: function (index) {
+                var uidArr = [];
+                $('.distributionData [type="checkbox"]:checked').each(function(){
+                    uidArr.push($(this).val());
+                })
+                console.log(uidArr);
+
+                // 点击提交接口
+                myAjax("/clazz/updateTeachers",{tids:uidArr,id:rowsdata.id}, handle)
+                function handle(data,params) {
+                    var msg = (data.msg == undefined ? '' : ',' + data.msg);
+                    if (data.success) {
+                        layer.msg(result.succ, {icon:1,time:1000,shade: 0.01},function () {
+                            layer.closeAll()
+                        });
+                        handleTable("",3,serverUrl+"/clazz/getAll");
+
+                    } else {
+                        layer.msg(result.fail + msg, {icon: 2,time:500, shade: 0.01});
+                    }
+                }
+            },
+            shadeClose: true, //开启遮罩关闭
+            success: function (layero, index) {
+
+            }
+        })
+    }
+
+
+
+    function echoUser(data){
+        $("#id").val(data.id);
+        $("#name").val(data.name);
+        $("#phone").val(data.phone);
+        $("#qq").val(data.qq);
+        $("#mail").val(data.mail);
+        $("#idCard").val(data.idCard);
+        $("#classId").val(data.classId);
+        $("#checkStatus").val(data.checkStatus);
+    }
+
+
+    function deleteUser(id){
+        var url = "/userRequest/delete";
+        var result = {succ:'删除成功！',fail:'删除失败！'};
+        layer.msg('确认删除吗?', {
+            shade: [0.1, '##f5f5f5'],
+            time: 0 //不自动关闭
+            ,btn: ['确定','取消']
+            ,yes: function(index){
+                layer.close(index);
+
+                myAjax(url,{id:id},handle);
+                function handle(data,param){
+                    var msg = (data.msg == undefined ? '':','+data.msg);
+                    if(data.success) {
+                        layer.msg(result.succ, {icon: 1,shade: 0.01});
+                        handleTable(param,2);
+                    }else{
+                        layer.msg(result.fail+msg, {icon: 2,shade: 0.01});
+                    }
+                }
+            },btn2: function(index, layero){
+            }
+        });
+    }
+
+    $(function () {
+        var Table = new TableInit(columns);
+        Table.Init();
+        var Sub2Table = new Sub2TableInit(sub2Columns);
+        Sub2Table.Init();
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+
+    });
+
+    //初始化页面上面的按钮事件
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn_add').click(addUser);
+            $('#btn_edit').click(edit);
+            $('#btn_clear_backUser').click(clearBackUser);
+            $('#user_search').click(reInitTable)
+        };
+
+        return oInit;
+    };
+
+    //点击查询按钮
+    function reInitTable(){
+        $table.bootstrapTable('refreshOptions',{page:1});
+    }
+
+
+
+</script>
+</body>
+
+</html>

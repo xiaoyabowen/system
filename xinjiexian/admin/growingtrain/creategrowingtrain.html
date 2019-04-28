@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>后台主题UI框架</title>
+    <meta name="keywords">
+    <meta name="description">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link href="../resource/css/bootstrap.min.css?v=3.3.6" rel="stylesheet">
+    <link href="../resource/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../resource/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+    <link href="../resource/js/plugins/select2/css/select2.css" rel="stylesheet">
+    <link href="../resource/js/plugins/dropzone/dropzone.css" rel="stylesheet">
+    <link href="../resource/css/animate.css" rel="stylesheet">
+    <link href="../resource/css/style.css?v=4.1.0" rel="stylesheet">
+    <link href="../resource/css/common.css" rel="stylesheet">
+</head>
+<body class="gray-bg">
+<div class="wrapper wrapper-content animated fadeInRight ">
+    <!-- Panel Other -->
+    <div class="ibox float-e-margins">
+        <div class="ibox-title">
+            <h5>添加客户</h5>
+        </div>
+        <div class="ibox-content">
+            <form method="get" class="form-horizontal">
+                <div class="hr-line-dashed  hideSchool"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">训练营名称</label>
+                    <div class="col-sm-6">
+                        <input type="text" id="title" placeholder="请输入训练营名称" class="form-control">
+                        <label class="help-block m-b-none validate">请输入训练营名称</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">训练营老师</label>
+
+                    <div class="col-sm-6">
+                        <select id="teacherName" class=" form-control js-data-example-ajax form-control"
+                                style="width: 100%">
+                        </select>
+                    </div>
+                    <span class="help-block m-b-none validate">请选择训练营老师</span>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">训练营价格</label>
+                    <div class="col-sm-6">
+                        <input type="number" id="fee" placeholder="请输入训练营价格" class="form-control">
+                        <label class="help-block m-b-none validate">请输入训练营价格</label>
+                    </div>
+                </div>
+                <div class="hr-line-dashed "></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">训练营封面</label>
+                    <div class="col-sm-6 ">
+                        <div class="input-group">
+                            <input id="cover" type="hidden">
+                            <input id="photoCover" type="text" class="form-control" placeholder="请选择图片" readonly>
+                                <span class="input-group-btn">
+                                <button type="button" class="btn btn-primary" onclick="uploadIcon()">选择文件</button>
+                                </span>
+                        </div>
+                        <img src="../resource/img/upload.png" class="img-rounded" id="iconView" width="15%"
+                             height="100%" style="display: none">
+                        <span class="help-block m-b-none validate">请上传训练营封面</span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed"></div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">训练营简介</label>
+                    <div class="col-sm-6">
+                        <textarea id="info" name="comment"  rows='8' class="form-control" required="" aria-required="true"    placeholder="请填训练营业简介"></textarea>
+                        <span class="help-block m-b-none validate">请填写训练营简介</span>
+                    </div>
+                </div>
+                <div class="hr-line-dashed  hideSchool"></div>
+
+
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-3">
+                        <button class="btn btn-primary" type="button" id="btn">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <form style="opacity: 0" action="" id="uploadForm" autocomplete="off" enctype="multipart/form-data">
+        <input style="height: 0;width: 0;" type="file" name="file"
+               accept="image/jpeg，image/jpg，image/png,image/jp2，image/jpe"/>
+    </form>
+</div>
+
+<!-- 全局js -->
+<script src="../resource/js/jquery.min.js?v=2.1.4"></script>
+<script src="../resource/js/bootstrap.min.js?v=3.3.6"></script>
+<script src="../resource/js/plugins/laydate/laydate.js"></script>
+<script src="../resource/js/plugins/layer/layer.js"></script>
+<!----select2----->
+
+<script src="../resource/js/plugins/select2/js/select2.full.js"></script>
+<script src="../resource/js/plugins/select2/js/i18n/zh-CN.js"></script>
+
+<script src="../resource/js/plugins/dropzone/dropzone.js"></script>
+<script src="../resource/js/plugins/dropzone/mydropzone.js"></script>
+
+<script src="../resource/common/multiselect.js"></script>
+<script src="../resource/common/common.js?" +Math.random()></script>
+<script>
+
+    initSelectSubject("#teacherName", "/teacher/searchTeacherByName?token=" + getUserToken(), false);
+    function formatSubject(item) {
+        if (item.loading) return item;
+        var markup = '<div> <p class="text-primary">咨询师姓名：' + item.realName|| item.text + '</p>';
+        //markup += '这里可以添加其他选项...';
+        markup += ' </div>';
+        return markup;
+    }
+//    var dropZone = myDropzone();
+    var ButtonInit = function () {
+        var oInit = new Object();
+        oInit.Init = function () {
+            $('#btn').click(submitData)
+        };
+
+        return oInit;
+    };
+
+    $(function () {
+        //初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+        laydate.render({
+            elem: '#birthday'
+        });
+    });
+
+    function submitData() {
+        var params = {};
+        var url = "/growingtrain/addGrowingTrain";
+        var title = $("#title").val();
+        var teacherId =$("#teacherName").val();
+        var courseList = {};
+        var fee = $("#fee").val();
+        var info = $("#info").val();
+        var icon = $("#cover").val();
+
+        //验证
+        if (isBlank(title)) {
+            showValidate($("#title").parent());
+            return;
+        }
+        if (isBlank(teacherId)) {
+            showValidate($("#teacherName").parent());
+            return;
+        }
+        if (isBlank(fee)) {
+            showValidate($("#fee").parent());
+            return;
+        }
+        if (isBlank(info)) {
+            showValidate($("#info").parent());
+            return;
+        }
+        if (isBlank(icon)) {
+            showValidate($("#cover").parent());
+            return;
+        }
+        params.title = title;
+        params.fee = fee;
+        params.courseList = courseList;
+        params.teacherId = teacherId;
+        params.info = info;
+        params.icon = icon;
+
+        ajaxSubmit(url, params, function(data){
+            var msg = (data.msg == undefined ? '' : '' + data.msg);
+            if (data && data.success) {
+                msgSuccess("添加成功");
+                reLoad();
+            } else {
+                msgFail("添加失败");
+            }
+        });
+    }
+
+</script>
+</body>
+
+</html>
